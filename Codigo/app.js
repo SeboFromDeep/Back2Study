@@ -19,6 +19,8 @@ node [nombre.js] estando dentro de la carpeta donde se aloja [nombre.js], lo eje
 ¿Que es express? Framework, modulo que forma parte de node, separacion MVC, basado en el modulo http, para gestionar las peticiones web (GET y POST)
 */
 
+const PORT = process.env.PORT || 3000;
+
 const express = require("express");
 //Libreria que vamos a usar
 const app = express();
@@ -53,10 +55,10 @@ app.get("/prueba", (request, response) => {
 });
 
 //-- Escucha del servidor
-app.listen(config.puerto, (err) => {
+app.listen(PORT, (err) => {
     if (err) {
         console.error(`No se pudo inicializar el servidor: ${err.message}`);
     } else {
-        console.log("Servidor arrancado en el puerto "+config.puerto);        
+        console.log(`Servidor arrancado en el puerto ${ PORT }`);        
     }
 });
