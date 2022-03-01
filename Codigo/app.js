@@ -1,4 +1,5 @@
 'use strict'
+
 //PASOS
 /*
 Inicializar Terminal (Pestaña de arriba), colocarse 
@@ -17,36 +18,41 @@ node [nombre.js] estando dentro de la carpeta donde se aloja [nombre.js], lo eje
 ¿Que es node? Permite ejecutar codigo javascript en servidor
 ¿Que es express? Framework, modulo que forma parte de node, separacion MVC, basado en el modulo http, para gestionar las peticiones web (GET y POST)
 */
+
 const express = require("express");
 //Libreria que vamos a usar
 const app = express();
 //express(); Devuelve una Aplicacion (Servidor http que escucha en un puerto determinado)
-const config =require("./js/config");//Configuracion bbd y puerto
+const config = require("./js/config");//Configuracion bbd y puerto
 
 //Configuracion de las vistas
 //Modulo para manejar direcciones
 const path = require("path");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
+app.use(express.json());//Devuelve middleware que solo analiza json y solo mira las solicitudes donde el encabezado Content-Type coincide con la opción de tipo.
+app.use(express.urlencoded({extended: true}));//Devuelve middleware que solo analiza cuerpos codificados en URL y solo mira las solicitudes donde el encabezado Content-Type coincide con la opción de tipo
+
 const morgan = require("morgan")
 app.use(morgan("dev"));//Al realizar cambios en los archivos, se reinicia la aplicacion automaticamente (Para programar)
 //Se indica a express donde se encuentan las vistas
 
-//------------------------------------Pagina inicial-----------------
+//-- Pagina inicial
 app.get("/", (request, response) => {
     response.render("index");
-      
-    
 });
-//--------------------------------------------------------------------
+
+//---
+
+console.log("Test");
+console.log("Test2");
 
 app.get("/prueba", (request, response) => {
     response.render("prueba");
-      
-    
 });
 
-//--------------------------------------Escucha del servidor----------
+//-- Escucha del servidor
 app.listen(config.puerto, (err) => {
     if (err) {
         console.error(`No se pudo inicializar el servidor: ${err.message}`);
