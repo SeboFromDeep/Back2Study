@@ -1,7 +1,6 @@
 {
-  "name": "Back2Study",
+  "name": "back2study",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,5 +16,10 @@
     "url": "https://github.com/SeboFromDeep/Back2Study/issues"
   },
   "homepage": "https://github.com/SeboFromDeep/Back2Study#readme",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "express": "^4.17.3"
+  },
+  "devDependencies": {},
+  "description": ""
 }
