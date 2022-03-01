@@ -49,7 +49,7 @@ app.get("/", (request, response) => {
 //---
 
 console.log("Test");
-console.log("Test2");
+console.log("Test22");
 
 app.get("/prueba", (request, response) => {
     response.render("prueba");
