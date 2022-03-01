@@ -28,6 +28,7 @@ const config =require("./js/config");//Configuracion bbd y puerto
 const path = require("path");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.use(morgan("dev"));//Al realizar cambios en los archivos, se reinicia la aplicacion automaticamente (Para programar)
 //Se indica a express donde se encuentan las vistas
 
 //------------------------------------Pagina inicial-----------------
