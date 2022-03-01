@@ -1,0 +1,30 @@
+{
+  "name": "back2study",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./Codigo/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeboFromDeep/Back2Study.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SeboFromDeep/Back2Study/issues"
+  },
+  "homepage": "https://github.com/SeboFromDeep/Back2Study#readme",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "ejs": "^3.1.6",
+    "express": "^4.17.3",
+    "morgan": "^1.10.0",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {},
+  "description": ""
+}
