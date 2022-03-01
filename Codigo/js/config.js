@@ -9,5 +9,5 @@ module.exports ={
         password: "",
         database:"back2study"
     } ,
-    puerto: 80
+    puerto: 5000
 };
