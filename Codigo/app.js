@@ -19,9 +19,6 @@ node [nombre.js] estando dentro de la carpeta donde se aloja [nombre.js], lo eje
 ¿Que es express? Framework, modulo que forma parte de node, separacion MVC, basado en el modulo http, para gestionar las peticiones web (GET y POST)
 */
 
-<<<<<<< HEAD
- 
-=======
 // modulo para manejar rutas
 const path = require("path");
 
@@ -32,7 +29,6 @@ const connectLivereload = require("connect-livereload");
 // open livereload high port and start to watch public directory for changes
 const liveReloadServer = livereload.createServer();
 liveReloadServer.watch(path.join(__dirname, "public"), path.join(__dirname, "views"));
->>>>>>> 4484e8032ac6a1125553b8776bcd1833953a0c8f
 
 const express = require("express");
 //Libreria que vamos a usar
@@ -51,6 +47,7 @@ app.use(express.static(__dirname + '/public'));
 
 //Ubicacion Archivos estaticos
 app.use(express.static(path.join(__dirname, "public")));
+
 //--------------------------------------------------------------------
 
 app.use(express.json());//Devuelve middleware que solo analiza json y solo mira las solicitudes donde el encabezado Content-Type coincide con la opción de tipo.
@@ -69,7 +66,7 @@ app.get("/", (request, response) => {
 liveReloadServer.server.once("connection", () => {
     console.log("Refrescando browser");
     setTimeout(() => {
-    liveReloadServer.refresh("/", "/prueba");
+    liveReloadServer.refresh("/");
     }, 100);
 });
 
@@ -80,9 +77,8 @@ app.get("/prueba", (request, response) => {
     response.render("login");
 });*/
 
+//-- -GESTION DE ERRORES 
 
-
-//----------------------------------------GESTION DE ERRORES-----------
 //Para errores de direccionamiento
 app.use(function(request, response, next) { 
     response.status(404);
@@ -96,7 +92,8 @@ app.use(function(error, request, response, next) {
         mensaje: error.message, 
         pila: error.stack });
 });
-//--------------------------------------------------------------------
+
+//---
 
 //-- Escucha del servidor
 app.listen(PORT, (err) => {
