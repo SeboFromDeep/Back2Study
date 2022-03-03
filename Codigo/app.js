@@ -19,20 +19,35 @@ node [nombre.js] estando dentro de la carpeta donde se aloja [nombre.js], lo eje
 ¿Que es express? Framework, modulo que forma parte de node, separacion MVC, basado en el modulo http, para gestionar las peticiones web (GET y POST)
 */
 
+<<<<<<< HEAD
  
+=======
+// modulo para manejar rutas
+const path = require("path");
+
+// watch front-end changes
+const livereload = require("livereload");
+const connectLivereload = require("connect-livereload");
+
+// open livereload high port and start to watch public directory for changes
+const liveReloadServer = livereload.createServer();
+liveReloadServer.watch(path.join(__dirname, "public"), path.join(__dirname, "views"));
+>>>>>>> 4484e8032ac6a1125553b8776bcd1833953a0c8f
 
 const express = require("express");
 //Libreria que vamos a usar
 const app = express();
+// monkey patch every served HTML so they know of changes
+app.use(connectLivereload());
+
 //express(); Devuelve una Aplicacion (Servidor http que escucha en un puerto determinado)
 const config = require("./js/config");//Configuracion bbd y puerto
 const PORT = process.env.PORT || config.puerto;
 
 //Configuracion de las vistas
-//Modulo para manejar direcciones
-const path = require("path");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.use(express.static(__dirname + '/public'));
 
 //Ubicacion Archivos estaticos
 app.use(express.static(path.join(__dirname, "public")));
@@ -50,10 +65,15 @@ app.get("/", (request, response) => {
     response.render("login");
 });
 
-//---
+// ping browser on Express boot, once browser has reconnected and handshaken
+liveReloadServer.server.once("connection", () => {
+    console.log("Refrescando browser");
+    setTimeout(() => {
+    liveReloadServer.refresh("/", "/prueba");
+    }, 100);
+});
 
-console.log("Test");
-console.log("Test22");
+//---
 
 /*
 app.get("/prueba", (request, response) => {
