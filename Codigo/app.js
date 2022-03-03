@@ -19,7 +19,7 @@ node [nombre.js] estando dentro de la carpeta donde se aloja [nombre.js], lo eje
 ¿Que es express? Framework, modulo que forma parte de node, separacion MVC, basado en el modulo http, para gestionar las peticiones web (GET y POST)
 */
 
-
+ 
 
 const express = require("express");
 //Libreria que vamos a usar
@@ -34,6 +34,10 @@ const path = require("path");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+//Ubicacion Archivos estaticos
+app.use(express.static(path.join(__dirname, "public")));
+//--------------------------------------------------------------------
+
 app.use(express.json());//Devuelve middleware que solo analiza json y solo mira las solicitudes donde el encabezado Content-Type coincide con la opción de tipo.
 app.use(express.urlencoded({extended: true}));//Devuelve middleware que solo analiza cuerpos codificados en URL y solo mira las solicitudes donde el encabezado Content-Type coincide con la opción de tipo
 
@@ -43,7 +47,7 @@ app.use(morgan("dev"));//Al realizar cambios en los archivos, se reinicia la apl
 
 //-- Pagina inicial
 app.get("/", (request, response) => {
-    response.render("index");
+    response.render("login");
 });
 
 //---
@@ -51,9 +55,28 @@ app.get("/", (request, response) => {
 console.log("Test");
 console.log("Test22");
 
+/*
 app.get("/prueba", (request, response) => {
-    response.render("prueba");
+    response.render("login");
+});*/
+
+
+
+//----------------------------------------GESTION DE ERRORES-----------
+//Para errores de direccionamiento
+app.use(function(request, response, next) { 
+    response.status(404);
+    response.render("error404", { url: request.url });
 });
+
+//Errores de servidor
+app.use(function(error, request, response, next) {
+    response.status(500); 
+    response.render("error500", {
+        mensaje: error.message, 
+        pila: error.stack });
+});
+//--------------------------------------------------------------------
 
 //-- Escucha del servidor
 app.listen(PORT, (err) => {
