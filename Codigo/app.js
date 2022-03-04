@@ -67,7 +67,11 @@ app.get("/", (request, response) => {
                                 msgRegistro: false});
 });
 
-
+//-- Pagina de registro 
+app.get("/signup", (request, response) => {     
+    response.status(200);     
+    response.render("signup", {  title: "Sign Up Page",
+                                msgRegistro: false}); });
 
 // ping browser on Express boot, once browser has reconnected and handshaken
 liveReloadServer.server.once("connection", () => {

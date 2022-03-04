@@ -24,13 +24,16 @@
 
 <!-- CONTENIDO -->
     <div class="container">
-        <% if (msgRegistro) { %>
-            <div class="alert <%=tipoAlert%>" role="alert">
-                <%=msgRegistro%>
-            </div>
-        <% } %>
+        
         <div class="row vh-80 justify-content-center align-items-center">
+            
             <div class="col-auto bg-light p-5 rounded">
+                <% if (msgRegistro) { %>
+                    <div class="alert <%=tipoAlert%> alert-dismissible fade show " role="alert">
+                        <strong><%=msgRegistro%></strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% } %>
                 <form action="/usuarios/login_user" method="POST" enctype="multipart/form-data">
                     <h1 class="display-6 text-center">Login</h1>
                     <div class="input-group p-2">
@@ -41,7 +44,7 @@
                     </div><br>
                     
                     <button type="submit" class="btn btn-primary w-100">Login</button>
-                    <a href="/registro" class="link-dark "><h6 class="h6 text-center">Registro</h5></a>
+                    <a href="/signup" class="link-dark "><h6 class="h6 text-center">Registro</h5></a>
                 </form>
             </div>
             
