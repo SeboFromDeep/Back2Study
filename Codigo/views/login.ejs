@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     
-    <title>Pagina de prueba bootstrap</title>
+    <title><%=title %></title>
     
     <link rel="stylesheet" href="/css/stilo.css" media="screen"/>
     <!-- <link rel="stylesheet" href="public/css/stilo.css" media="screen"/> -->
@@ -24,9 +24,14 @@
 
 <!-- CONTENIDO -->
     <div class="container">
+        <% if (msgRegistro) { %>
+            <div class="alert <%=tipoAlert%>" role="alert">
+                <%=msgRegistro%>
+            </div>
+        <% } %>
         <div class="row vh-80 justify-content-center align-items-center">
             <div class="col-auto bg-light p-5 rounded">
-                <form action="#" method="POST" >
+                <form action="/usuarios/login_user" method="POST" enctype="multipart/form-data">
                     <h1 class="display-6 text-center">Login</h1>
                     <div class="input-group p-2">
                         <input type="email" name="correo" class="form-control" id="floatingInput" placeholder="name@example.com">
@@ -36,9 +41,14 @@
                     </div><br>
                     
                     <button type="submit" class="btn btn-primary w-100">Login</button>
+                    <a href="/registro" class="link-dark "><h6 class="h6 text-center">Registro</h5></a>
                 </form>
-            </div>    
+            </div>
+            
+            
         </div>
+        
+            
     </div>
 
     
