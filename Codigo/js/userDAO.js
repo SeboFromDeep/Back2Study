@@ -33,7 +33,7 @@ class DaoUsers{
     }
 
     login(email, contrasena, callback) {
-        console.log("DAO "+email+" "+contrasena)
+        console.log("DAO "+email+" "+contrasena);
         this.pool.getConnection(function(err, connection) {
             if (err) {
                 callback(new Error("Error de conexión a la base de datos"));
