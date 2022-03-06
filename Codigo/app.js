@@ -68,7 +68,7 @@ app.use("/usuarios", routerUser);
 app.get("/", (request, response) => {
     response.status(200);
     
-    response.render("login", {  title: "Pagina de logeo",
+    response.render("login", {  title: "Página de inicio de sesión",
                                 msgRegistro: false});
 });
 
@@ -76,7 +76,7 @@ app.get("/", (request, response) => {
 app.get("/signup", (request, response) => {     
     response.status(200);
     const errors = validationResult(request);
-    response.render("signup", { title: "Sign Up Page",
+    response.render("signup", { title: "Página de registro",
                                 errores: errors.mapped() ,
                                 msgRegistro: false});//False para usu que no existe True si ya existe 
                             });

@@ -25,13 +25,13 @@
                     </div>
                 <% } %>
                 <form action="/usuarios/registro_Usuario" method="POST" enctype="multipart/form-data">
-                    <h1 class="display-6 text-center">Sign Up</h1>
+                    <h1 class="display-6 text-center">Registrarse</h1>
                     <!--Los campos vacios se comprueban con el campo 'required'-->
                     <div class="input-group p-2">
-                        <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Username" >
+                        <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Nombre de usuario" >
                     </div>
                     <div class="input-group p-2">
-                        <input type="email" name="correo" class="form-control" id="floatingInput" placeholder="name@example.com" >
+                        <input type="email" name="correo" class="form-control" id="floatingInput" placeholder="nombre@ejemplo.com" >
                         
                     </div>
                     <div class="input-group">
@@ -42,7 +42,7 @@
                         <% } %>
                     </div>
                     <div class="input-group p-2">
-                        <input type="password" name="password" class="form-control" id="floatingInput" placeholder="Password" >
+                        <input type="password" name="password" class="form-control" id="floatingInput" placeholder="Contraseña" >
                     </div>
                     <div class="input-group">
                         <% if (errores.password) { %>
@@ -52,7 +52,7 @@
                         <% } %>
                     </div>
                     <div class="input-group p-2">
-                        <input type="password" name="password2" class="form-control" id="floatingInput" placeholder="Confirm Password" >
+                        <input type="password" name="password2" class="form-control" id="floatingInput" placeholder="Confirmar contraseña" >
                     </div>
                     <div class="input-group">
                         <% if (errores.password2) { %>
@@ -63,8 +63,8 @@
                     </div>
                     <br>
 
-                    <button type="submit" class="btn btn-primary w-100">Sign Up</button>
-                    <a href="/" class="link-dark "><h6 class="h6 text-center">Login</h5></a>
+                    <button type="submit" class="btn btn-primary w-100">Registarse</button>
+                    <a href="/" class="link-dark "><h6 class="h6 text-center">Ya estoy registrado</h5></a>
 
                 </form>
             </div>
