@@ -29,6 +29,7 @@ const connectLivereload = require("connect-livereload");
 // open livereload high port and start to watch public directory for changes
 const liveReloadServer = livereload.createServer();
 liveReloadServer.watch(path.join(__dirname, "public"), path.join(__dirname, "views"));
+
 const express = require("express");
 //Libreria que vamos a usar
 const app = express();
@@ -45,6 +46,7 @@ app.use(connectLivereload());
 
 //Ubicacion Archivos estaticos
 app.use(express.static(path.join(__dirname, "public")));
+
 //--------------------------------------------------------------------
 
 app.use(express.json());//Devuelve middleware que solo analiza json y solo mira las solicitudes donde el encabezado Content-Type coincide con la opción de tipo.
@@ -85,7 +87,7 @@ app.get("/signup", (request, response) => {
 liveReloadServer.server.once("connection", () => {
     console.log("Refrescando browser");
     setTimeout(() => {
-    liveReloadServer.refresh("/", "/prueba");
+    liveReloadServer.refresh("/");
     }, 100);
 });
 
@@ -96,9 +98,8 @@ app.get("/prueba", (request, response) => {
     response.render("login");
 });*/
 
+//-- -GESTION DE ERRORES 
 
-
-//----------------------------------------GESTION DE ERRORES-----------
 //Para errores de direccionamiento
 app.use(function(request, response, next) { 
     response.status(404);
@@ -112,7 +113,8 @@ app.use(function(error, request, response, next) {
         mensaje: error.message, 
         pila: error.stack });
 });
-//--------------------------------------------------------------------
+
+//---
 
 //-- Escucha del servidor
 app.listen(PORT, (err) => {

@@ -1,7 +1,12 @@
 body{
-    background-color: dodgerblue !important;
+    background-color: #42a6e9 !important;
 }
 
+h1 {
+  color: #333333;
+  font-family: verdana;
+  font-size: 300%;
+}
 
 /*.abs-center {
     margin-top: 15%;
