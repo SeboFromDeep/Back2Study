@@ -10,25 +10,23 @@ class DaoUsers{
             if(err){
                 callback(new ErrorEvent("Error de conexión a la base de datos"));
             }
-            // else{
-            //     console.log("Datos insert usuario: "+usuario.correo+" "+usuario.nombre+" "+usuario.pass+" "+usuario.pass2+" "); 
-            //     const valor="INSERT INTO usuarios (correo, contra, nombre, img) VALUES (?,?,?,?)";
-            //     connection.query(valor,[usuario.correo, usuario.pass, usuario.nombre, usuario.imagen],
-            //     //SIN IMAGEN
-            //     // const valor="INSERT INTO usuarios (correo, contra, nombre) VALUES (?,?,?)";
-            //     // connection.query(valor,[usuario.correo, usuario.pass, usuario.nombre],
-            //         function(err, result){
-            //             connection.release(); //devolver el pool de conexiones.
-            //             if(err){
-            //                 //console.log("ERROR: "+err.message);
-            //                 callback(new Error("Error de acceso a la base de datos"));
-            //             }
-            //             else{
-                            
-            //                 callback(null, usuario.nombre);
-            //             }
-            //         });
-            // }
+            else{
+                console.log("Datos insert usuario: "+usuario.nombre+" "+usuario.correo+" "+usuario.pass); 
+                connection.query('USE back2study;');
+                const valor="INSERT INTO users (username, email, password) VALUES (?,?,?)";
+                connection.query(valor,[usuario.nombre, usuario.correo, usuario.pass],
+                    function(err, result){
+                    connection.release(); //devolver el pool de conexiones.
+                    if(err){
+                        console.log("ERROR: "+err.message);
+                        callback(new Error("Error de acceso a la base de datos"));
+                    }
+                    else{
+                        
+                        callback(null, usuario.nombre);
+                    }
+                });
+            }
         });
     }
 
@@ -39,22 +37,24 @@ class DaoUsers{
                 callback(new Error("Error de conexión a la base de datos"));
             }
             else {
-                connection.query("SELECT * FROM usuarios WHERE correo = ? AND contra= ?" ,
-                            [email,contrasena],
-                            function(err, rows) {
-                                connection.release(); // devolver al pool la conexión
-                                if (err) {
-                                    callback(new Error("Error de acceso a la base de datos"));
+                console.log("Datos log usuario: "+ email +" "+ contrasena);
+                connection.query('USE back2study;');
+                connection.query("SELECT * FROM users WHERE email = ? AND password= ?" ,
+                    [email,contrasena],
+                    function(err, rows) {
+                        connection.release(); // devolver al pool la conexión
+                        if (err) {
+                            callback(new Error("Error de acceso a la base de datos"));
+                        }
+                        else {
+                            if (rows.length === 0) {
+                                callback(null, false); //no está el usuario con el password proporcionado
                                 }
-                                else {
-                                    if (rows.length === 0) {
-                                        callback(null, false); //no está el usuario con el password proporcionado
-                                     }
-                                    else {
-                                        callback(null, rows[0]);
-                                    }
-                                }
-                            });
+                            else {
+                                callback(null, rows[0]);
+                            }
+                        }
+                    });
             }
         });
     }
