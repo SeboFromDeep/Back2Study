@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     
-    <title>Back2Study Home</title>
+    <title><%=title %></title>
     
     <link rel="stylesheet" href="/css/stilo.css" media="screen"/>
     <!-- <link rel="stylesheet" href="public/css/stilo.css" media="screen"/> -->
@@ -24,21 +24,36 @@
 
 <!-- CONTENIDO -->
     <div class="container">
+        
         <div class="row vh-80 justify-content-center align-items-center">
+            
             <div class="col-auto bg-light p-5 rounded">
-                <form action="#" method="POST" >
-                    <h1 class="display-6 text-center">Login</h1>
+                <% if (msgRegistro) { %>
+                    <div class="alert <%=tipoAlert%> alert-dismissible fade show " role="alert">
+                        <strong><%=msgRegistro%></strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% } %>
+                <form action="/usuarios/login_user" method="POST" enctype="multipart/form-data">
+                    <h1 class="display-6 text-center">Iniciar Sesión</h1>
                     <div class="input-group p-2">
-                        <input type="email" name="correo" class="form-control" id="floatingInput" placeholder="name@example.com">
+                        <input type="email" name="correo" class="form-control" id="floatingInput" placeholder="nombre@ejemplo.com">
+
                     </div>
                     <div class="input-group p-2">
-                        <input type="password"  name="password" class="form-control" id="floatingPassword" placeholder="Password">
+                        <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Contraseña">
+                        
                     </div><br>
                     
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                    <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+                    <a href="/signup" class="link-dark "><h6 class="h6 text-center">No tengo cuenta</h5></a>
                 </form>
-            </div>    
+            </div>
+            
+            
         </div>
+        
+            
     </div>
 
     

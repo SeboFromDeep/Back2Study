@@ -34,16 +34,15 @@ const express = require("express");
 //Libreria que vamos a usar
 const app = express();
 // monkey patch every served HTML so they know of changes
-app.use(connectLivereload());
-
 //express(); Devuelve una Aplicacion (Servidor http que escucha en un puerto determinado)
 const config = require("./js/config");//Configuracion bbd y puerto
 const PORT = process.env.PORT || config.puerto;
 
-//Configuracion de las vistas
+//Configuracion de las vistas y usos
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(__dirname + '/public'));
+app.use(connectLivereload());
 
 //Ubicacion Archivos estaticos
 app.use(express.static(path.join(__dirname, "public")));
@@ -57,10 +56,32 @@ const morgan = require("morgan")
 app.use(morgan("dev"));//Al realizar cambios en los archivos, se reinicia la aplicacion automaticamente (Para programar)
 //Se indica a express donde se encuentan las vistas
 
+//Para validar errores en formularios.
+const { check, validationResult } = require("express-validator"); // https://www.youtube.com/watch?v=hBETsBY3Hlg
+
+
+//Routers
+const routerUser = require("./routers/userRouter");
+app.use("/usuarios", routerUser);
+
+
+
 //-- Pagina inicial
 app.get("/", (request, response) => {
-    response.render("login");
+    response.status(200);
+    
+    response.render("login", {  title: "Página de inicio de sesión",
+                                msgRegistro: false});
 });
+
+//-- Pagina de registro Login --> Registro
+app.get("/signup", (request, response) => {     
+    response.status(200);
+    const errors = validationResult(request);
+    response.render("signup", { title: "Página de registro",
+                                errores: errors.mapped() ,
+                                msgRegistro: false});//False para usu que no existe True si ya existe 
+                            });
 
 // ping browser on Express boot, once browser has reconnected and handshaken
 liveReloadServer.server.once("connection", () => {
