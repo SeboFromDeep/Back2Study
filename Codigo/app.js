@@ -23,12 +23,12 @@ node [nombre.js] estando dentro de la carpeta donde se aloja [nombre.js], lo eje
 const path = require("path");
 
 // watch front-end changes
-const livereload = require("livereload");
-const connectLivereload = require("connect-livereload");
+// const livereload = require("livereload");
+// const connectLivereload = require("connect-livereload");
 
-// open livereload high port and start to watch public directory for changes
-const liveReloadServer = livereload.createServer();
-liveReloadServer.watch(path.join(__dirname, "public"), path.join(__dirname, "views"));
+// // open livereload high port and start to watch public directory for changes
+// const liveReloadServer = livereload.createServer();
+// liveReloadServer.watch(path.join(__dirname, "public"), path.join(__dirname, "views"));
 
 const express = require("express");
 //Libreria que vamos a usar
@@ -38,11 +38,34 @@ const app = express();
 const config = require("./js/config");//Configuracion bbd y puerto
 const PORT = process.env.PORT || config.puerto;
 
+//---------------------------------Sesion---------------------------------
+const session = require("express-session");
+const mysqlSession = require("express-mysql-session");
+const MySQLStore = mysqlSession(session);
+const sessionStore = new MySQLStore(config.databaseConfig);
+
+const middlewareSession = session({
+    saveUninitialized: true,
+    secret: "foobar34",
+    resave: false,
+    store: sessionStore
+});
+
+app.use(middlewareSession);
+
+//Para ver que usuario esta logeado en el momento (Para pruebas)
+app.use(function(request, response, next) {
+    console.log("Usuario logeado: ", request.session.mailID);
+    next();
+})
+//--------------------------------------------------------------------
+
+
 //Configuracion de las vistas y usos
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(__dirname + '/public'));
-app.use(connectLivereload());
+// app.use(connectLivereload());
 
 //Ubicacion Archivos estaticos
 app.use(express.static(path.join(__dirname, "public")));
@@ -68,10 +91,22 @@ app.use("/usuarios", routerUser);
 
 //-- Pagina inicial
 app.get("/", (request, response) => {
-    response.status(200);
+    // if(request.session.mailID===undefined){
+        response.status(200);
+        response.render("login", {  title: "Página de inicio de sesión",
+                                    msgRegistro: false});
+    // }
+    // else{
+    //     response.render("principal", {
+    //         nameUser: request.session.userName });
+    // }
+});
+
+app.get("/login", (request, response) => {
+     response.status(200);
+    response.render("login", {  title: "Pagina de logeo", 
+                                    msgRegistro: false});
     
-    response.render("login", {  title: "Página de inicio de sesión",
-                                msgRegistro: false});
 });
 
 //-- Pagina de registro Login --> Registro
@@ -84,12 +119,12 @@ app.get("/signup", (request, response) => {
                             });
 
 // ping browser on Express boot, once browser has reconnected and handshaken
-liveReloadServer.server.once("connection", () => {
-    console.log("Refrescando browser");
-    setTimeout(() => {
-    liveReloadServer.refresh("/");
-    }, 100);
-});
+// liveReloadServer.server.once("connection", () => {
+//     console.log("Refrescando browser");
+//     setTimeout(() => {
+//     liveReloadServer.refresh("/");
+//     }, 100);
+// });
 
 //---
 

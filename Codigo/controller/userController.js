@@ -14,17 +14,17 @@ const { check, validationResult } = require("express-validator");
 
 class controllerU{
 
-    // usuarioLogeado(request, response, next) {
-    //     if (request.session.mailID !== undefined && request.session.userName !== undefined ) {
-    //         response.locals.userEmail = request.session.currentUser;
-    //         response.locals.userName = request.session.currentName;
+    usuarioLogeado(request, response, next) {
+        if (request.session.mailID !== undefined && request.session.userName !== undefined ) {
+            response.locals.userEmail = request.session.currentUser;
+            response.locals.userName = request.session.currentName;
             
-    //         next();
-    //     } else {
+            next();
+        } else {
             
-    //         response.redirect("/login");
-    //     }
-    // }
+            response.redirect("/login");
+        }
+    }
 
     login(request, response){
         console.log("CONTROLADOR "+request.body.correo+" "+request.body.password);
@@ -48,9 +48,17 @@ class controllerU{
                                                 tipoAlert: "alert-danger"});
                 }
                 else{
-                    response.render("login", {  title: "Inicio de sesión realizado con éxito", 
-                                                msgRegistro: "Inicio de sesión realizado con éxito " + datosUsuario.username, 
-                                                tipoAlert: "alert-success"});
+
+                    request.session.mailID = request.body.correo;
+                    request.session.userName = datosUsuario.nombre;
+
+                    response.locals.mailID = request.session.mailID;
+                    response.locals.userName = request.session.userName;
+                    console.log("NOMBRE USUARIO: "+datosUsuario.nombre);
+
+                    response.render("principal", {
+                        nameUser: request.session.mailID });
+                    
                 }
                 
             }
@@ -59,11 +67,11 @@ class controllerU{
 
 
 
-    // cierreSesion(request, response){
-    //     response.status(200);
-    //     request.session.destroy();
-    //     response.redirect("/login");
-    // }
+    cierreSesion(request, response){
+        response.status(200);
+        request.session.destroy();
+        response.redirect("/");
+    }
 
 
     registroUsu(request, response)  {

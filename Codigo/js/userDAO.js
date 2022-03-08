@@ -51,6 +51,7 @@ class DaoUsers{
                                 callback(null, false); //no está el usuario con el password proporcionado
                                 }
                             else {
+                                //console.log("DAOOOO "+rows.);
                                 callback(null, rows[0]);
                             }
                         }
