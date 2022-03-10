@@ -51,6 +51,7 @@ class DaoUsers{
                                 callback(null, false); //no está el usuario con el password proporcionado
                                 }
                             else {
+                                console.log("DATOS DAAAAO: "+rows[0].id+"/"+rows[0].username+"/"+rows[0].email+"/"+rows[0].password);
                                 callback(null, rows[0]);
                             }
                         }

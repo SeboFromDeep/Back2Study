@@ -14,17 +14,17 @@ const { check, validationResult } = require("express-validator");
 
 class controllerU{
 
-    // usuarioLogeado(request, response, next) {
-    //     if (request.session.mailID !== undefined && request.session.userName !== undefined ) {
-    //         response.locals.userEmail = request.session.currentUser;
-    //         response.locals.userName = request.session.currentName;
+    usuarioLogeado(request, response, next) {
+        if (request.session.mail !== undefined && request.session.userName !== undefined ) {
+            response.locals.mail = request.session.currentUser;
+            response.locals.userName = request.session.currentName;
             
-    //         next();
-    //     } else {
+            next();
+        } else {
             
-    //         response.redirect("/login");
-    //     }
-    // }
+            response.redirect("/login");
+        }
+    }
 
     login(request, response){
         console.log("CONTROLADOR "+request.body.correo+" "+request.body.password);
@@ -48,9 +48,20 @@ class controllerU{
                                                 tipoAlert: "alert-danger"});
                 }
                 else{
-                    response.render("login", {  title: "Inicio de sesión realizado con éxito", 
-                                                msgRegistro: "Inicio de sesión realizado con éxito " + datosUsuario.username, 
-                                                tipoAlert: "alert-success"});
+
+                    // request.session.id=datosUsuario.id;
+                    request.session.mail = datosUsuario.email;
+                    request.session.userName = datosUsuario.username;
+
+                    response.locals.id=request.session.id;
+                    response.locals.mailID = request.session.mailID;
+                    response.locals.userName = request.session.userName;
+
+                    console.log("DATOS controller: "+datosUsuario.id+"/"+datosUsuario.username+"/"+datosUsuario.email+"/"+datosUsuario.password);
+                    response.render("principal", {  
+                                                title: "Inicio de sesión realizado con éxito", 
+                                                nameUser: request.session.userName, 
+                                                mailUser: request.session.mail });
                 }
                 
             }
@@ -59,11 +70,12 @@ class controllerU{
 
 
 
-    // cierreSesion(request, response){
-    //     response.status(200);
-    //     request.session.destroy();
-    //     response.redirect("/login");
-    // }
+    cierreSesion(request, response){
+        response.status(200);
+        console.log("SESSION "+request.session);
+        request.session.destroy();
+        response.redirect("/");
+    }
 
 
     registroUsu(request, response)  {
