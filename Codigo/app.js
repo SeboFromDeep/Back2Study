@@ -64,6 +64,8 @@ app.use(function(request, response, next) {
 const routerUser = require("./routers/userRouter");
 app.use("/usuarios", routerUser);
 
+const routerTask = require("./routers/taskRouter");
+app.use("/tareas", routerTask);
 
 
 //-- Pagina inicial

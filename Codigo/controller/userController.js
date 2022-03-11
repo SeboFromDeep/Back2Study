@@ -15,7 +15,8 @@ const { check, validationResult } = require("express-validator");
 class controllerU{
 
     usuarioLogeado(request, response, next) {
-        if (request.session.mail !== undefined && request.session.userName !== undefined ) {
+        if (request.session.id_!== undefined && request.session.mail !== undefined && request.session.userName !== undefined ) {
+            response.locals.id_ = request.session.currentId;
             response.locals.mail = request.session.currentUser;
             response.locals.userName = request.session.currentName;
             
@@ -49,11 +50,11 @@ class controllerU{
                 }
                 else{
 
-                    // request.session.id=datosUsuario.id;
+                    request.session.id_=datosUsuario.id;
                     request.session.mail = datosUsuario.email;
                     request.session.userName = datosUsuario.username;
 
-                    response.locals.id=request.session.id;
+                    response.locals.id_=request.session.id_;
                     response.locals.mailID = request.session.mailID;
                     response.locals.userName = request.session.userName;
 
@@ -61,7 +62,8 @@ class controllerU{
                     response.render("principal", {  
                                                 title: "Inicio de sesión realizado con éxito", 
                                                 nameUser: request.session.userName, 
-                                                mailUser: request.session.mail });
+                                                mailUser: request.session.mail,
+                                                tareas: undefined });
                 }
                 
             }
@@ -72,11 +74,27 @@ class controllerU{
 
     cierreSesion(request, response){
         response.status(200);
-        console.log("SESSION "+request.session);
         request.session.destroy();
         response.redirect("/");
     }
 
+    probando(request, response){
+        response.status(200);
+        response.render("principal", {  
+            title: "Inicio de sesión realizado con éxito", 
+            nameUser: request.session.userName, 
+            mailUser: request.session.mail,
+            tareas: undefined });
+    }
+
+    probando2(request, response){
+        response.status(200);
+        response.render("principal2", {  
+            title: "Inicio de sesión realizado con éxito", 
+            nameUser: request.session.userName, 
+            mailUser: request.session.mail });
+        
+    }
 
     registroUsu(request, response)  {
         console.log("CONTROLADOR registro "+request.body.correo+" "+request.body.password);
