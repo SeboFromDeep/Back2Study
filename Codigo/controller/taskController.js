@@ -5,7 +5,7 @@ const config =require("../js/config");
 const mysql = require("mysql");
 
 const pool = mysql.createPool(config.databaseConfig);
-const DaoTask = require('../js/TaskDAO');
+const DaoTask = require('../js/taskDAO');
 const tareas = new DaoTask(pool);
 
 const moment = require('moment');
