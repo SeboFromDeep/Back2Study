@@ -13,8 +13,8 @@ class DaoUsers{
             else{
                 console.log("Datos insert usuario: "+usuario.nombre+" "+usuario.correo+" "+usuario.pass); 
                 connection.query('USE back2study;');
-                const existeName = "SELECT * FROM back2study.users where username = ?";
-                connection.query(existeName,[usuario.nombre],
+                const existeName = "SELECT * FROM back2study.users where username = ?  or email= ?";
+                connection.query(existeName,[usuario.nombre, usuario.correo],
                     function(err, result){
                     
                     if(err){

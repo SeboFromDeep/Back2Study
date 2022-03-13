@@ -129,7 +129,7 @@ class controllerU{
                                                 tipoAlert: "alert-success"});
                     }
                     else{
-                        let msg= "El usuario '"+request.body.username+"' ya existe";
+                        let msg= "El usuario o correo ya existes";
                         console.log(msg);
                         response.render("signup", {   title: "¡Registro erroneo Usu!",
                                                         errores: errors.mapped(), 
