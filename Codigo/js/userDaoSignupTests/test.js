@@ -21,5 +21,18 @@ describe("UserDAO", function () {
             chai.assert.equal(username, 'testusername');
         })
     });
+
+    it("Registro con usuario existente", function(){
+        let usuario = {
+            correo: 'testemail@gmail.com',
+            nombre: 'testusername',
+            pass: '1234',
+            pass2: '1234',
+        };
+        user.registro(usuario, function(errors, username){
+            chai.assert.equal(errors, null);
+            chai.assert.equal(username, 'testusername');
+        })
+    });
 });
 

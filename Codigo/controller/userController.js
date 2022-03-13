@@ -116,15 +116,26 @@ class controllerU{
                 if (err) {
                     //console.log(err.message);
                     response.status(500);
-                    response.render("registro", {   title: "¡Registro erroneo!",
+                    let msg= "Error de registro";
+                    response.render("signup", {   title: "¡Registro erroneo!",
                                                     errores: errors.mapped(), 
-                                                    msgRegistro: true});
+                                                    msgRegistro: msg});
                 } 
                 else {
                     // console.log("usuario registrado-->: "+newId);
-                    response.render("login", {  title: "Registro completado", 
+                    if(newId){
+                        response.render("login", {  title: "Registro completado", 
                                                 msgRegistro: "Registro completado" +". Ya puedes loguearte " + newId, 
                                                 tipoAlert: "alert-success"});
+                    }
+                    else{
+                        let msg= "El usuario '"+request.body.username+"' ya existe";
+                        console.log(msg);
+                        response.render("signup", {   title: "¡Registro erroneo Usu!",
+                                                        errores: errors.mapped(), 
+                                                        msgRegistro: msg});
+                    }
+                    
                 }
             }
             
