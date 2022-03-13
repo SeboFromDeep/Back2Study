@@ -1,10 +1,12 @@
 const assert = require("chai").assert
 const chai = require("chai")
-const dao = require("../userDAO")
+const dao = require("../../Codigo/js/userDAO")
+const mysql = require('mysql')
+const config = require('../../Codigo/js/config');
 const pool = mysql.createPool(config.databaseConfig)
 const user = new dao(pool)
-require("cleanUserTableData")
-require('./userDaoSingUpTest')
+//require("cleanUserTableData")
+require('../cleanUserTableData')
 
 
 describe("UserDAO", function () {

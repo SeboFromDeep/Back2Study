@@ -1,6 +1,6 @@
 const chai = require("chai")
-const config =require("../config");
-const mysql = require("mysql");
+const mysql = require('mysql')
+const config = require('../Codigo/js/config');
 
 const con = mysql.createConnection({
     host:"back2study-database.cp7iwtc61ifu.eu-west-3.rds.amazonaws.com",
