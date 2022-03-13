@@ -112,19 +112,30 @@ class controllerU{
         
             users.registro(usuario, cb_insert);
             
-            function cb_insert(err, newId){
+            function cb_insert(err, completed){
                 if (err) {
                     //console.log(err.message);
                     response.status(500);
-                    response.render("registro", {   title: "¡Registro erroneo!",
+                    let msg= "Error de registro";
+                    response.render("signup", {   title: "¡Registro erroneo!",
                                                     errores: errors.mapped(), 
-                                                    msgRegistro: true});
+                                                    msgRegistro: msg});
                 } 
                 else {
                     // console.log("usuario registrado-->: "+newId);
-                    response.render("login", {  title: "Registro completado", 
-                                                msgRegistro: "Registro completado" +". Ya puedes loguearte " + newId, 
+                    if(completed){
+                        response.render("login", {  title: "Registro completado", 
+                                                msgRegistro: "Registro completado" + usuario.nombre + ". Ya puedes loguearte", 
                                                 tipoAlert: "alert-success"});
+                    }
+                    else{
+                        let msg= "El usuario o correo ya existen";
+                        console.log(msg);
+                        response.render("signup", {   title: "¡Registro erroneo Usu!",
+                                                        errores: errors.mapped(), 
+                                                        msgRegistro: msg});
+                    }
+                    
                 }
             }
             
