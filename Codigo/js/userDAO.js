@@ -27,7 +27,7 @@ class DaoUsers{
                             callback(null, false);
                         }
                         else{
-                            const valor="INSERT INTO users (username, email, password) VALUES (?,?,?)";
+                            const valor="INSERT INTO users (username, email, password) VALUES (?,?,?);";
                             connection.query(valor,[usuario.nombre, usuario.correo, usuario.pass],
                             function(err2, result2){
                                 connection.release(); //devolver el pool de conexiones.
