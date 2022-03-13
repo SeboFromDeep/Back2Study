@@ -5,11 +5,11 @@ const mysql = require('mysql')
 const config = require('../../Codigo/js/config');
 const pool = mysql.createPool(config.databaseConfig)
 const user = new dao(pool)
-//require("cleanUserTableData")
 require('../cleanUserTableData')
 
 
-describe("UserDAO", function () {
+describe("UserDAO login", function () {
+    
     it("El usuario ya esta registrado en la bd con la contraseña correcta", function(){
         let usuario = {
             correo: 'testemail@gmail.com',
@@ -22,10 +22,7 @@ describe("UserDAO", function () {
             chai.assert.equal(userlogin.name, user.correo);
         })
     });
-});
 
-
-describe("UserDAO", function () {
     it("El usuario no esta registrado en la bd", function(){
         let usuario = {
             correo: 'noregister@gmail.com',
@@ -36,9 +33,7 @@ describe("UserDAO", function () {
             chai.assert.notEqual(error,null)
         })
     });
-});
 
-describe("UserDAO", function () {
     it("El usuario esta registrado en la bd pero la contraseña es incorrecta", function(){
         let usuario = {
             correo: 'testemail@gmail.com',
@@ -49,4 +44,5 @@ describe("UserDAO", function () {
             chai.assert.notEqual(error,null)
         })
     });
+
 });
