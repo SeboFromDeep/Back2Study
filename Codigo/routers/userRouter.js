@@ -16,7 +16,18 @@ routerUsers.post("/login_user",
                 multerFactory.none(),
                 cU.login);
 
+// Cierre de sesion------------
+routerUsers.get("/CloseSession", 
+                cU.usuarioLogeado, 
+                cU.cierreSesion);
 
+routerUsers.get("/principal",
+                cU.usuarioLogeado,
+                cU.probando);
+
+routerUsers.get("/prueba2",
+                cU.usuarioLogeado,
+                cU.probando2);
 
 routerUsers.post("/registro_Usuario",
     multerFactory.none(),

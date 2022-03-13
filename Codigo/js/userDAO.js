@@ -13,19 +13,41 @@ class DaoUsers{
             else{
                 console.log("Datos insert usuario: "+usuario.nombre+" "+usuario.correo+" "+usuario.pass); 
                 connection.query('USE back2study;');
-                const valor="INSERT INTO users (username, email, password) VALUES (?,?,?)";
-                connection.query(valor,[usuario.nombre, usuario.correo, usuario.pass],
+                const existeName = "SELECT * FROM back2study.users where username = ?  or email= ?";
+                connection.query(existeName,[usuario.nombre, usuario.correo],
                     function(err, result){
-                    connection.release(); //devolver el pool de conexiones.
+                    
                     if(err){
                         console.log("ERROR: "+err.message);
                         callback(new Error("Error de acceso a la base de datos"));
                     }
                     else{
-                        
-                        callback(null, usuario.nombre);
+                        if (result.length==1){
+                            //El usuario ya existe
+                            callback(null, false);
+                        }
+                        else{
+                            const valor="INSERT INTO users (username, email, password) VALUES (?,?,?);";
+                            connection.query(valor,[usuario.nombre, usuario.correo, usuario.pass],
+                            function(err2, result2){
+                                connection.release(); //devolver el pool de conexiones.
+                                if(err2){
+                                    console.log("ERROR: "+err.message);
+                                    callback(new Error("Error de acceso a la base de datos"));
+                                }
+                                else{
+                                    
+                                    callback(null, true);
+                                }
+                            });
+                        }
+                       
                     }
                 });
+
+
+
+                
             }
         });
     }
@@ -51,6 +73,7 @@ class DaoUsers{
                                 callback(null, false); //no está el usuario con el password proporcionado
                                 }
                             else {
+                                console.log("DATOS DAO: "+rows[0].id+"/"+rows[0].username+"/"+rows[0].email+"/"+rows[0].password);
                                 callback(null, rows[0]);
                             }
                         }

@@ -23,6 +23,10 @@ describe("UserDAO login", function () {
         })
     });
 
+<<<<<<< HEAD
+=======
+describe("UserDAO", function () {
+>>>>>>> 87ed2693e35dca61d9dce41fa044aec8bd003694
     it("El usuario no esta registrado en la bd", function(){
         let usuario = {
             correo: 'noregister@gmail.com',

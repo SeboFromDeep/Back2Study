@@ -14,17 +14,18 @@ const { check, validationResult } = require("express-validator");
 
 class controllerU{
 
-    // usuarioLogeado(request, response, next) {
-    //     if (request.session.mailID !== undefined && request.session.userName !== undefined ) {
-    //         response.locals.userEmail = request.session.currentUser;
-    //         response.locals.userName = request.session.currentName;
+    usuarioLogeado(request, response, next) {
+        if (request.session.id_!== undefined && request.session.mail !== undefined && request.session.userName !== undefined ) {
+            response.locals.id_ = request.session.currentId;
+            response.locals.mail = request.session.currentUser;
+            response.locals.userName = request.session.currentName;
             
-    //         next();
-    //     } else {
+            next();
+        } else {
             
-    //         response.redirect("/login");
-    //     }
-    // }
+            response.redirect("/login");
+        }
+    }
 
     login(request, response){
         console.log("CONTROLADOR "+request.body.correo+" "+request.body.password);
@@ -48,9 +49,21 @@ class controllerU{
                                                 tipoAlert: "alert-danger"});
                 }
                 else{
-                    response.render("login", {  title: "Inicio de sesión realizado con éxito", 
-                                                msgRegistro: "Inicio de sesión realizado con éxito " + datosUsuario.username, 
-                                                tipoAlert: "alert-success"});
+
+                    request.session.id_=datosUsuario.id;
+                    request.session.mail = datosUsuario.email;
+                    request.session.userName = datosUsuario.username;
+
+                    response.locals.id_=request.session.id_;
+                    response.locals.mailID = request.session.mailID;
+                    response.locals.userName = request.session.userName;
+
+                    console.log("DATOS controller: "+datosUsuario.id+"/"+datosUsuario.username+"/"+datosUsuario.email+"/"+datosUsuario.password);
+                    response.render("principal", {  
+                                                title: "Inicio de sesión realizado con éxito", 
+                                                nameUser: request.session.userName, 
+                                                mailUser: request.session.mail,
+                                                tareas: undefined });
                 }
                 
             }
@@ -59,12 +72,29 @@ class controllerU{
 
 
 
-    // cierreSesion(request, response){
-    //     response.status(200);
-    //     request.session.destroy();
-    //     response.redirect("/login");
-    // }
+    cierreSesion(request, response){
+        response.status(200);
+        request.session.destroy();
+        response.redirect("/");
+    }
 
+    probando(request, response){
+        response.status(200);
+        response.render("principal", {  
+            title: "Inicio de sesión realizado con éxito", 
+            nameUser: request.session.userName, 
+            mailUser: request.session.mail,
+            tareas: undefined });
+    }
+
+    probando2(request, response){
+        response.status(200);
+        response.render("principal2", {  
+            title: "Inicio de sesión realizado con éxito", 
+            nameUser: request.session.userName, 
+            mailUser: request.session.mail });
+        
+    }
 
     registroUsu(request, response)  {
         console.log("CONTROLADOR registro "+request.body.correo+" "+request.body.password);
@@ -82,19 +112,30 @@ class controllerU{
         
             users.registro(usuario, cb_insert);
             
-            function cb_insert(err, newId){
+            function cb_insert(err, completed){
                 if (err) {
                     //console.log(err.message);
                     response.status(500);
-                    response.render("registro", {   title: "¡Registro erroneo!",
+                    let msg= "Error de registro";
+                    response.render("signup", {   title: "¡Registro erroneo!",
                                                     errores: errors.mapped(), 
-                                                    msgRegistro: true});
+                                                    msgRegistro: msg});
                 } 
                 else {
                     // console.log("usuario registrado-->: "+newId);
-                    response.render("login", {  title: "Registro completado", 
-                                                msgRegistro: "Registro completado" +". Ya puedes loguearte " + newId, 
+                    if(completed){
+                        response.render("login", {  title: "Registro completado", 
+                                                msgRegistro: "Registro completado" + usuario.nombre + ". Ya puedes loguearte", 
                                                 tipoAlert: "alert-success"});
+                    }
+                    else{
+                        let msg= "El usuario o correo ya existen";
+                        console.log(msg);
+                        response.render("signup", {   title: "¡Registro erroneo Usu!",
+                                                        errores: errors.mapped(), 
+                                                        msgRegistro: msg});
+                    }
+                    
                 }
             }
             
