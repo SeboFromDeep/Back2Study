@@ -97,19 +97,19 @@ class controllerU{
     }
 
     registroUsu(request, response)  {
-        console.log("CONTROLADOR registro "+request.body.correo+" "+request.body.password);
+        //console.log("CONTROLADOR registro "+request.body.correo+" "+request.body.password);
         const errors = validationResult(request);
         if (errors.isEmpty()) {
             console.log("SIN ERRORES");
             
+            //creamos el usuario con los datos del formulario
             let usuario = {
                 correo: request.body.correo,
                 nombre: request.body.username,
                 pass: request.body.password,
                 pass2: request.body.password2,
-                imagen: null
             };
-        
+            //ejecutamos la función registro de el DAO, y después se ejecuta cb_insert
             users.registro(usuario, cb_insert);
             
             function cb_insert(err, completed){
@@ -122,14 +122,14 @@ class controllerU{
                                                     msgRegistro: msg});
                 } 
                 else {
-                    // console.log("usuario registrado-->: "+newId);
                     if(completed){
+                        console.log("Registro exitoso.")
                         response.render("login", {  title: "Registro completado", 
-                                                msgRegistro: "Registro completado" + usuario.nombre + ". Ya puedes loguearte", 
+                                                msgRegistro: "Registro completado " + usuario.nombre + ". Ya puedes loguearte.", 
                                                 tipoAlert: "alert-success"});
                     }
                     else{
-                        let msg= "El usuario o correo ya existen";
+                        let msg= "El usuario o correo ya existen.";
                         console.log(msg);
                         response.render("signup", {   title: "¡Registro erroneo Usu!",
                                                         errores: errors.mapped(), 

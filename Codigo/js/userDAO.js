@@ -11,8 +11,9 @@ class DaoUsers{
                 callback(new ErrorEvent("Error de conexión a la base de datos"));
             }
             else{
-                console.log("Datos insert usuario: "+usuario.nombre+" "+usuario.correo+" "+usuario.pass); 
+                console.log("Datos registro usuario: "+usuario.nombre+" "+usuario.correo+" "+usuario.pass); 
                 connection.query('USE back2study;');
+                //Buscamos en la BBDD si existe algún usuario con el nombre o el correo proporcionado
                 const existeName = "SELECT * FROM back2study.users where username = ?  or email= ?";
                 connection.query(existeName,[usuario.nombre, usuario.correo],
                     function(err, result){
@@ -27,6 +28,7 @@ class DaoUsers{
                             callback(null, false);
                         }
                         else{
+                            //Si no existe podemos registrar al usuario
                             const valor="INSERT INTO users (username, email, password) VALUES (?,?,?);";
                             connection.query(valor,[usuario.nombre, usuario.correo, usuario.pass],
                             function(err2, result2){
