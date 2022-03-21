@@ -6,6 +6,8 @@ const mysql = require("mysql");
 
 const pool = mysql.createPool(config.databaseConfig);
 
+const transporter = require("../js/mailer");
+
 const DaoUsers = require('../js/userDAO');
 const users =new DaoUsers(pool);
 
@@ -147,6 +149,17 @@ class controllerU{
                 errores: errors.mapped(), 
                 msgRegistro: false});
         }
+    }
+
+    sendEmail(request, response){
+        console.log("correo enviado a:" + request.body.email);
+        // send mail with defined transport object
+        let info = transporter.sendMail({
+            from: '"Recuperar contraseña 👻" <back2study.gps@gmail.com>', // sender address
+            to: request.body.email, // list of receivers
+            subject: "Recuperar contraseña ✔", // Subject line
+            html: "<b>Correo enviado desde back2study</b>", // html body
+        });
     }
     
 }

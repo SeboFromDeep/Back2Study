@@ -44,4 +44,10 @@ routerUsers.post("/registro_Usuario",
      }),
     cU.registroUsu);
 
+routerUsers.post("/forgot_password",
+        multerFactory.none(),
+        cU.sendEmail
+        //res.send(email);
+    );
+
 module.exports = routerUsers;
