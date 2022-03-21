@@ -9,6 +9,6 @@ module.exports ={
         password: "Back2Studyadmin",
         database:"back2study"
     } ,
-    puerto: 3300
+    puerto: 3306
 };
 
