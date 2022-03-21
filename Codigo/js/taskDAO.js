@@ -12,7 +12,7 @@ class DaoTask{
             }
             else{
                 console.log("ID DE USUARIO "+id)
-                const valor ="SELECT id, nombre, fechaFin, prioridad FROM back2study.tareas where usuario= ?";
+                const valor ="SELECT id, nombre, prioridad FROM back2study.tareas where usuario= ?";
                 connection.query(valor, [id],function(err,result){
                     connection.release();
                     if(err){
