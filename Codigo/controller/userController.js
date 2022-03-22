@@ -6,7 +6,9 @@ const mysql = require("mysql");
 
 const pool = mysql.createPool(config.databaseConfig);
 
-const transporter = require("../js/mailer");
+const transporter = require("../js/mailer");    // para enviar correos
+const jwt = require("jsonwebtoken");    // para crear un link
+const JWT_SECRET = "supersecreto";  // esto habria que moverlo a otro sitio tal vez pero de momento funciona
 
 const DaoUsers = require('../js/userDAO');
 const users =new DaoUsers(pool);
@@ -152,14 +154,35 @@ class controllerU{
     }
 
     sendEmail(request, response){
-        console.log("correo enviado a:" + request.body.email);
-        // send mail with defined transport object
-        let info = transporter.sendMail({
-            from: '"Recuperar contraseña 👻" <back2study.gps@gmail.com>', // sender address
-            to: request.body.email, // list of receivers
-            subject: "Recuperar contraseña ✔", // Subject line
-            html: "<b>Correo enviado desde back2study</b>", // html body
-        });
+        users.findUserByEmail(request.body.email, cb_sendEmail);    // buscamos el usuario en la BBDD
+
+        function cb_sendEmail(errors, user){
+            if (errors){
+                response.render("forgot-password", {}); // falta por hacer
+            }
+            else{
+                if(user){
+                    console.log("Enviando correo a: " + request.body.email);
+                    const secret = JWT_SECRET + user.password;
+                    const payload = {
+                        email: request.body.email,
+                        id: user.id
+                    };
+            
+                    const token = jwt.sign(payload, secret, {expiresIn: '15m'});
+                    const link = `http://localhost:3300/reset-password/${user.id}/${token}`; // localhost:3300 hay que cambiarlo por back2study.herokuapp.com cuando este todo listo
+                    console.log("Link creado: " + link);
+            
+                    // send mail with defined transport object
+                    let info = transporter.sendMail({
+                        from: '"Recuperar contraseña 👻" <back2study.gps@gmail.com>', // sender address
+                        to: request.body.email, // list of receivers
+                        subject: "Recuperar contraseña ✔", // Subject line
+                        html: "<b>Correo enviado desde back2study. Link: " + link + "</b>", // html body
+                    });
+                }   
+            }
+        }
     }
     
 }
