@@ -29,6 +29,32 @@ class DaoTask{
 
         });
     }
+
+    añadirTareas(callback, id){
+        this.pool.getConnection(function(err,connection){
+            if(err){
+                callback(new ErrorEvent("Error de conexión a la base de datos"));
+            }
+            else{
+                console.log("ID DE USUARIO "+id)
+                const valor ="Insert into tareas (nombre,fechaCreacion, fechaFin,prioridad,usuario) values(?, ?, ?, ?, ?)";
+                connection.query(valor,[tareas.title, Date.now(), tareas.fechaFin, tareas.prioriry, tareas.user  ],
+                function(err2, result2){
+                    connection.release();
+                    if(err){
+                        console.log("ERROR:"+err.message);
+                        callback(new ErrorEvent("Error de acceso a la base de datos"));
+                    }
+                    else
+                    {
+                        console.log("RESULTADOS:"+ result);
+                        callback(null, result);
+                    }
+                });
+            }
+
+        });
+    }
     
 
 
