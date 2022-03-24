@@ -14,6 +14,8 @@ const multerFactory = multer({ storage: multer.memoryStorage() });
 const { check, validationResult } = require("express-validator"); // https://www.youtube.com/watch?v=hBETsBY3Hlg
 
 taskRouter.get("/taskList", controllerUsuario.usuarioLogeado, controllerTareas.listarTareas);
+
+// Falta hacer el post de tarea manual
 taskRouter.get("/tasks", controllerUsuario.usuarioLogeado, controllerTareas.añadirTareaManual);
 
 module.exports = taskRouter;
