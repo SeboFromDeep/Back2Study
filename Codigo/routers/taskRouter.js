@@ -18,6 +18,6 @@ const { check, validationResult } = require("express-validator"); // https://www
 
 taskRouter.get("/taskList", cU.usuarioLogeado, cT.getTareas);
 
-taskRouter.get("/addTask", cU.usuarioLogeado, cT.getTareas);
+taskRouter.get("/add_scheduled_task", cU.usuarioLogeado, cT.renderAddScheduledTask);
 
 module.exports = taskRouter;

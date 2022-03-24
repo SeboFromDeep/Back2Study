@@ -12,6 +12,7 @@ const moment = require('moment');
 const fecha = moment();
 //Validar
 const { check, validationResult } = require("express-validator");
+const res = require("express/lib/response");
 
 class controllerT{
 
@@ -208,6 +209,11 @@ class controllerT{
         }
 
 
+    }
+
+    renderAddScheduledTask(request, response){
+        response.status(200);
+        response.render("add-scheduled-task");
     }
 }
 
