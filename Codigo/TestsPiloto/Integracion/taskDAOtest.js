@@ -1,12 +1,12 @@
+//const chai = require("chai");
 const assert = require("chai").assert;
-const chai = require("chai");
-const dao = require("../../js/taskDAO");
-const mysql = require('mysql');
-const config = require('../../js/config');
-const pool = mysql.createPool(config.databaseConfig);
-const task = new dao(pool);
-const moment = require("moment");
 
+const mysql = require('mysql');
+const pool = mysql.createPool(require('../../js/config').databaseConfig);
+const dao = require("../../js/taskDAO");
+const task = new dao(pool);
+
+const moment = require("moment");
 const a = moment("1999-1-1");
 const b = moment("2041-12-31");
 

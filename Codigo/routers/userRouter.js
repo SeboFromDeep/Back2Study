@@ -5,7 +5,7 @@ const express = require("express");
 const routerUsers = express.Router();
 
 const multer = require("multer"); // npm install multer --save
-const controllerU = require("../controller/userController");
+const controllerU = require("../controllers/userController");
 const cU = new controllerU();
 const multerFactory = multer({ storage: multer.memoryStorage() });
 

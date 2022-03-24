@@ -5,7 +5,7 @@ const express = require("express");
 const taskRouter = express.Router();
 
 const multer = require("multer");
-const controllerU = require("../controller/userController");
+const controllerU = require("../controllers/userController");
 const controllerUsuario = new controllerU();
 const controllerTareas = new require("../controller/taskController")();
 const multerFactory = multer({ storage: multer.memoryStorage() });
