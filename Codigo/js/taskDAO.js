@@ -68,10 +68,9 @@ class DaoTask{
             }
             else{
                 console.log("ID DE USUARIO "+id)
-                const valor ="Insert into tareas (nombre,prioridad,categoria,usuario) values(?, ?, ?, ?, ?)";
-                connection.query(valor,[tarea.title, Date.now(), tarea.fechaFin, tarea.prioriry, tarea.user],
-                function(err2, result2){
-                    connection.release();
+                const valor ="Insert into tareas (nombre,prioridad,categoria,usuario,fechafin,fechaIni) values(?, ?, ?, ?, ?, ?)";
+                connection.query(valor,[tarea.nombre, tarea.prioridad, tarea.categoria, tarea.usuario, tarea.fechaFin, tarea.fechaIni],
+                function(err, idtarea){
                     if(err){
                         console.log("ERROR:"+err.message);
                         callback(new ErrorEvent
@@ -79,8 +78,62 @@ class DaoTask{
                     }
                     else
                     {
-                        console.log("RESULTADOS:"+ result);
-                        callback(null, result);
+                        const valor ="Insert into tareas_manuales (id,hora_ini,hora_fin,recurrente,dias_recurrentes) values(?, ?, ?, ?, ?)";
+                        connection.query(valor,[idtarea, tarea.horaIni, tarea.horaFin, tarea.recurrente, tarea.diasRecurrentes],
+                        function(err, result){
+
+                            if(err){
+                                console.log("ERROR:"+err.message);
+                                callback(new ErrorEvent
+                                    ("Error al insertar tarea"));
+                            }
+                            else
+                            {
+                                console.log("RESULTADOS:"+ result);
+                                callback(null, result);
+                            }
+                        });
+                    }
+                });
+            }
+
+        });
+    }
+
+
+    añadirTareaProgramada(callback, tarea){
+        this.pool.getConnection(function(err,connection){
+            if(err){
+                callback(new ErrorEvent("Error de conexión a la base de datos"));
+            }
+            else{
+                console.log("ID DE USUARIO "+id)
+                const valor ="Insert into tareas (nombre,prioridad,categoria,usuario,fechafin,fechaIni) values(?, ?, ?, ?, ?, ?)";
+                connection.query(valor,[tarea.nombre, tarea.prioridad, tarea.categoria, tarea.usuario, tarea.fechaFin, tarea.fechaIni],
+                function(err, idtarea){
+                    if(err){
+                        console.log("ERROR:"+err.message);
+                        callback(new ErrorEvent
+                            ("Error de acceso a la base de datos"));
+                    }
+                    else
+                    {
+                        const valor ="Insert into tareas_programadas (id,hora_ini,hora_fin,recurrente,dias_recurrentes) values(?, ?, ?, ?, ?)";
+                        connection.query(valor,[idtarea, tarea.horaIni, tarea.horaFin, tarea.recurrente, tarea.diasRecurrentes],
+                        function(err, result){
+
+                            if(err){
+                                console.log("ERROR:"+err.message);
+                                callback(new ErrorEvent
+                                    ("Error al insertar tarea"));
+                            }
+                            else
+                            {
+                                console.log("RESULTADOS:"+ result);
+                                callback(null, result);
+                            }
+
+                        });
                     }
                 });
             }
