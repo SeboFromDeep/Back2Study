@@ -1,32 +1,30 @@
 "use strict";
 
-
-const config =require("../js/config");
+const config = require("../js/config");
 const mysql = require("mysql");
 
 const pool = mysql.createPool(config.databaseConfig);
-const DaoTask = require('../js/taskDAO');
-const tareas = new DaoTask(pool);
+const taskDao = require('../js/taskDAO');
+const daoTareas = new taskDao(pool);
 
 const moment = require('moment');
 const fecha = moment();
+
+const { createResponseLocals, createObjectFromRequest } = require("./controllerUtils")
+
 //Validar
 const { check, validationResult } = require("express-validator");
 
-class controllerT{
+class controllerTareas {
 
-    getTareas(request, response){
+    listarTareas(request, response) {
 
-        tareas.listaTareas(cb_listaTareas, request.session.id_);
-        
-        function cb_listaTareas(err, tareas){
-            if(err){
-                
+        function listarTareasCallback(err, tareas) {
+            if (err) {
                 response.status(500);
-               
             }
-            else{
-                if(tareas){
+            else {
+                if (tareas) {
                     
                     // response.render("preguntas", {
                     //     consult: "Todas las Preguntas",
@@ -34,7 +32,7 @@ class controllerT{
                     //     imageUser: request.session.mailID, 
                     //     preguntas: preguntas
                     // });
-                    response.render("principal",{
+                    response.render("principal", {
                         title: "Inicio de sesión realizado con éxito", 
                         nameUser: request.session.userName, 
                         mailUser: request.session.mail,
@@ -44,8 +42,11 @@ class controllerT{
                 }
             }
         }
+
+        daoTareas.listaTareas(listarTareasCallback, request.session.id_);
     }
 
+  /*
     createTareas(request, response)
     {
           
@@ -158,57 +159,93 @@ class controllerT{
                   msgRegistro: false});
           }
       }
+     */
+    añadirTareaManual(request, response) {
+        console.log("Añadiendo la tarea manual " + request.body.nombre + " a la BBDD");
 
-    addTareaProgramada(request, response){
-        console.log("Añadiendo la tarea " + request.body.nombre +  " a la BBDD");
-        let tareaProgramada = {
-            nombre: request.body.nombre,
-            prioridad: request.body.prioridad,
-            categoria: request.body.categoria.toUpperCase(),
-            usuario: request.session.currentId,
-            fechaFin: request.body.fechaFin,
-            fechaIni: request.body.fechaIni,
-
-            //estos son los atributos de programada
-            horas: request.body.horas,
-            tipo: request.body.tipo.toUpperCase() // diaria o semanal 
-        };
-
-        // Aquí planearíamos la tarea llamando al algoritmo de ordenación
-
-        // Añadimos la tarea a la BBDD
-        tareas.añadirTareaProgramada(tareaProgramada, cb_addTareaProgramada);
-
-        function cb_addTareaProgramada(errors, result){
-            if (errors){
-                //render y mssg pueden cambiar de nombre 
-                response.render("add_tarea_programada", {
-                    title: "Error",
-                    mssg: "Error en la creación de la tarea",
-                    tipoAlert: "alert-danger" 
-                });
-                
+        function añadirTareaManualCallback(err, result) {
+            if (err){
+                response.render("add_tarea_manual", createResponseLocals(false, "Error: creación de tarea manual en BBDD fallida"));   
             }
-            else{
-                if (completed){
-                    response.render("listar_tareas", {
-                        title: "Exito",
-                        mssg: "Tarea Programada añadida",
-                        tipoAlert: "alert-success" 
-                    });
+            else {
+                if (result) {
+                    response.render("listar_tareas", createResponseLocals(true, "Exito: tarea manual añadida"));
+                } else {
+                    response.render("add_tarea_programada", createResponseLocals(false, "Error: tarea manual es null"));
                 }
-                else{
+            }
+        }   
+        
+        function franjaHorariaCallback(err, franjaDisponible) {
+            if (err) {
+                response.status(500);
+                response.render("add_tarea_manual", createResponseLocals(false, "Error: no se pudo consultar la franja horaria en la BBDD"));   
+            }
+            else {
+                if (franjaDisponible) {
+                    console.log("La franja horaria esta disponible");
+                    request.body.category = request.body.categoria.toUpperCase()
+                    daoTareas.añadirTareas(añadirTareaManualCallback, createObjectFromRequest(request));
+                }
+                else {
+                    response.status(500);
+                    response.render("add_tarea_manual", createResponseLocals(false, "Error: franja horaria no disponible"));   
+                }
+            }
+        } 
+
+        // comprobar que no haya tareas en la franja proporcionada
+        // el dao automaticamente llamara a la funcion del DAO de añadir tareas si todo va bien
+        daoTareas.consultarTareasEnFranjaHoraria(franjaHorariaCallback, request.body.fechaIni, request.body.fechaFin);
+  
+      addTareaProgramada(request, response){
+            console.log("Añadiendo la tarea " + request.body.nombre +  " a la BBDD");
+            let tareaProgramada = {
+                nombre: request.body.nombre,
+                prioridad: request.body.prioridad,
+                categoria: request.body.categoria.toUpperCase(),
+                usuario: request.session.currentId,
+                fechaFin: request.body.fechaFin,
+                fechaIni: request.body.fechaIni,
+
+                //estos son los atributos de programada
+                horas: request.body.horas,
+                tipo: request.body.tipo.toUpperCase() // diaria o semanal 
+            };
+
+            // Aquí planearíamos la tarea llamando al algoritmo de ordenación
+
+            // Añadimos la tarea a la BBDD
+            tareas.añadirTareaProgramada(tareaProgramada, cb_addTareaProgramada);
+
+            function cb_addTareaProgramada(errors, result){
+                if (errors){
+                    //render y mssg pueden cambiar de nombre 
                     response.render("add_tarea_programada", {
                         title: "Error",
                         mssg: "Error en la creación de la tarea",
                         tipoAlert: "alert-danger" 
                     });
+
+                }
+                else{
+                    if (completed){
+                        response.render("listar_tareas", {
+                            title: "Exito",
+                            mssg: "Tarea Programada añadida",
+                            tipoAlert: "alert-success" 
+                        });
+                    }
+                    else{
+                        response.render("add_tarea_programada", {
+                            title: "Error",
+                            mssg: "Error en la creación de la tarea",
+                            tipoAlert: "alert-danger" 
+                        });
+                    }
                 }
             }
         }
-
-
-    }
 }
 
-module.exports = controllerT;
+module.exports = controllerTareas;
