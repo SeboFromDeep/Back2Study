@@ -1,8 +1,8 @@
 const assert = require("chai").assert
 const chai = require("chai")
-const dao = require("../taskDAO")
+const dao = require("../../js/taskDAO")
 const mysql = require('mysql')
-const config = require('../config');
+const config = require('../../js/config');
 const pool = mysql.createPool(config.databaseConfig)
 const task = new dao(pool)
 
@@ -20,7 +20,7 @@ describe("TaskDAO", function() {
             recurrente: '1',
             dias_recurrentes: '@L@X',
         };
-        task.añadirTareaRapida(tareaManual, function(errors, valid){
+        task.añadirTareaManual(tareaManual, function(errors, valid){
             chai.assert.equal(errors, null);
             chai.assert.notEqual(result, null);
             chai.assert.typeOf(result, "object", "debería devolver un objeto");
