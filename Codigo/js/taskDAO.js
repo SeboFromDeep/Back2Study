@@ -122,6 +122,7 @@ class DaoTask{
                         const valor ="Insert into tareas_programadas (id, horas, tipo) values(?, ?, ?)";
                         connection.query(valor,[tareacreada.insertId, tarea.horas, tarea.tipo],
                         function(err, result){
+                            connection.release();
                             if(err){
                                 console.log("ERROR:"+err.message);
                                 callback(new Error
