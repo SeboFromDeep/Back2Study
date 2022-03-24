@@ -18,4 +18,6 @@ taskRouter.get("/taskList", controllerUsuario.usuarioLogeado, controllerTareas.l
 // Falta hacer el post de tarea manual
 taskRouter.get("/tasks", controllerUsuario.usuarioLogeado, controllerTareas.añadirTareaManual);
 
+taskRouter.get("/addTask", cU.usuarioLogeado, cT.getTareas);
+
 module.exports = taskRouter;
