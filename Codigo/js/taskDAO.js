@@ -3,6 +3,7 @@
 class DaoTask{
     constructor(pool){
         this.pool = pool;
+        
     }
 
     listaTareas(callback, id){
@@ -61,15 +62,15 @@ class DaoTask{
 
   
 
-    añadirTareaRapida(callback, tarea){
+    añadirTareaManual(callback, tarea){
         this.pool.getConnection(function(err,connection){
             if(err){
                 callback(new ErrorEvent("Error de conexión a la base de datos"));
             }
             else{
                 console.log("ID DE USUARIO "+id)
-                const valor ="Insert into tareas (nombre,prioridad,categoria,usuario,fechafin,fechaIni) values(?, ?, ?, ?, ?, ?)";
-                connection.query(valor,[tarea.nombre, tarea.prioridad, tarea.categoria, tarea.usuario, tarea.fechaFin, tarea.fechaIni],
+                const valor ="Insert into tareas (nombre,prioridad,categoria,usuario,fechafin,fechaIni,tipo) values(?, ?, ?, ?, ?, ?, ?)";
+                connection.query(valor,[tarea.nombre, tarea.prioridad, tarea.categoria, tarea.usuario, tarea.fechaFin, tarea.fechaIni, 'm'],
                 function(err, idtarea){
                     if(err){
                         console.log("ERROR:"+err.message);
@@ -108,8 +109,8 @@ class DaoTask{
             }
             else{
                 console.log("Insertando tarea de usuario " + tarea.usuario);
-                const valor ="Insert into tareas (nombre,prioridad,categoria,usuario,fechafin,fechaIni) values(?, ?, ?, ?, ?, ?)";
-                connection.query(valor,[tarea.nombre, tarea.prioridad, tarea.categoria, tarea.usuario, tarea.fechaFin, tarea.fechaIni],
+                const valor ="Insert into tareas (nombre,prioridad,categoria,usuario,fechafin,fechaIni, tipo) values(?, ?, ?, ?, ?, ?, ?)";
+                connection.query(valor,[tarea.nombre, tarea.prioridad, tarea.categoria, tarea.usuario, tarea.fechaFin, tarea.fechaIni, 'p'],
                 function(err, tareacreada){
                     if(err){
                         console.log("ERROR:"+err.message);
