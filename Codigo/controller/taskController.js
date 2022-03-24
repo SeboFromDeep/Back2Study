@@ -158,6 +158,57 @@ class controllerT{
                   msgRegistro: false});
           }
       }
+
+    addTareaProgramada(request, response){
+        console.log("Añadiendo la tarea " + request.body.nombre +  " a la BBDD");
+        let tareaProgramada = {
+            nombre: request.body.nombre,
+            prioridad: request.body.prioridad,
+            categoria: request.body.categoria.toUpperCase(),
+            usuario: request.session.currentId,
+            fechaFin: request.body.fechaFin,
+            fechaIni: request.body.fechaIni,
+
+            //estos son los atributos de programada
+            horas: request.body.horas,
+            tipo: request.body.tipo.toUpperCase() // diaria o semanal 
+        };
+
+        // Aquí planearíamos la tarea llamando al algoritmo de ordenación
+
+        // Añadimos la tarea a la BBDD
+        tareas.añadirTareaProgramada(cb_addTareaProgramada, tareaProgramada);
+
+        function cb_addTareaProgramada(errors, result){
+            if (errors){
+                //render y mssg pueden cambiar de nombre 
+                response.render("add_tarea_programada", {
+                    title: "Error",
+                    mssg: "Error en la creación de la tarea",
+                    tipoAlert: "alert-danger" 
+                });
+                
+            }
+            else{
+                if (completed){
+                    response.render("listar_tareas", {
+                        title: "Exito",
+                        mssg: "Tarea Programada añadida",
+                        tipoAlert: "alert-success" 
+                    });
+                }
+                else{
+                    response.render("add_tarea_programada", {
+                        title: "Error",
+                        mssg: "Error en la creación de la tarea",
+                        tipoAlert: "alert-danger" 
+                    });
+                }
+            }
+        }
+
+
+    }
 }
 
 module.exports = controllerT;
