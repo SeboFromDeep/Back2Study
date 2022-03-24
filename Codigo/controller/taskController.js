@@ -15,7 +15,7 @@ const { check, validationResult } = require("express-validator");
 
 class controllerT{
 
-    getTareas(request, response){
+    getListTareas(request, response){
 
         tareas.listaTareas(cb_listaTareas, request.session.id_);
         
@@ -45,6 +45,14 @@ class controllerT{
             }
         }
     }
+
+    getTask(request, response){
+
+
+        
+    }
+
+
 
     
 

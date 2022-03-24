@@ -16,6 +16,12 @@ const multerFactory = multer({ storage: multer.memoryStorage() });
 //Validar
 const { check, validationResult } = require("express-validator"); // https://www.youtube.com/watch?v=hBETsBY3Hlg
 
-taskRouter.get("/taskList", cU.usuarioLogeado, cT.getTareas);
+taskRouter.get("/taskList", 
+                cU.usuarioLogeado, 
+                cT.getListTareas);
+
+// taskRouter.get("/taskBy/:id", 
+//                 cU.usuarioLogeado, 
+//                 cT.getTask);//Busqueda por tag
 
 module.exports = taskRouter;

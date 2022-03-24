@@ -88,4 +88,4 @@ class DaoUsers{
  
 }
 
-module.exports =DaoUsers;
+module.exports =DaoUsers

@@ -19,35 +19,63 @@
 <%- include("menu") %>
 
 <!-- CONTENIDO -->
-    <div class="container contenido bg-light">
+    <div class="container contenido ">
         
         <div class="row vh-80 justify-content-center align-items-center">
             
-            <h1>HOLA <%=nameUser %> tu correo de sesion es <%=mailUser %></h1>
-            <a href="/usuarios/prueba2" class="btn btn-outline-danger btn-sm">Go to principal2</a><br>
+                HOLA <%=nameUser %> tu correo de sesion es <%=mailUser %>
+                
             
-            <a href="/tareas/taskList" class="btn btn-outline-danger btn-sm">LISTAR</a><br> <br>
+                
+            
+            
             
             
             
             
         </div>
         
+                <% let color="bg-secondary";%>
+                <% if(tareas){%>
+                    <% if(typeof(tareas) !== "undefined"){%>   
+                        <% tareas.forEach(function(p) {%>
+                            <% if(p.prioridad == "ALTA"){
+                                    color="bg-danger";
+                                }
+                                else if(p.prioridad == "MEDIA") {
+                                    color="bg-warning";
+                                }
+                                else if(p.prioridad == "BAJA") {
+                                    color="bg-success";
+                                }%> 
+                        <div class="row vh-80">
+                            <div class="col">
+                                <div class="card  <%=color%>">
+                                    <div class="card-header">
+                                        #<%=p.id%> <%=p.nombre%>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">Special title treatment</h5>
+                                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                    
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                    2 days ago
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                            
+        
+                        </div>    
+                        <%});%>
+                    <%}%>
+                <%}%> 
+            </div>
 
-        <% if(tareas){%>
-            <% if(typeof(tareas) !== "undefined"){%>   
-                <% tareas.forEach(function(p) {%> 
+        
 
-                    <div class="card text-dark bg-light mb-3" >
-                        <div class="card-header"><%=p.nombre%></div>
-                        <div class="card-body">
-                            <h5 class="card-title">SIN FECHA</h5>
-                            <p class="card-text"><%=p.prioridad%></p>
-                        </div>
-                    </div>
-                <%});%>
-            <%}%>
-        <%}%>   
+          
     </div>
 
     
