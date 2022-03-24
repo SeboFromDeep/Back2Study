@@ -54,7 +54,7 @@ class controllerT{
               console.log("SIN ERRORES");
             
            
-            if(request.tipo=='programada')
+            if(request.body.tipo=='programada')
             {
 
                 
