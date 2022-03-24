@@ -177,7 +177,7 @@ class controllerT{
         // Aquí planearíamos la tarea llamando al algoritmo de ordenación
 
         // Añadimos la tarea a la BBDD
-        tareas.añadirTareaProgramada(cb_addTareaProgramada, tareaProgramada);
+        tareas.añadirTareaProgramada(tareaProgramada, cb_addTareaProgramada);
 
         function cb_addTareaProgramada(errors, result){
             if (errors){

@@ -101,35 +101,35 @@ class DaoTask{
     }
 
 
-    añadirTareaProgramada(callback, tarea){
+    añadirTareaProgramada(tarea, callback){
         this.pool.getConnection(function(err,connection){
             if(err){
                 callback(new ErrorEvent("Error de conexión a la base de datos"));
             }
             else{
-                console.log("ID DE USUARIO "+id)
+                console.log("Insertando tarea de usuario " + tarea.usuario);
                 const valor ="Insert into tareas (nombre,prioridad,categoria,usuario,fechafin,fechaIni) values(?, ?, ?, ?, ?, ?)";
                 connection.query(valor,[tarea.nombre, tarea.prioridad, tarea.categoria, tarea.usuario, tarea.fechaFin, tarea.fechaIni],
-                function(err, idtarea){
+                function(err, tareacreada){
                     if(err){
                         console.log("ERROR:"+err.message);
-                        callback(new ErrorEvent
+                        callback(new Error
                             ("Error de acceso a la base de datos"));
                     }
                     else
                     {
-                        const valor ="Insert into tareas_programadas (id,hora_ini,hora_fin,recurrente,dias_recurrentes) values(?, ?, ?, ?, ?)";
-                        connection.query(valor,[idtarea, tarea.horaIni, tarea.horaFin, tarea.recurrente, tarea.diasRecurrentes],
+                        console.log("Tarea creada con id " + tareacreada.insertId);
+                        const valor ="Insert into tareas_programadas (id, horas, tipo) values(?, ?, ?)";
+                        connection.query(valor,[tareacreada.insertId, tarea.horas, tarea.tipo],
                         function(err, result){
-
                             if(err){
                                 console.log("ERROR:"+err.message);
-                                callback(new ErrorEvent
+                                callback(new Error
                                     ("Error al insertar tarea"));
                             }
                             else
                             {
-                                console.log("RESULTADOS:"+ result);
+                                console.log("Tarea programada añadida");
                                 callback(null, result);
                             }
 
