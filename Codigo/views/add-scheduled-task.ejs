@@ -32,7 +32,27 @@
 
                     <input class="col" type="text" name="categoria" id="floatingInput" placeholder="@CATEGORIA">
                 </div>
+                <div class="row input-group p-2">
+                    <select class="col form-select" name="tipo" aria-label="Selector de tipo">
+                        <option selected>Tipo</option>
+                        <option value="DIARIA">Diaria</option>
+                        <option value="SEMANAL">Semanal</option>
+                    </select>
 
+                    <input class="col" type="text" name="horas" id="floatingInput" placeholder="Número de horas">
+                </div>
+                <div class="row input-group p-2">
+                    <div class="col">
+                        <label for="fechaIni">Fecha de inicio</label>
+                        <input id="fechaIni" class="form-control" type="date" name="fechaIni"/>
+                        <span id="fechaIniSeleccionada"></span>
+                    </div>
+                    <div class="col">
+                        <label for="fechaFin">Fecha de finalización</label>
+                        <input id="fechaFin" class="form-control" type="date" name="fechaFin"/>
+                        <span id="fechaFinSeleccionada"></span>
+                    </div>
+                </div><br>
                 <button type="submit"class="btn btn-primary w-100">Añadir</button>
             </form>
         </div>

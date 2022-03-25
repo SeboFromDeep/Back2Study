@@ -20,5 +20,8 @@ taskRouter.get("/taskList", controllerUsuario.usuarioLogeado, controllerTareas.l
 taskRouter.get("/tasks", controllerUsuario.usuarioLogeado, controllerTareas.añadirTareaManual);
 
 taskRouter.get("/add_scheduled_task", controllerUsuario.usuarioLogeado, controllerTareas.renderAddScheduledTask);
+taskRouter.post("/add_scheduled_task", 
+    multerFactory.none(), 
+    controllerTareas.addTareaProgramada)
 
 module.exports = taskRouter;

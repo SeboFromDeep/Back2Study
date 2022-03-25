@@ -86,11 +86,23 @@ class controllerTareas {
       
     addTareaProgramada(request, response){
         console.log("Añadiendo la tarea " + request.body.nombre +  " a la BBDD");
+        console.log(request.body);
         
         // inicializamos el objeto de tarea
-        request.body.category = request.body.categoria.toUpperCase()
-        request.body.tipo = request.body.tipo.toUpperCase()
-        let tareaProgramada = createObjectFromRequest(request);
+        // request.body.category = request.body.categoria;
+        // request.body.tipo = request.body.tipo;
+        // let tareaProgramada = createObjectFromRequest(request);
+        let tareaProgramada = {
+            usuario: request.session.id_,
+            nombre: request.body.nombre,
+            prioridad: request.body.prioridad,
+            categoria: request.body.categoria,
+            tipo: request.body.tipo,
+            horas: request.body.horas,
+            fechaIni: request.body.fechaIni,
+            fechaFin: request.body.fechaFin
+        }
+        console.log(tareaProgramada);
 
         // aquí planearíamos la tarea llamando al algoritmo de ordenación
 
@@ -110,7 +122,7 @@ class controllerTareas {
         }
 
         // añadimos la tarea a la BBDD
-        tareas.añadirTareaProgramada(tareaProgramada, añadirTareaProgramadaCallback);
+        daoTareas.añadirTareaProgramada(tareaProgramada, añadirTareaProgramadaCallback);
     }
 
     renderAddScheduledTask(request, response){
