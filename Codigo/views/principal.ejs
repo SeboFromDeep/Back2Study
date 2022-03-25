@@ -24,35 +24,32 @@
         <div class="row vh-80 justify-content-center align-items-center">
             
                 HOLA <%=nameUser %> tu correo de sesion es <%=mailUser %>
-                
-            
-                
-            
-            
-            
-            
-            
-            
-        </div>
+         </div>
         
                 <% let color="bg-secondary";%>
+                <% let prioridad="";%>
                 <% if(tareas){%>
                     <% if(typeof(tareas) !== "undefined"){%>   
                         <% tareas.forEach(function(p) {%>
                             <% if(p.prioridad == "ALTA"){
                                     color="bg-danger";
+                                    prioridad="ALTA";
                                 }
                                 else if(p.prioridad == "MEDIA") {
                                     color="bg-warning";
+                                    prioridad="MEDIA";
                                 }
                                 else if(p.prioridad == "BAJA") {
                                     color="bg-success";
+                                    prioridad="BAJA";
                                 }%> 
                         <div class="row vh-80">
                             <div class="col">
-                                <div class="card  <%=color%>">
+                                <div class="card  ">
                                     <div class="card-header">
-                                        #<%=p.id%> <%=p.nombre%>
+                                        #<%=p.id%> <b><%=p.nombre%></b>
+                                        Prioridad: <span class="badge <%=color%>"><%=p.prioridad%></span>
+                                        Fecha Fin: <%=p.fechafin.toDateString()%>
                                     </div>
                                     <div class="card-body text-center">
                                         <h5 class="card-title">Special title treatment</h5>
@@ -60,7 +57,11 @@
                                     
                                     </div>
                                     <div class="card-footer text-muted">
-                                    2 days ago
+                                        <%p.categoria.split('@').forEach( tag => {%>
+                                            <% if(tag != ''){%>
+                                            <a href="" class="btn btn-info">#<%=tag%></a>
+                                            <%} %>
+                                        <%});%>
                                     </div>
                                 </div>
                                 <br>

@@ -27,19 +27,32 @@ class controllerT{
             }
             else{
                 if(tareas){
-                    
+                    console.log(tareas[0].tipo);
                     // response.render("preguntas", {
                     //     consult: "Todas las Preguntas",
                     //     nameUser: request.session.userName,
                     //     imageUser: request.session.mailID, 
                     //     preguntas: preguntas
                     // });
+                    // tareas.listarTareasEspecifica(cb_listaTareasESP, tareas[0].tipo);
+                    // function cb_listaTareasESP(err, tab){
+                    //     if(err){
+                
+                    //         response.status(500);
+                           
+                    //     }
+                    //     else{
+                            
+                    //     }
+                    // }
                     response.render("principal",{
                         title: "Inicio de sesión realizado con éxito", 
                         nameUser: request.session.userName, 
                         mailUser: request.session.mail,
                         tareas: tareas
-                    })
+                    });
+
+                    
                     console.log(tareas);
                 }
             }

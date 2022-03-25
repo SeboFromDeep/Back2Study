@@ -12,21 +12,37 @@ class DaoTask{
             }
             else{
                 console.log("ID DE USUARIO "+id)
-                const valor ="SELECT id, nombre, prioridad, categoria, fechafin ,fechaini FROM back2study.tareas where usuario= ?";
+                const valor ="SELECT id, nombre, prioridad, categoria, fechafin ,fechaini, tipo FROM back2study.tareas where usuario= ?";
                 connection.query(valor, [id],function(err,result){
                     connection.release();
                     if(err){
                         console.log("ERROR:"+err.message);
                         callback(new ErrorEvent("Error de acceso a la base de datos"));
                     }
-                    else
-                    {
+                    else{
+                        
                         console.log("RESULTADOS:"+ result);
                         callback(null, result);
                     }
                 });
             }
 
+        });
+    }
+
+    listarTareasEspecifica(callback,  tipo){
+        this.pool.getConnection(function(err,connection){
+            if(err){
+                callback(new ErrorEvent("Error de conexión a la base de datos"));
+            }
+            else{
+                if(tipo=="m"){
+                    console.log("MANUAL");
+                }
+                else if(tipo=="p"){
+                    console.log("PROGRAMADA");
+                }
+            }
         });
     }
     
