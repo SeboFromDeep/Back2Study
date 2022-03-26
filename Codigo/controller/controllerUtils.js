@@ -16,7 +16,7 @@ module.exports.createResponseLocals = function(success, outputMessage, customLoc
 }
 
 module.exports.createObjectFromRequest = function(request) {
-    let object = { usuario: request.session.currentId }
+    let object = { usuario: request.session.id_ }
 
     for (const [key, value] of Object.entries(request.body))
         object[key] = value
