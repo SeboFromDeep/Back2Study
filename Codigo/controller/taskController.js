@@ -89,9 +89,12 @@ class controllerTareas {
         console.log(request.body);
         
         // inicializamos el objeto de tarea
-        // request.body.category = request.body.categoria;
-        // request.body.tipo = request.body.tipo;
-        // let tareaProgramada = createObjectFromRequest(request);
+        request.body.category = request.body.categoria.toUpperCase();
+        request.body.tipo = request.body.tipo.toUpperCase();
+        let tareaProgramada = createObjectFromRequest(request);
+        console.log(tareaProgramada);
+        console.log(request);
+        /*
         let tareaProgramada = {
             usuario: request.session.id_,
             nombre: request.body.nombre,
@@ -101,7 +104,7 @@ class controllerTareas {
             horas: request.body.horas,
             fechaIni: request.body.fechaIni,
             fechaFin: request.body.fechaFin
-        }
+        }*/
         console.log(tareaProgramada);
 
         // aquí planearíamos la tarea llamando al algoritmo de ordenación
@@ -109,14 +112,14 @@ class controllerTareas {
         function añadirTareaProgramadaCallback(errors, result){
             if (errors){
                 //render y mssg pueden cambiar de nombre 
-                response.render("add_tarea_programada", createResponseLocals(false, "Error en la creación de la tarea"));
+                response.render("add-scheduled-task", createResponseLocals(false, "Error en la creación de la tarea"));
             }
             else {
                 if (result) {
                     response.render("listar_tareas", createResponseLocals(true, "Tarea Programada añadida"));
                 }
                 else { 
-                    response.render("add_tarea_programada", createResponseLocals(false, "Error en la creación de la tarea"));
+                    response.render("add-scheduled-task", createResponseLocals(false, "Error en la creación de la tarea"));
                 }
             }
         }
