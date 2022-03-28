@@ -61,16 +61,15 @@ class controllerT{
 
     getTask(request, response){
         console.log("obteniendo detalles de tarea "+ request.params.id+ " "+ request.params.tipo+ " "+ request.params.nombre+ " "+ request.params.prioridad+ " "+ request.params.fecha+ " "+ request.params.cat );
-        tareas.getDetailsTaskManual( request.session.id_, request.params.id, request.params.tipo, cb_verTarea);
-
-        function cb_verTarea(err, tarea){
-            if(err){
-                
-                response.status(500);
-               
-            }
-            else{
-                if(request.params.tipo == "m"){
+        if(request.params.tipo == "m"){
+            tareas.getDetailsTaskManual( request.session.id_, request.params.id, request.params.tipo, cb_verTareaM);
+            function cb_verTareaM(err, tarea_M){
+                if(err){
+                    
+                    response.status(500);
+                   
+                }
+                else{
                     response.render("verTareaManual",{
                         title: "Tarea", 
                         nameUser: request.session.userName, 
@@ -80,13 +79,23 @@ class controllerT{
                         prioridad: request.params.prioridad, 
                         fecha: request.params.fecha,
                         cat: request.params.cat,
-                        tareaM: tarea
+                        tareaM: tarea_M
                     });
-                    console.log(tarea);
+                    console.log(tarea_M);
                 }
-                else if(request.params.tipo = "p"){
+            }
+        }
+        else if(request.params.tipo = "p"){
+            tareas.getDetailsTaskProgram( request.session.id_, request.params.id, request.params.tipo, cb_verTareaP);
+            function cb_verTareaP(err, tarea_P){
+                if(err){
+                    
+                    response.status(500);
+                   
+                }
+                else{
                     console.log("TAREA PROGRAMADA");
-                    // console.log(tarea);
+                    console.log(tarea_P);
                     response.render("verTareaProgramada",{
                         title: "Tarea Programada", 
                         nameUser: request.session.userName, 
@@ -96,13 +105,14 @@ class controllerT{
                         prioridad: request.params.prioridad, 
                         fecha: request.params.fecha,
                         cat: request.params.cat,
-                        tareaP: tarea
+                        tareaP: tarea_P
                     });
-                    
                 }
-                
             }
         }
+        
+
+        
     }
 
 

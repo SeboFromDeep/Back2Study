@@ -21,9 +21,9 @@
 <!-- CONTENIDO -->
     <div class="container contenido ">
         
-        <div class="row vh-80 justify-content-center align-items-center">
+        <div class="row vh-80 justify-content-center text-center align-items-center">
             
-                HOLA <%=nameUser %> tu correo de sesion es <%=mailUser %>
+            <h1 class="display-6">Tarea Manual</h1>
         </div>
         
         <% let color="bg-secondary";%>
@@ -46,10 +46,13 @@
                     
         <div class="card">
             <div class="card-header">
-                #<%=idTarea%> <b><%=nombre%> <small>Prioridad: <span class="badge <%=color%>"><%=prioridad%></span></small></b>
+                <div class="row">
+                    <div class="col">#<%=idTarea%> <b><%=nombre%></div></b>
+                    <div class="col text-end"><small>Prioridad: <span class="badge <%=color%>"><%=prioridad%></span></small></div>
+                </div>
             </div>
             <div class="card-body">
-              <h5 class="card-title">Fecha Fin: <%=fecha%></h5>
+              <p class="card-text">Fecha Fin: <%=fecha%></p>
                 <table class="table">
                     <thead>
                         <tr>
@@ -135,7 +138,7 @@
             <div class="card-footer text-muted">
                 <%cat.split('@').forEach( tag => {%>
                     <% if(tag != ''){%>
-                        <a href="" class="badge bg-info">#<%=tag%></a>
+                        <a href="/porTagManual/<%=tag%>" class="badge bg-info">#<%=tag%></a>
                     <%} %>
                 <%});%>
             </div>
