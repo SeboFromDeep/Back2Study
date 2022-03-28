@@ -1,5 +1,7 @@
 "use strict"
 
+const ConnectionConfig = require("mysql/lib/ConnectionConfig");
+
 class DaoUsers{
     constructor(pool){
         this.pool =pool;
@@ -15,6 +17,7 @@ class DaoUsers{
                 connection.query('USE back2study;');
                 //Buscamos en la BBDD si existe algún usuario con el nombre o el correo proporcionado
                 const existeName = "SELECT * FROM back2study.users where username = ?  or email= ?";
+                
                 connection.query(existeName,[usuario.nombre, usuario.correo],
                     function(err, result){
                     
@@ -23,7 +26,7 @@ class DaoUsers{
                         callback(new Error("Error de acceso a la base de datos"));
                     }
                     else{
-                        if (result.length==1){
+                        if (result.length != 0){
                             //El usuario ya existe
                             callback(null, false);
                         }
@@ -78,6 +81,31 @@ class DaoUsers{
                                 console.log("DATOS DAO: "+rows[0].id+"/"+rows[0].username+"/"+rows[0].email+"/"+rows[0].password);
                                 callback(null, rows[0]);
                             }
+                        }
+                    });
+            }
+        });
+    }
+
+    delete_user(email, callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) {
+                callback(new Error("Error de conexión a la base de datos"));
+            }
+            else {
+                connection.query('USE back2study;');
+                connection.query('SET SQL_SAFE_UPDATES = 0;');
+                connection.query("DELETE FROM users WHERE email = ?" ,
+                    [email],
+                    function(err, rows) {
+                        connection.release(); // devolver al pool la conexión
+                        if (err) {
+                            callback(new Error("Error de acceso a la base de datos"));
+                        }
+                        else {
+                                console.log("USUARIO ELIMINADO");
+                                console.log(email);
+                                callback(null, true);
                         }
                     });
             }
