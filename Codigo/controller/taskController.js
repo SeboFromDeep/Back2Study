@@ -27,7 +27,7 @@ class controllerT{
             }
             else{
                 if(tareas){
-                    console.log(tareas[0].tipo);
+                    // console.log(tareas[0].tipo);
                     // response.render("preguntas", {
                     //     consult: "Todas las Preguntas",
                     //     nameUser: request.session.userName,
@@ -52,17 +52,57 @@ class controllerT{
                         tareas: tareas
                     });
 
+                    // console.log(tareas);
                     
-                    console.log(tareas);
                 }
             }
         }
     }
 
     getTask(request, response){
+        console.log("obteniendo detalles de tarea "+ request.params.id+ " "+ request.params.tipo+ " "+ request.params.nombre+ " "+ request.params.prioridad+ " "+ request.params.fecha+ " "+ request.params.cat );
+        tareas.getDetailsTaskManual( request.session.id_, request.params.id, request.params.tipo, cb_verTarea);
 
-
-        
+        function cb_verTarea(err, tarea){
+            if(err){
+                
+                response.status(500);
+               
+            }
+            else{
+                if(request.params.tipo == "m"){
+                    response.render("verTareaManual",{
+                        title: "Tarea", 
+                        nameUser: request.session.userName, 
+                        mailUser: request.session.mail,
+                        idTarea: request.params.id,
+                        nombre: request.params.nombre,
+                        prioridad: request.params.prioridad, 
+                        fecha: request.params.fecha,
+                        cat: request.params.cat,
+                        tareaM: tarea
+                    });
+                    console.log(tarea);
+                }
+                else if(request.params.tipo = "p"){
+                    console.log("TAREA PROGRAMADA");
+                    // console.log(tarea);
+                    response.render("verTareaProgramada",{
+                        title: "Tarea Programada", 
+                        nameUser: request.session.userName, 
+                        mailUser: request.session.mail,
+                        idTarea: request.params.id,
+                        nombre: request.params.nombre,
+                        prioridad: request.params.prioridad, 
+                        fecha: request.params.fecha,
+                        cat: request.params.cat,
+                        tareaP: tarea
+                    });
+                    
+                }
+                
+            }
+        }
     }
 
 

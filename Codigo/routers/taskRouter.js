@@ -20,6 +20,10 @@ taskRouter.get("/taskList",
                 cU.usuarioLogeado, 
                 cT.getListTareas);
 
+taskRouter.get("/taskDetalisBy/:id/:tipo/:nombre/:prioridad/:fecha/:cat", 
+                cU.usuarioLogeado, 
+                cT.getTask);
+
 // taskRouter.get("/taskBy/:id", 
 //                 cU.usuarioLogeado, 
 //                 cT.getTask);//Busqueda por tag
