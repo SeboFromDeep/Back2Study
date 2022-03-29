@@ -99,14 +99,15 @@ class controllerTareas {
       
     addTareaProgramada(request, response){
         console.log("Añadiendo la tarea " + request.body.nombre +  " a la BBDD");
-        console.log(request.body);
+        
         
         // inicializamos el objeto de tarea
         request.body.category = request.body.categoria.toUpperCase();
         request.body.tipo = request.body.tipo.toUpperCase();
         let tareaProgramada = createObjectFromRequest(request);
-        console.log(tareaProgramada);
-        console.log(request);
+        // console.log("request.body");
+        // console.log(tareaProgramada);
+        // console.log(request);
         /*
         let tareaProgramada = {
             usuario: request.session.id_,
@@ -118,7 +119,7 @@ class controllerTareas {
             fechaIni: request.body.fechaIni,
             fechaFin: request.body.fechaFin
         }*/
-        console.log(tareaProgramada);
+        
         // añadimos la tarea a la BBDD
         daoTareas.añadirTareaProgramada(tareaProgramada, añadirTareaProgramadaCallback);
         // aquí planearíamos la tarea llamando al algoritmo de ordenación
@@ -133,7 +134,10 @@ class controllerTareas {
             }
             else {
                 if (result) {
-                    response.render("listar_tareas", createResponseLocals(true, "Tarea Programada añadida"));
+                    console.log("RESULTADO");
+                    console.log(result);
+                    
+                    response.redirect("/tareas/taskList");
                 }
                 else { 
                     response.render("add-scheduled-task", createResponseLocals(false, "Error en la creación de la tarea"));
@@ -146,7 +150,9 @@ class controllerTareas {
 
     renderAddScheduledTask(request, response){
         response.status(200);
-        response.render("add-scheduled-task");
+        response.render("add-scheduled-task", {
+                        nameUser: request.session.userName,
+        });
     }
 
     getTask(request, response){
@@ -160,6 +166,7 @@ class controllerTareas {
                    
                 }
                 else{
+
                     response.render("verTareaManual",{
                         title: "Tarea", 
                         nameUser: request.session.userName, 

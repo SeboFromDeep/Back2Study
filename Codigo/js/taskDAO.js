@@ -67,7 +67,7 @@ class DaoTask{
                 callback(new ErrorEvent("Error de conexión a la base de datos"));
             }
             else{
-
+                console.log("AÑADIENDO Y DEVOLVIENDO");
                 const sql="SELECT tareas_programadas.horas ,tareas_programadas.tipo " +
                     "FROM back2study.tareas JOIN tareas_programadas "+
                     "on tareas.id= tareas_programadas.id "+
@@ -190,7 +190,7 @@ class DaoTask{
                             else
                             {
                                 console.log("Tarea programada añadida");
-                                callback(null, result);
+                                callback(null, tareacreada.insertId);
                             }
 
                         });

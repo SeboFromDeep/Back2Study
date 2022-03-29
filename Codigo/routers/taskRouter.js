@@ -12,16 +12,26 @@ const multerFactory = multer({ storage: multer.memoryStorage() });
 //Validar
 const { check, validationResult } = require("express-validator"); // https://www.youtube.com/watch?v=hBETsBY3Hlg
 
-taskRouter.get("/taskList", controllerUsuario.usuarioLogeado, controllerTareas.getListTareas);
+taskRouter.get("/taskList", 
+                controllerUsuario.usuarioLogeado, 
+                controllerTareas.getListTareas);
 
 // Falta hacer el post de tarea manual
-taskRouter.get("/tasks", controllerUsuario.usuarioLogeado, controllerTareas.añadirTareaManual);
+taskRouter.get("/tasks", 
+                controllerUsuario.usuarioLogeado, 
+                controllerTareas.añadirTareaManual);
 
-taskRouter.get("/add_scheduled_task", controllerUsuario.usuarioLogeado, controllerTareas.renderAddScheduledTask);
+//Menu --> Formulario Añadir Tarea Programada
+taskRouter.get("/add_scheduled_task", 
+                controllerUsuario.usuarioLogeado, 
+                controllerTareas.renderAddScheduledTask);
+
+//Formulario Añadir Tarea Programada --> Tarea bbdd --> Mostrar Tarea
 taskRouter.post("/add_scheduled_task", 
-    multerFactory.none(),
-    controllerUsuario.usuarioLogeado,
-    controllerTareas.addTareaProgramada);
+            multerFactory.none(),
+            controllerUsuario.usuarioLogeado,
+            controllerTareas.addTareaProgramada);
+
 
 taskRouter.get("/taskDetalisBy/:id/:tipo/:nombre/:prioridad/:fecha/:cat", 
                 controllerUsuario.usuarioLogeado, 
