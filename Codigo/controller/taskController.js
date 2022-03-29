@@ -30,7 +30,7 @@ class controllerTareas {
                     //     preguntas: preguntas
                     // });
                   
-                    // tareas.listarTareasEspecifica(cb_listaTareasESP, tareas[0].tipo);
+                    //daoTareaslistarTareasEspecifica(cb_listaTareasESP, tareas[0].tipo);
                     // function cb_listaTareasESP(err, tab){
                     //     if(err){
                 
@@ -106,11 +106,33 @@ class controllerTareas {
         let tareaProgramada = createObjectFromRequest(request);
 
         // aquí planearíamos la tarea llamando al algoritmo de ordenación
+    
+    
+    
+      
+        function añadirTareaProgramadaCallback(errors, result){
+            if (errors){
+                //render y mssg pueden cambiar de nombre 
+                response.render("add_tarea_programada", createResponseLocals(false, "Error en la creación de la tarea"));
+            }
+            else {
+                if (result) {
+                    response.render("listar_tareas", createResponseLocals(true, "Tarea Programada añadida"));
+                }
+                else { 
+                    response.render("add_tarea_programada", createResponseLocals(false, "Error en la creación de la tarea"));
+                }
+            }
+        }
+
+        // añadimos la tarea a la BBDD
+        daoTareas.añadirTareaProgramada(tareaProgramada, añadirTareaProgramadaCallback);
+    }
 
     getTask(request, response){
         console.log("obteniendo detalles de tarea "+ request.params.id+ " "+ request.params.tipo+ " "+ request.params.nombre+ " "+ request.params.prioridad+ " "+ request.params.fecha+ " "+ request.params.cat );
         if(request.params.tipo == "m"){
-            tareas.getDetailsTaskManual( request.session.id_, request.params.id, request.params.tipo, cb_verTareaM);
+            daoTareas.getDetailsTaskManual( request.session.id_, request.params.id, request.params.tipo, cb_verTareaM);
             function cb_verTareaM(err, tarea_M){
                 if(err){
                     
@@ -134,7 +156,7 @@ class controllerTareas {
             }
         }
         else if(request.params.tipo = "p"){
-            tareas.getDetailsTaskProgram( request.session.id_, request.params.id, request.params.tipo, cb_verTareaP);
+           daoTareas.getDetailsTaskProgram( request.session.id_, request.params.id, request.params.tipo, cb_verTareaP);
             function cb_verTareaP(err, tarea_P){
                 if(err){
                     
@@ -162,25 +184,6 @@ class controllerTareas {
 
         
     }
-      
-        function añadirTareaProgramadaCallback(errors, result){
-            if (errors){
-                //render y mssg pueden cambiar de nombre 
-                response.render("add_tarea_programada", createResponseLocals(false, "Error en la creación de la tarea"));
-            }
-            else {
-                if (result) {
-                    response.render("listar_tareas", createResponseLocals(true, "Tarea Programada añadida"));
-                }
-                else { 
-                    response.render("add_tarea_programada", createResponseLocals(false, "Error en la creación de la tarea"));
-                }
-            }
-        }
-
-        // añadimos la tarea a la BBDD
-        tareas.añadirTareaProgramada(tareaProgramada, añadirTareaProgramadaCallback);
-    }
 }
 
 module.exports = controllerTareas;
@@ -207,7 +210,7 @@ module.exports = controllerTareas;
                 //ejecutamos la función registro de el DAO, y después se ejecuta cb_insert
                 //Aqui consultaríamos antes el primer hueco dispoible...
 
-                tareas.registroProgramada(cb_insert, tareaProgramada)
+               daoTareas.registroProgramada(cb_insert, tareaProgramada)
             } else {
                 let tareaManual = {
                     nombre: request.body.nombre,
@@ -222,14 +225,14 @@ module.exports = controllerTareas;
                     diasRecurrentes: request.body.diasRecurrentes,
                 };
 
-                tareas.consultarTarea(cb_consultarTarea, tareaManual);
+               daoTareas.consultarTarea(cb_consultarTarea, tareaManual);
 
                 function cb_consultarTarea(err, num_tareas){
                     if (err) {
                         response.status(500);
                     } else {
                         if (num_tareas == 0) {
-                            tareas.registroManual(cb_insert, tareaManual)
+                           daoTareas.registroManual(cb_insert, tareaManual)
                         }
                         else {
                             //Lanzar error
@@ -248,7 +251,7 @@ module.exports = controllerTareas;
                         msgRegistro: "Error al añadir tarea"});
                     } 
 
-                 //cambios a partir de aqui para tareas.
+                 //cambios a partir de aqui paradaoTareas
                 else {
                     if (completed) {
                         console.log("Registro exitoso.")
