@@ -13,6 +13,7 @@ describe('hooks', function () {
     after(function () {
         // runs after each test in this block
         dao_aux.delete_user("paco@gmail.com", function (error, result) { });
+        
     });
 
     // test cases
@@ -31,6 +32,8 @@ describe('hooks', function () {
                 assert.notEqual(result, null);
                 done();
             });
+
+            done();
         });
 
     });
@@ -50,6 +53,8 @@ describe('hooks', function () {
                 assert.equal(result, false);
                 done();
             });
+
+            done();
         });
 
     });
@@ -69,8 +74,8 @@ describe('hooks', function () {
                 assert.equal(result, false);
                 done();
             });
+            done();
         });
-
     });
 
 });

@@ -117,23 +117,23 @@ class controllerU{
                     //console.log(err.message);
                     response.status(500);
                     let msg= "Error de registro";
-                    // response.render("signup", {   title: "¡Registro erroneo!",
-                    //                                 errores: errors.mapped(), 
-                    //                                 msgRegistro: msg});
+                     response.render("signup", {   title: "¡Registro erroneo!",
+                                                     errores: errors.mapped(), 
+                                                     msgRegistro: msg});
                 } 
                 else {
                     if(completed){
                         console.log("Registro exitoso.")
-                        // response.render("login", {  title: "Registro completado", 
-                        //                         msgRegistro: "Registro completado " + usuario.nombre + ". Ya puedes loguearte.", 
-                        //                         tipoAlert: "alert-success"});
+                         response.render("login", {  title: "Registro completado", 
+                                                 msgRegistro: "Registro completado " + usuario.nombre + ". Ya puedes loguearte.", 
+                                                 tipoAlert: "alert-success"});
                     }
                     else{
                         let msg= "El usuario o correo ya existen.";
                         console.log(msg);
-                        // response.render("signup", {   title: "¡Registro erroneo Usu!",
-                        //                                errores: errors.mapped(), 
-                        //                                msgRegistro: msg});
+                         response.render("signup", {   title: "¡Registro erroneo Usu!",
+                                                        errores: errors.mapped(), 
+                                                        msgRegistro: msg});
                     }
                     
                 }
@@ -142,10 +142,10 @@ class controllerU{
         } 
         else {
             console.log("ERRORES!");
-            // response.render("signup", {
-            //     title: "¡Hay Errores!", 
-            //     errores: errors.mapped(), 
-            //     msgRegistro: false});
+             response.render("signup", {
+                 title: "¡Hay Errores!", 
+                 errores: errors.mapped(), 
+                 msgRegistro: false});
         }
     }
     
