@@ -5,8 +5,7 @@ const express = require("express");
 const taskRouter = express.Router();
 
 const multer = require("multer");
-const controllerU = require("../controller/userController");
-const controllerUsuario = new controllerU();
+const controllerUsuario = new (require("../controller/userController"))();
 const controllerTareas = new (require("../controller/taskController"))();
 const multerFactory = multer({ storage: multer.memoryStorage() });
 
@@ -18,7 +17,11 @@ taskRouter.get("/taskList", controllerUsuario.usuarioLogeado, controllerTareas.g
 // Falta hacer el post de tarea manual
 taskRouter.get("/tasks", controllerUsuario.usuarioLogeado, controllerTareas.añadirTareaManual);
 
-taskRouter.get("/addTask", controllerUsuario.usuarioLogeado, controllerTareas.addTareaProgramada);
+taskRouter.get("/add_scheduled_task", controllerUsuario.usuarioLogeado, controllerTareas.renderAddScheduledTask);
+taskRouter.post("/add_scheduled_task", 
+    multerFactory.none(),
+    controllerUsuario.usuarioLogeado,
+    controllerTareas.addTareaProgramada);
 
 taskRouter.get("/taskDetalisBy/:id/:tipo/:nombre/:prioridad/:fecha/:cat", 
                 controllerUsuario.usuarioLogeado, 

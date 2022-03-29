@@ -99,34 +99,54 @@ class controllerTareas {
       
     addTareaProgramada(request, response){
         console.log("Añadiendo la tarea " + request.body.nombre +  " a la BBDD");
+        console.log(request.body);
         
         // inicializamos el objeto de tarea
-        request.body.category = request.body.categoria.toUpperCase()
-        request.body.tipo = request.body.tipo.toUpperCase()
+        request.body.category = request.body.categoria.toUpperCase();
+        request.body.tipo = request.body.tipo.toUpperCase();
         let tareaProgramada = createObjectFromRequest(request);
-
+        console.log(tareaProgramada);
+        console.log(request);
+        /*
+        let tareaProgramada = {
+            usuario: request.session.id_,
+            nombre: request.body.nombre,
+            prioridad: request.body.prioridad,
+            categoria: request.body.categoria,
+            tipo: request.body.tipo,
+            horas: request.body.horas,
+            fechaIni: request.body.fechaIni,
+            fechaFin: request.body.fechaFin
+        }*/
+        console.log(tareaProgramada);
+        // añadimos la tarea a la BBDD
+        daoTareas.añadirTareaProgramada(tareaProgramada, añadirTareaProgramadaCallback);
         // aquí planearíamos la tarea llamando al algoritmo de ordenación
-    
-    
-    
-      
+
+        
+        
         function añadirTareaProgramadaCallback(errors, result){
             if (errors){
                 //render y mssg pueden cambiar de nombre 
                 response.render("add_tarea_programada", createResponseLocals(false, "Error en la creación de la tarea"));
+
             }
             else {
                 if (result) {
                     response.render("listar_tareas", createResponseLocals(true, "Tarea Programada añadida"));
                 }
                 else { 
-                    response.render("add_tarea_programada", createResponseLocals(false, "Error en la creación de la tarea"));
+                    response.render("add-scheduled-task", createResponseLocals(false, "Error en la creación de la tarea"));
                 }
             }
         }
 
-        // añadimos la tarea a la BBDD
-        daoTareas.añadirTareaProgramada(tareaProgramada, añadirTareaProgramadaCallback);
+        
+    }
+
+    renderAddScheduledTask(request, response){
+        response.status(200);
+        response.render("add-scheduled-task");
     }
 
     getTask(request, response){
@@ -184,6 +204,7 @@ class controllerTareas {
 
         
     }
+
 }
 
 module.exports = controllerTareas;
