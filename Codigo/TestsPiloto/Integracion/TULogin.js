@@ -15,8 +15,6 @@ describe("UserDAO", function () {
             correo: 'testemail@gmail.com',
             pass: '1234',
         };
-        
-
         user.login(usuario, function(errors,userlogin){
             chai.assert.equal(errors, null);
             chai.assert.equal(userlogin.name, user.correo);
