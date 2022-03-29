@@ -15,16 +15,13 @@
 
 <body>
     <!--Centrar en bootstrap: https://codea.app/blog/centrar-div-boostrap -->
-<!-- ENCABEADO-->    
-    <div class="m-0 row justify-content-center">
-        <div class="col-auto p-5 text-center">
-            <h1 class="display-1"><strong>Back2Study</strong></h1>
-        </div>
-    </div>
+<!-- ENCABEADO Menu--> 
+<%- include("menu") %>
 
 <!-- CONTENIDO -->
-    <div class="container">
+    <div class="container contenido ">
         
+
         <div class="row vh-80 justify-content-center align-items-center">
             
             <h1>HOLA <%=nameUser %> tu correo de sesion es <%=mailUser %></h1>
@@ -39,21 +36,72 @@
             
         </div>
         
+            <% let color="bg-secondary";%>
+            <% let tipoTarea="";%>
+            <% let prioridad="";%>
+            <% if(tareas){%>
+                <% if(typeof(tareas) !== "undefined"){%> 
+            <div class="row vh-80 justify-content-center align-items-center">
 
-        <% if(tareas){%>
-            <% if(typeof(tareas) !== "undefined"){%>   
-                <% tareas.forEach(function(p) {%> 
+                HOLA <%=nameUser %> tu correo de sesion es <%=mailUser %>
+                <p class="h3">Numero de Tareas: <span class="badge bg-warning rounded-circle"><%=tareas.length%></span></p>
+            </div>  
 
-                    <div class="card text-dark bg-light mb-3" >
-                        <div class="card-header"><%=p.nombre%></div>
+                    <% tareas.forEach(function(p) {%>
+                        <% if(p.prioridad == "ALTA"){
+                            color="bg-danger";
+                            prioridad="ALTA";
+                        }
+                        else if(p.prioridad == "MEDIA") {
+                            color="bg-warning";
+                            prioridad="MEDIA";
+                        }
+                        else if(p.prioridad == "BAJA") {
+                            color="bg-success";
+                            prioridad="BAJA";
+                        }%>
+                        <% if(p.tipo == "p"){
+                            tipoTarea="Programada";
+                            
+                        }
+                        else if(p.tipo == "m") {
+                            tipoTarea="Manual";
+                        }%> 
+                        
+            
+            <div class="row">
+                <div class="col ">
+                    <div class="card">
+                        <div class="card-header">
+                            <!-- <div class="row">
+                                <div class="col">#<%=p.id%> <b><%=p.nombre%></div></b>
+                                <div class="col text-end"><small>Prioridad: <span class="badge <%=color%>"><%=p.prioridad%></span></small></div>
+                            </div> -->
+                            #<%=p.id%> <b><%=p.nombre%> <small>Prioridad: <span class="badge <%=color%>"><%=p.prioridad%></span></small></b>
+                        </div>
                         <div class="card-body">
-                            <h5 class="card-title"><%=p.fechaFin%></h5>
-                            <p class="card-text"><%=p.prioridad%></p>
+                          <h5 class="card-title">Tarea <%=tipoTarea%></h5>
+                          <p class="card-text">Fecha Fin: <%=p.fechafin.toDateString()%>.</p>
+                            <button  type="button" class="btn btn-outline-primary">
+                                <a href="/tareas/taskDetalisBy/<%=p.id%>/<%=p.tipo%>/<%=p.nombre%>/<%=p.prioridad%>/<%=p.fechafin.toDateString()%>/<%=p.categoria%>" style=" text-decoration:none;">Ver detalles</a>
+                            </button>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <%p.categoria.split('@').forEach( tag => {%>
+                                <% if(tag != ''){%>
+                                    <a href="/porTag/<%=tag%>" class="badge bg-info">#<%=tag%></a>
+                                <%} %>
+                            <%});%>
                         </div>
                     </div>
-                <%});%>
-            <%}%>
-        <%}%>   
+                    <br>
+                </div>
+            </div>  
+     
+                            <%});%>
+                        <%}%>
+                    <%}%>
+            
     </div>
 
     

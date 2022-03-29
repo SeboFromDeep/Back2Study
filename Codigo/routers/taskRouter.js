@@ -22,4 +22,12 @@ taskRouter.post("/add_scheduled_task",
     multerFactory.none(), 
     controllerTareas.addTareaProgramada)
 
+taskRouter.get("/taskDetalisBy/:id/:tipo/:nombre/:prioridad/:fecha/:cat", 
+                controllerUsuario.usuarioLogeado, 
+                controllerTareas.getTask);
+
+// taskRouter.get("/taskBy/:id", 
+//                 cU.usuarioLogeado, 
+//                 cT.getTask);//Busqueda por tag
+
 module.exports = taskRouter;
