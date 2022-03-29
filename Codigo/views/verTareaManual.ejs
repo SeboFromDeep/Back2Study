@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    
+    <title><%=title %></title>
+    
+    <link rel="stylesheet" href="/css/stilo.css" media="screen"/>
+    <!-- <link rel="stylesheet" href="public/css/stilo.css" media="screen"/> -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    
+    
+</head>
+
+<body>
+    <!--Centrar en bootstrap: https://codea.app/blog/centrar-div-boostrap -->
+<!-- ENCABEADO Menu--> 
+<%- include("menu") %>
+
+<!-- CONTENIDO -->
+    <div class="container contenido ">
+        
+        <div class="row vh-80 justify-content-center text-center align-items-center">
+            
+            <h1 class="display-6">Tarea Manual</h1>
+        </div>
+        
+        <% let color="bg-secondary";%>
+        <% let tipoTarea="";%>
+        
+        <% if(tareaM){%>
+            <% if(typeof(tareaM) !== "undefined"){%>   
+                <% if(prioridad == "ALTA"){
+                        color="bg-danger";
+                        ;
+                    }
+                    else if(prioridad == "MEDIA") {
+                        color="bg-warning";
+                        
+                    }
+                    else if(prioridad == "BAJA") {
+                        color="bg-success";
+                        
+                    }%>
+                    
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col">#<%=idTarea%> <b><%=nombre%></div></b>
+                    <div class="col text-end"><small>Prioridad: <span class="badge <%=color%>"><%=prioridad%></span></small></div>
+                </div>
+            </div>
+            <div class="card-body">
+              <p class="card-text">Fecha Fin: <%=fecha%></p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Inicio</th>
+                            <th scope="col">Fin</th>
+                            <th scope="col">Dias</th>
+                            <th scope="col">Recurrente</th>
+                        </tr>
+                    </thead>
+                    
+                    
+                    <tbody>
+                        <% tareaM.forEach(function(p) {%>
+                        <tr>
+                            <th scope="row"><%=p.hora_ini%></th>
+                            <td><%=p.hora_fin%></td>
+                            <td>
+                                <%p.dias_recurrentes.split('@').forEach( dia => {%>
+                                    <% if(dia != ''){%>
+                                        <a href="" class="badge bg-dark">
+                                            <% 
+                                            let diaSem="";
+                                            switch(dia) {
+                                                case "L":
+                                                    diaSem="Lunes";
+                                                  break;
+                                                case "M":
+                                                    diaSem="Martes";
+                                                  break;
+                                                  case "X":
+                                                  diaSem="Miercoles";
+                                                  break;
+                                                  case "J":
+                                                  diaSem="Jueves";
+                                                  break;
+                                                  case "V":
+                                                  diaSem="Viernes";
+                                                  break;
+                                                  case "S":
+                                                  diaSem="Sabado";
+                                                  break;
+                                                  case "D":
+                                                  diaSem="Domingo";
+                                                  break;
+                                                default:
+                                                diaSem="";
+                                              }
+                                            %>
+                                            
+                                            <%=diaSem%></a>
+                                    <%} %>
+                                <%});%>
+
+                            </td>
+                            
+                            <td>
+                                <%
+                                let marca="";
+                                let textoRepetir="Solo 1 vez"
+                                if(p.recurrente == 1){
+                                    marca="checked";
+                                    textoRepetir="Recurrente";
+                                }
+                                %>
+                                <!-- <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" <%=marca%> disabled>
+                                <label class="form-check-label" for="flexCheckDisabled">
+                                    Repetir
+                                </label> -->
+
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckCheckedDisabled" <%=marca%> disabled>
+                                    <label class="form-check-label" for="flexSwitchCheckCheckedDisabled"><%=textoRepetir%></label>
+                                  </div>
+                                
+                            
+                            </td>
+                          </tr>
+                        <%});%>
+                    </tbody>
+                </table>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+            <div class="card-footer text-muted">
+                <%cat.split('@').forEach( tag => {%>
+                    <% if(tag != ''){%>
+                        <a href="/porTagManual/<%=tag%>" class="badge bg-info">#<%=tag%></a>
+                    <%} %>
+                <%});%>
+            </div>
+          </div>
+          
+                <%}%>
+            <%}%>
+            
+            
+    </div>
+
+    
+   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+</body>
+</html>

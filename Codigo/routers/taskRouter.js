@@ -18,6 +18,14 @@ taskRouter.get("/taskList", controllerUsuario.usuarioLogeado, controllerTareas.l
 // Falta hacer el post de tarea manual
 taskRouter.get("/tasks", controllerUsuario.usuarioLogeado, controllerTareas.añadirTareaManual);
 
-taskRouter.get("/addTask", cU.usuarioLogeado, cT.getTareas);
+taskRouter.get("/addTask", controllerUsuario.usuarioLogeado, controllerTareas.getTareas);
+
+taskRouter.get("/taskDetalisBy/:id/:tipo/:nombre/:prioridad/:fecha/:cat", 
+                controllerUsuario.usuarioLogeado, 
+                controllerTareas.getTask);
+
+// taskRouter.get("/taskBy/:id", 
+//                 cU.usuarioLogeado, 
+//                 cT.getTask);//Busqueda por tag
 
 module.exports = taskRouter;

@@ -10,7 +10,7 @@ class DaoUsers{
             if(err){
                 callback(new ErrorEvent("Error de conexión a la base de datos"));
             }
-            else{
+            else{//HOOOOOLA
                 console.log("Datos registro usuario: "+usuario.nombre+" "+usuario.correo+" "+usuario.pass); 
                 connection.query('USE back2study;');
                 //Buscamos en la BBDD si existe algún usuario con el nombre o el correo proporcionado
@@ -62,7 +62,7 @@ class DaoUsers{
             }
             else {
                 console.log("Datos log usuario: "+ email +" "+ contrasena);
-                connection.query('USE back2study;');
+                // connection.query('USE back2study;');
                 connection.query("SELECT * FROM users WHERE email = ? AND password= ?" ,
                     [email,contrasena],
                     function(err, rows) {
@@ -75,7 +75,7 @@ class DaoUsers{
                                 callback(null, false); //no está el usuario con el password proporcionado
                                 }
                             else {
-                                console.log("DATOS DAO: "+rows[0].id+"/"+rows[0].username+"/"+rows[0].email+"/"+rows[0].password);
+                                // console.log("DATOS DAO: "+rows[0].id+"/"+rows[0].username+"/"+rows[0].email+"/"+rows[0].password);
                                 callback(null, rows[0]);
                             }
                         }
@@ -88,4 +88,4 @@ class DaoUsers{
  
 }
 
-module.exports =DaoUsers;
+module.exports =DaoUsers
