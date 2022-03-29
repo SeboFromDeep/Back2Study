@@ -96,7 +96,9 @@ class controllerTareas {
         // el dao automaticamente llamara a la funcion del DAO de añadir tareas si todo va bien
         daoTareas.consultarTareasEnFranjaHoraria(franjaHorariaCallback, request.body.fechaIni, request.body.fechaFin);
     }
-      
+    
+
+    //REVISAR LOS RENDER
     addTareaProgramada(request, response){
         console.log("Añadiendo la tarea " + request.body.nombre +  " a la BBDD");
         
@@ -121,12 +123,13 @@ class controllerTareas {
         }*/
         
         // añadimos la tarea a la BBDD
-        daoTareas.añadirTareaProgramada(tareaProgramada, añadirTareaProgramadaCallback);
+        //NO USAR Ñ!!! Me sangran los ojos
+        daoTareas.addTaskProgram(tareaProgramada, cb_addTaskP);
         // aquí planearíamos la tarea llamando al algoritmo de ordenación
 
         
         
-        function añadirTareaProgramadaCallback(errors, result){
+        function cb_addTaskP(errors, result){
             if (errors){
                 //render y mssg pueden cambiar de nombre 
                 response.render("add_tarea_programada", createResponseLocals(false, "Error en la creación de la tarea"));
