@@ -14,17 +14,18 @@ const { check, validationResult } = require("express-validator");
 
 class controllerU{
 
-    // usuarioLogeado(request, response, next) {
-    //     if (request.session.mailID !== undefined && request.session.userName !== undefined ) {
-    //         response.locals.userEmail = request.session.currentUser;
-    //         response.locals.userName = request.session.currentName;
+    usuarioLogeado(request, response, next) {
+        if (request.session.id_!== undefined && request.session.mail !== undefined && request.session.userName !== undefined ) {
+            response.locals.id_ = request.session.currentId;
+            response.locals.mail = request.session.currentUser;
+            response.locals.userName = request.session.currentName;
             
-    //         next();
-    //     } else {
+            next();
+        } else {
             
-    //         response.redirect("/login");
-    //     }
-    // }
+            response.redirect("/login");
+        }
+    }
 
     login(request, response){
         console.log("CONTROLADOR "+request.body.correo+" "+request.body.password);
@@ -48,17 +49,21 @@ class controllerU{
                                                 tipoAlert: "alert-danger"});
                 }
                 else{
-                    //Variables de sesion correo(id) y nombre de usuario
-                    request.session.mailID = request.body.correo;
-                    request.session.userName = datosUsuario.nombre;
 
+                    request.session.id_=datosUsuario.id;
+                    request.session.mail = datosUsuario.email;
+                    request.session.userName = datosUsuario.username;
+
+                    response.locals.id_=request.session.id_;
                     response.locals.mailID = request.session.mailID;
                     response.locals.userName = request.session.userName;
-                    
-                
-                    response.render("principal", {
-                        nameUser: request.session.userName,
-                        imageUser: request.session.mailID, });
+
+                    console.log("DATOS controller: "+datosUsuario.id+"/"+datosUsuario.username+"/"+datosUsuario.email+"/"+datosUsuario.password);
+                    response.render("principal", {  
+                                                title: "Inicio de sesión realizado con éxito", 
+                                                nameUser: request.session.userName, 
+                                                mailUser: request.session.mail,
+                                                tareas: undefined });
                 }
                 
             }
@@ -67,56 +72,72 @@ class controllerU{
 
 
 
-    // cierreSesion(request, response){
-    //     response.status(200);
-    //     request.session.destroy();
-    //     response.redirect("/login");
-    // }
+    cierreSesion(request, response){
+        response.status(200);
+        request.session.destroy();
+        response.redirect("/");
+    }
 
+    probando(request, response){
+        response.status(200);
+        response.render("principal", {  
+            title: "Inicio de sesión realizado con éxito", 
+            nameUser: request.session.userName, 
+            mailUser: request.session.mail,
+            tareas: undefined });
+    }
+
+    probando2(request, response){
+        response.status(200);
+        response.render("principal2", {  
+            title: "Inicio de sesión realizado con éxito", 
+            nameUser: request.session.userName, 
+            mailUser: request.session.mail });
+        
+    }
 
     registroUsu(request, response)  {
-        console.log("CONTROLADOR registro "+request.body.correo+" "+request.body.password);
+        //console.log("CONTROLADOR registro "+request.body.correo+" "+request.body.password);
         const errors = validationResult(request);
         if (errors.isEmpty()) {
             console.log("SIN ERRORES");
             
-        //         let usuario = {
-        //             correo: request.body.correo,
-        //             nombre: request.body.nombre,
-        //             pass: request.body.passw,
-        //             pass2: request.body.passw2,
-        //             imagen: null
-        //         };
+            //creamos el usuario con los datos del formulario
+            let usuario = {
+                correo: request.body.correo,
+                nombre: request.body.username,
+                pass: request.body.password,
+                pass2: request.body.password2,
+            };
+            //ejecutamos la función registro de el DAO, y después se ejecuta cb_insert
+            users.registro(usuario, cb_insert);
             
-        //         if (request.file.originalname) {
-        //             // console.log(request.file.originalname);//Nombre archivo
-        //             // console.log("<<<<<<<<<<<<<<<<<<<<<");
-        //             // console.log(request.file.buffer);//archivo binario
-        //             usuario.imagen= request.file.buffer;
-        //         }
-        //         else{//Hacer random de imagen
-        //             // console.log(request.file);
-        //             // console.log("SIN IMAGEN");
-        //         }
-        //         // console.log("Datos usuario antes DAO: "+usuario.correo+" "+usuario.nombre+" "+usuario.pass+" "+usuario.pass2); 
-        //         //let users =new DaoUsers(pool);
-        //         users.insert(usuario, cb_insert);
-                
-        //         function cb_insert(err, newId){
-        //             if (err) {
-        //                 //console.log(err.message);
-        //                 response.status(500);
-        //                 response.render("registro", {   title: "¡Registro erroneo!",
-        //                                                 errores: errors.mapped(), 
-        //                                                 msgRegistro: true});
-        //             } 
-        //             else {
-        //                 // console.log("usuario registrado-->: "+newId);
-        //                 response.render("login", {  title: "¡Registro completado!", 
-        //                                             msgRegistro: "¡Registro completado! Puede Logearse. "+newId, 
-        //                                             tipoAlert: "alert-success"});
-        //             }
-        //         }
+            function cb_insert(err, completed){
+                if (err) {
+                    //console.log(err.message);
+                    response.status(500);
+                    let msg= "Error de registro";
+                    response.render("signup", {   title: "¡Registro erroneo!",
+                                                    errores: errors.mapped(), 
+                                                    msgRegistro: msg});
+                } 
+                else {
+                    if(completed){
+                        console.log("Registro exitoso.")
+                        response.render("login", {  title: "Registro completado", 
+                                                msgRegistro: "Registro completado " + usuario.nombre + ". Ya puedes loguearte.", 
+                                                tipoAlert: "alert-success"});
+                    }
+                    else{
+                        let msg= "El usuario o correo ya existen.";
+                        console.log(msg);
+                        response.render("signup", {   title: "¡Registro erroneo Usu!",
+                                                        errores: errors.mapped(), 
+                                                        msgRegistro: msg});
+                    }
+                    
+                }
+            }
             
         } 
         else {
