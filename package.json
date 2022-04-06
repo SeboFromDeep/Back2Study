@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./Codigo/app.js",
     "watch": "nodemon ./Codigo/app.js --ext ejs --ignore public",
-    "test": "mocha ./Codigo/TestsPiloto/Integracion/TIRegistroController.js"
+    "test": "mocha ./Codigo/TestsPiloto/Integracion/TIRegistroDAO.js"
   },
   "repository": {
     "type": "git",
