@@ -120,7 +120,7 @@ class DaoTask{
 
   
 
-    addTaskProgram(callback, tarea){
+    addTaskManual(callback, tarea){
         this.pool.getConnection(function(err,connection){
             if(err){
                 callback(new ErrorEvent("Error de conexión a la base de datos"));
@@ -160,7 +160,7 @@ class DaoTask{
     }
 
 
-    añadirTareaProgramada(tarea, callback){
+    addTaskProgram(tarea, callback){
         this.pool.getConnection(function(err,connection){
             if(err){
                 callback(new ErrorEvent("Error de conexión a la base de datos"));
