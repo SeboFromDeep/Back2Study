@@ -29,8 +29,8 @@ class controllerU{
 
     login(request, response){
         console.log("CONTROLADOR "+request.body.correo+" "+request.body.password);
-        users.login(request.body.correo, request.body.password, cb_isUser);
         
+        users.login(request.body.correo, request.body.password, cb_isUser);
         function cb_isUser(err, datosUsuario){
             if (err) {
                

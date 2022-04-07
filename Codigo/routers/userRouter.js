@@ -13,6 +13,7 @@ const { check, validationResult } = require("express-validator"); // https://www
 
 routerUsers.post("/login_user", 
                 multerFactory.none(),
+                //check("correo","Dirección de correo no válida o vacia").isEmail(),
                 controllerUsuario.login);
 
 // Cierre de sesion------------

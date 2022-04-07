@@ -16,40 +16,36 @@ class DaoUsers{
             }
             else{//HOOOOOLA
                 console.log("Comprobacion si existe usuario: "+usuario.nombre+" "+usuario.correo+" "+usuario.pass); 
-                
-                //Buscamos en la BBDD si existe algún usuario con el nombre o el correo proporcionado
                 const existeName = "SELECT * FROM back2study.users where username = ?";
                 connection.query(existeName,[usuario.nombre],
-                    function(err, result){
-                    
+                function(err, result){
+                
                     if(err){
                         console.log("ERROR: "+err.message);
                         callback(new Error("Error de acceso a la base de datos"));
                     }
                     else{
+                        
                         if (result.length==1){
                             //El usuario ya existe
-                            callback(null, true, "El Nombre de usuario ya existe");
+                            callback(null, true, "El Usuario con nombre '"+result[0].username+ "' ya existe");
                         }
                         else{
                             //El usuario no existe
                             const existeName = "SELECT * FROM back2study.users where email= ?";
                             connection.query(existeName,[usuario.correo],
-                                function(err, result){
+                                function(err, result2){
                                 
                                 if(err){
                                     console.log("ERROR: "+err.message);
                                     callback(new Error("Error de acceso a la base de datos"));
                                 }
                                 else{
-                                    if (result.length==1){
-                                        //El correo ya existe
-                                        callback(null, true, "El Correo electronico ya existe");
+                                    
+                                    if (result2.length==1){
+                                        callback(null, true, "El Correo electronico '"+result2[0].email+ "' ya existe");
                                     }
-                                    else{
-                                        //El usuario no existe
-                                        callback(null, false);
-                                    }
+                                    else    callback(null, false);
                                 }
                             });
                         }
@@ -68,9 +64,6 @@ class DaoUsers{
             else{//HOOOOOLA
                 console.log("Datos registro usuario: "+usuario.nombre+" "+usuario.correo+" "+usuario.pass); 
                 connection.query('USE back2study;');
-                //Buscamos en la BBDD si existe algún usuario con el nombre o el correo proporcionado
-                
-                
                 const valor="INSERT INTO users (username, email, password) VALUES (?,?,?);";
                 connection.query(valor,[usuario.nombre, usuario.correo, usuario.pass],
                 function(err2, result2){
@@ -80,8 +73,9 @@ class DaoUsers{
                         callback(new Error("Error de acceso a la base de datos"));
                     }
                     else{
-                        
-                        callback(null, true);
+                        console.log(result2);
+                        if(result2.affectedRows)    callback(null, true);
+                        else callback(null, false);
                     }
                 });
                 
