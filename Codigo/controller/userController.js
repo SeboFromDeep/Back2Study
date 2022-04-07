@@ -110,9 +110,8 @@ class controllerU{
                 pass2: request.body.password2,
             };
             //ejecutamos la función registro de el DAO, y después se ejecuta cb_insert
-            users.registro(usuario, cb_insert);
-            
-            function cb_insert(err, completed){
+            users.existeUsuario(usuario, cb_existeUsu);
+            function cb_existeUsu(err, existe, msgExiste){
                 if (err) {
                     //console.log(err.message);
                     response.status(500);
@@ -120,25 +119,44 @@ class controllerU{
                     response.render("signup", {   title: "¡Registro erroneo!",
                                                     errores: errors.mapped(), 
                                                     msgRegistro: msg});
-                } 
-                else {
-                    if(completed){
-                        console.log("Registro exitoso.")
-                        response.render("login", {  title: "Registro completado", 
+                }
+                else if(existe){
+                    let msg= msgExiste;
+                    console.log(msg);
+                    response.render("signup", {     title: "¡Registro erroneo!",
+                                                    errores: errors.mapped(), 
+                                                    msgRegistro: msg});
+                }else{
+                    users.registro(usuario, cb_insert);
+                    function cb_insert(err2, completed){
+                        if (err2) {
+                            //console.log(err.message);
+                            response.status(200);
+                            let msg= "Error de registro";
+                            response.render("signup", {   title: "¡Registro erroneo!",
+                                                            errores: errors.mapped(), 
+                                                            msgRegistro: msg});
+                        }
+                        else {
+                            if(completed){
+                                console.log("Registro exitoso.")
+                                response.render("login", {  
+                                                title: "Registro completado", 
                                                 msgRegistro: "Registro completado " + usuario.nombre + ". Ya puedes loguearte.", 
                                                 tipoAlert: "alert-success"});
+                            }
+                            else{
+                                response.status(200);
+                                let msg= "Error de registro";
+                                response.render("signup", {   
+                                                title: "¡Registro erroneo!",
+                                                errores: errors.mapped(), 
+                                                msgRegistro: msg});
+                            }
+                        }
                     }
-                    else{
-                        let msg= "El usuario o correo ya existen.";
-                        console.log(msg);
-                        response.render("signup", {   title: "¡Registro erroneo Usu!",
-                                                        errores: errors.mapped(), 
-                                                        msgRegistro: msg});
-                    }
-                    
-                }
-            }
-            
+                } 
+            } 
         } 
         else {
             console.log("ERRORES!");
