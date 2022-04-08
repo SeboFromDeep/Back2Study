@@ -1,8 +1,5 @@
 'use strict'
 
-
-
-
 const path = require("path");// modulo para manejar rutas
 // watch front-end changes
 const livereload = require("livereload");
@@ -48,9 +45,11 @@ const middlewareSession = session({
     store: sessionStore
 });
 
+
+
 app.use(middlewareSession);
 
-//Para ver que usuario esta logeado en el momento (Para pruebas)
+//Para ver que usuario esta logeado en el momento (Para pruebas) A eliminar en un futuro no muy lejano
 app.use(function(request, response, next) {
     console.log("Usuario logeado: ", request.session.userName);
     next();
@@ -79,8 +78,9 @@ app.get("/", (request, response) => {
 
 //-----------------------------------Registro --> Login--------------
 app.get("/login", (request, response) => {
-     response.status(200);
-        response.render("login", {  title: "Pagina de logeo", 
+    response.status(200);
+    
+    response.render("login", {  title: "Pagina de logeo", 
                                     msgRegistro: false});
     
 });
@@ -92,7 +92,7 @@ app.get("/signup", (request, response) => {
     response.render("signup", { title: "Página de registro",
                                 errores: errors.mapped() ,
                                 msgRegistro: false});//False para usu que no existe True si ya existe 
-                            });
+});
 
 // ping browser on Express boot, once browser has reconnected and handshaken
 liveReloadServer.server.once("connection", () => {
@@ -102,12 +102,6 @@ liveReloadServer.server.once("connection", () => {
     }, 100);
 });
 
-//---
-
-/*
-app.get("/prueba", (request, response) => {
-    response.render("login");
-});*/
 
 //-- -GESTION DE ERRORES 
 

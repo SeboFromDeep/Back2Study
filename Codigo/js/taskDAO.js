@@ -23,7 +23,7 @@ class DaoTask{
                     }
                     else{
                         
-                        // console.log("RESULTADOS:"+ result);
+                        console.log(result);
                         callback(null, result);
                     }
                 });

@@ -30,7 +30,7 @@ class controllerU{
     login(request, response){
         console.log("CONTROLADOR "+request.body.correo+" "+request.body.password);
         
-        
+
         users.login(request.body.correo, request.body.password, cb_isUser);
         function cb_isUser(err, datosUsuario){
             if (err) {
@@ -39,7 +39,8 @@ class controllerU{
                 response.render("login", {  
                         title: "Error", 
                         msgRegistro: "Error en el acceso a la base de datos", 
-                        tipoAlert: "alert-danger"});
+                        tipoAlert: "alert-danger",
+                        errores: errors.mapped()});
             } 
             else {         
                 
@@ -47,7 +48,8 @@ class controllerU{
                     response.status(200);
                     response.render("login", {  title: "Error", 
                                                 msgRegistro: "Error en usuario o contraseña", 
-                                                tipoAlert: "alert-danger"});
+                                                tipoAlert: "alert-danger",
+                                                errores: errors.mapped()});
                 }
                 else{
 
@@ -161,7 +163,8 @@ class controllerU{
                                         response.render("login", {  
                                                         title: "Registro completado", 
                                                         msgRegistro: "Registro completado " + usuario.nombre + ". Ya puedes loguearte.", 
-                                                        tipoAlert: "alert-success"});
+                                                        tipoAlert: "alert-success",
+                                                        errores: errors.mapped()});
                                     }
                                     else{
                                         response.status(200);
