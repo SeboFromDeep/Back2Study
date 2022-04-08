@@ -15,9 +15,9 @@ describe('hooks', function () {
     });
 
     // tests
-    describe("Registrarse correcto", async function () {
+    describe("Registrarse", function () {
 
-        it("Todos los datos del registro son correctos y el usuario no está registrado aún", function (done) {
+        it("Agrega usuario a la BD", function () {
             let nuevoUsuario = {
                 nombre: "paco",
                 correo: "paco@gmail.com",
@@ -26,41 +26,6 @@ describe('hooks', function () {
             task.registro(nuevoUsuario, function (errors, result) {
                 assert.equal(errors, null);
                 assert.equal(result, true);
-                done();
-            });
-        });
-
-    });
-
-    describe("Registrarse incorrecto", async function () {
-
-        it("Ya hay un usuario registrado con el mismo nombre de usuario", function (done) {
-            let nuevoUsuario = {
-                nombre: "paco",
-                correo: "lucia@gmail.com",
-                pass: "luciapass",
-            };
-            task.registro(nuevoUsuario, function (errors, result) {
-                assert.equal(errors, null);
-                assert.equal(result, false);
-                done();
-            });
-        });
-
-    });
-
-    describe("Registrarse incorrecto", async function () {
-
-        it("Ya hay un usuario registrado con el mismo correo", function (done) {
-            let nuevoUsuario = {
-                nombre: "maria",
-                correo: "paco@gmail.com",
-                pass: "mariapass",
-            };
-            task.registro(nuevoUsuario, function (errors, result) {
-                assert.equal(errors, null);
-                assert.equal(result, false);
-                done();
             });
         });
 

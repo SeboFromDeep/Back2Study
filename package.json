@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./Codigo/app.js",
     "watch": "nodemon ./Codigo/app.js --ext ejs --ignore public",
-    "test": "mocha ./Codigo/TestsPiloto/Integracion/TIuserDAORegistro.js"
+    "test": "mocha ./Codigo/TestsPiloto/Integracion/TIuserControllerRegistro.js"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,8 @@
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.15",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "sinon": "^13.0.1"
   },
   "description": "",
   "devDependencies": {
