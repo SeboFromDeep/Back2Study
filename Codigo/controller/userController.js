@@ -30,6 +30,7 @@ class controllerU{
     login(request, response){
         console.log("CONTROLADOR "+request.body.correo+" "+request.body.password);
         
+        
         users.login(request.body.correo, request.body.password, cb_isUser);
         function cb_isUser(err, datosUsuario){
             if (err) {
@@ -111,52 +112,79 @@ class controllerU{
             };
             //ejecutamos la función registro de el DAO, y después se ejecuta cb_insert
             users.existeUsuario(usuario, cb_existeUsu);
-            function cb_existeUsu(err, existe, msgExiste){
+            function cb_existeUsu(err, existeUsu){
                 if (err) {
                     //console.log(err.message);
                     response.status(500);
-                    let msg= "Error de registro";
-                    response.render("signup", {   title: "¡Registro erroneo!",
-                                                    errores: errors.mapped(), 
-                                                    msgRegistro: msg});
+                    response.render("signup", {     
+                                    title: "¡Registro erroneo!",
+                                    errores: errors.mapped(), 
+                                    msgRegistro: "Error de registro"});
                 }
-                else if(existe){
-                    let msg= msgExiste;
-                    console.log(msg);
-                    response.render("signup", {     title: "¡Registro erroneo!",
-                                                    errores: errors.mapped(), 
-                                                    msgRegistro: msg});
+                else if(existeUsu){
+                    
+                    
+                    response.render("signup", {     
+                                    title: "¡Registro erroneo!",
+                                    errores: errors.mapped(), 
+                                    msgRegistro: "Nombre de usuario existente"});
                 }else{
-                    users.registro(usuario, cb_insert);
-                    function cb_insert(err2, completed){
-                        if (err2) {
-                            //console.log(err.message);
-                            response.status(200);
-                            let msg= "Error de registro";
-                            response.render("signup", {   title: "¡Registro erroneo!",
-                                                            errores: errors.mapped(), 
-                                                            msgRegistro: msg});
+                    users.existeCorreo(usuario, cb_existeCor);
+                    function cb_existeCor(err2, existeCor){
+                        if(err2){
+                            response.status(500);
+                            response.render("signup", {     
+                                    title: "¡Registro erroneo!",
+                                    errores: errors.mapped(), 
+                                    msgRegistro: "Error de registro"});
                         }
-                        else {
-                            if(completed){
-                                console.log("Registro exitoso.")
-                                response.render("login", {  
-                                                title: "Registro completado", 
-                                                msgRegistro: "Registro completado " + usuario.nombre + ". Ya puedes loguearte.", 
-                                                tipoAlert: "alert-success"});
-                            }
-                            else{
-                                response.status(200);
-                                let msg= "Error de registro";
-                                response.render("signup", {   
-                                                title: "¡Registro erroneo!",
-                                                errores: errors.mapped(), 
-                                                msgRegistro: msg});
-                            }
+                        else if(existeCor){
+                            response.render("signup", {     
+                                title: "¡Registro erroneo!",
+                                errores: errors.mapped(), 
+                                msgRegistro: "Correo electronico existente"});
                         }
+                        else{
+                            users.registro(usuario, cb_insert);
+                            function cb_insert(err2, completed){
+                                if (err2) {
+                                    //console.log(err.message);
+                                    response.status(200);
+                                    let msg= "Error de registro";
+                                    response.render("signup", {   title: "¡Registro erroneo!",
+                                                                    errores: errors.mapped(), 
+                                                                    msgRegistro: msg});
+                                }
+                                else {
+                                    if(completed){
+                                        console.log("Registro exitoso.")
+                                        response.render("login", {  
+                                                        title: "Registro completado", 
+                                                        msgRegistro: "Registro completado " + usuario.nombre + ". Ya puedes loguearte.", 
+                                                        tipoAlert: "alert-success"});
+                                    }
+                                    else{
+                                        response.status(200);
+                                        let msg= "Error de registro";
+                                        response.render("signup", {   
+                                                        title: "¡Registro erroneo!",
+                                                        errores: errors.mapped(), 
+                                                        msgRegistro: msg});
+                                    }
+                                }
+                            }
+
+                        };
+                        
                     }
-                } 
-            } 
+                    
+                }
+                
+                
+                
+                
+            }
+             
         } 
         else {
             console.log("ERRORES!");

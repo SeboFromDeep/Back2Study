@@ -6,6 +6,7 @@ class DaoUsers{
     }
 
     /*
+    Comprueba que no E un usuario en la base de datos
     True --> El usuario/correo existe
     False --> No Existe
     */
@@ -26,35 +27,44 @@ class DaoUsers{
                     }
                     else{
                         
-                        if (result.length==1){
-                            //El usuario ya existe
-                            callback(null, true, "El Usuario con nombre '"+result[0].username+ "' ya existe");
-                        }
-                        else{
-                            //El usuario no existe
-                            const existeName = "SELECT * FROM back2study.users where email= ?";
-                            connection.query(existeName,[usuario.correo],
-                                function(err, result2){
-                                
-                                if(err){
-                                    console.log("ERROR: "+err.message);
-                                    callback(new Error("Error de acceso a la base de datos"));
-                                }
-                                else{
-                                    
-                                    if (result2.length==1){
-                                        callback(null, true, "El Correo electronico '"+result2[0].email+ "' ya existe");
-                                    }
-                                    else    callback(null, false);
-                                }
-                            });
-                        }
+                        if (result.length==1)   callback(null, true);
+                        else    callback(null, false);
                     }
                 });
             }
         });
     }
     
+    /*
+    Comprueba que no E un correo en la base de datos
+    True --> El usuario/correo existe
+    False --> No Existe
+    */
+    existeCorreo(usuario, callback){
+        this.pool.getConnection(function(err,connection){
+            if(err){
+                callback(new ErrorEvent("Error de conexión a la base de datos"));
+            }
+            else{//HOOOOOLA
+                
+                //El usuario no existe
+                const existeName = "SELECT * FROM back2study.users where email= ?";
+                connection.query(existeName,[usuario.correo],
+                    function(err, result2){
+                    
+                    if(err){
+                        console.log("ERROR: "+err.message);
+                        callback(new Error("Error de acceso a la base de datos"));
+                    }
+                    else{
+                        
+                        if (result2.length==1)  callback(null, true);
+                        else    callback(null, false);
+                    }
+                });
+            }
+        });
+    }
 
     registro(usuario, callback){
         this.pool.getConnection(function(err,connection){
@@ -63,7 +73,7 @@ class DaoUsers{
             }
             else{//HOOOOOLA
                 console.log("Datos registro usuario: "+usuario.nombre+" "+usuario.correo+" "+usuario.pass); 
-                connection.query('USE back2study;');
+                
                 const valor="INSERT INTO users (username, email, password) VALUES (?,?,?);";
                 connection.query(valor,[usuario.nombre, usuario.correo, usuario.pass],
                 function(err2, result2){
@@ -73,7 +83,7 @@ class DaoUsers{
                         callback(new Error("Error de acceso a la base de datos"));
                     }
                     else{
-                        console.log(result2);
+                        
                         if(result2.affectedRows)    callback(null, true);
                         else callback(null, false);
                     }
