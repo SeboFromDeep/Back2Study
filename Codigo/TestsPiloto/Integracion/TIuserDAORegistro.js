@@ -25,7 +25,7 @@ describe('hooks', function () {
             };
             task.registro(nuevoUsuario, function (errors, result) {
                 assert.equal(errors, null);
-                assert.notEqual(result, null);
+                assert.equal(result, true);
                 done();
             });
         });

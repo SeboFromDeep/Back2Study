@@ -1,49 +1,85 @@
-const assert = require("chai").assert
-const chai = require("chai")
-const dao = require("../../Codigo/js/userDAO")
-const mysql = require('mysql')
-const config = require('../../Codigo/js/config');
-const pool = mysql.createPool(config.databaseConfig)
-const user = new dao(pool)
-//require("cleanUserTableData")
-require('../cleanUserTableData')
+const assert = require("chai").assert;
+const chai = require("chai");
+const controller = require("../../controller/userController");
+const dao = require("../../js/userDAO");
+const mysql = require('mysql');
+const config = require('../../js/config');
+const sinon = require('sinon');
+const task = new controller();
 
 
-describe("UserDAO", function () {
-    it("El usuario ya esta registrado en la bd con la contraseña correcta", function(){
-        let usuario = {
-            correo: 'testemail@gmail.com',
-            pass: '1234',
+describe("Iniciar sesion correcto", function () {
+
+    it("Correo y contraseña correctos", function() {
+        let request = {
+            body: {
+                correo: "testemail@gmail.com",
+                password: "1234",
+            },
+            
+            session:{
+                id_: 23,
+                mail: "testemail@gmail.com",
+                userName: "prueba",
+            },
+            
         };
-        user.login(usuario, function(errors,userlogin){
-            chai.assert.equal(errors, null);
-            chai.assert.equal(userlogin.name, user.correo);
+
+        task.login(request,function(errors, result) {
+            assert.equal(errors, null);
+            assert.notEqual(result, null);
         })
     });
+
 });
 
-describe("UserDAO", function () {
-    it("El usuario no esta registrado en la bd", function(){
-        let usuario = {
-            correo: 'noregister@gmail.com',
-            pass: '1234',
+describe("Iniciar sesion incorrecto", function () {
+
+    it("Correo no registrado en la BD", function() {
+        let request = {
+            body: {
+                correo: "noregister@gmail.com",
+                password: "1234",
+            },
+            
+            session:{
+                id_: 23,
+                mail: "noregister@gmail.com",
+                userName: "prueba",
+            },
+            
         };
-        user.login(usuario, function(errors,userlogin){
-            //si error no es nulo es que el dao no ha encontrado al usuario
-            chai.assert.notEqual(error,null)
+
+        task.login(request,function(errors, result) {
+            assert.equal(errors, null);
+            assert.equal(result, false);
         })
     });
+
 });
 
-describe("UserDAO", function () {
-    it("El usuario esta registrado en la bd pero la contraseña es incorrecta", function(){
-        let usuario = {
-            correo: 'testemail@gmail.com',
-            pass: '',
+describe("Iniciar sesion correcto", function () {
+
+    it("Correo registrado pero contraseña incorrecta", function() {
+        let request = {
+            body: {
+                correo: "testemail@gmail.com",
+                password: "4321",
+            },
+            
+            session:{
+                id_: 23,
+                mail: "testemail@gmail.com",
+                userName: "4321",
+            },
+            
         };
-        user.login(usuario, function(errors,userlogin){
-            //si error no es nulo es que el dao encuentra al usario pero la contraseña no es correcta
-            chai.assert.notEqual(error,null)
+
+        task.login(request,function(errors, result) {
+            assert.equal(errors, null);
+            assert.equal(result, false);
         })
     });
+
 });
+
