@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./Codigo/app.js",
     "watch": "nodemon ./Codigo/app.js --ext ejs --ignore public",
-    "test": "mocha ./Codigo/TestsPiloto/Integracion/taskDAOtest.js"
+    "test": "mocha ./Codigo/TestsPiloto/Integracion/TIuserDAORegistro.js"
   },
   "repository": {
     "type": "git",
