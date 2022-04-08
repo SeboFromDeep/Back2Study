@@ -14,7 +14,6 @@ describe('hooks', function () {
 
     after(function () {
         dao_aux.delete_user("paco@gmail.com", function (error, result) { });
-        
     });
 
     // tests
@@ -31,8 +30,10 @@ describe('hooks', function () {
 
             // mock para que no llame a render
             var mock = sinon.mock(task);
-            var expectation = mock.expects("response.render");
-            expectation.exactly(1);
+            var expectation_1 = mock.expects("response.render");
+            expectation_1.exactly(1);
+            var expectation_2 = mock.expects("response.status");
+            expectation_2.atMost(1);
             task.registroUsu(request, function (errors, result) {
                 assert.equal(errors, null);
                 assert.notEqual(result, null);
@@ -58,8 +59,10 @@ describe('hooks', function () {
 
             // mock para que no llame a render
             var mock = sinon.mock(task);
-            var expectation = mock.expects("response.render");
-            expectation.exactly(1);
+            var expectation_1 = mock.expects("response.render");
+            expectation_1.exactly(1);
+            var expectation_2 = mock.expects("response.status");
+            expectation_2.atMost(1);
             task.registroUsu(request, function (errors, result) {
                 assert.equal(errors, null);
                 assert.equal(result, false);
@@ -85,8 +88,10 @@ describe('hooks', function () {
 
             // mock para que no llame a render
             var mock = sinon.mock(task);
-            var expectation = mock.expects("response.render");
-            expectation.exactly(1);
+            var expectation_1 = mock.expects("response.render");
+            expectation_1.exactly(1);
+            var expectation_2 = mock.expects("response.status");
+            expectation_2.atMost(1);
             task.registroUsu(request, function (errors, result) {
                 assert.equal(errors, null);
                 assert.equal(result, false);

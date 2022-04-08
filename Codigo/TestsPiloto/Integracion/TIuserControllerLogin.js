@@ -25,10 +25,18 @@ describe("Iniciar sesion correcto", function () {
             
         };
 
-        task.login(request,function(errors, result) {
+        // mock para que no llame a render
+        var mock = sinon.mock(task);
+        var expectation_1 = mock.expects("response.render");
+        expectation_1.exactly(1);
+        var expectation_2 = mock.expects("response.status");
+        expectation_2.atMost(1);
+        task.login(request, function(errors, result) {
             assert.equal(errors, null);
             assert.notEqual(result, null);
         })
+        mock.verify();
+
     });
 
 });
@@ -50,10 +58,18 @@ describe("Iniciar sesion incorrecto", function () {
             
         };
 
-        task.login(request,function(errors, result) {
+        // mock para que no llame a render
+        var mock = sinon.mock(task);
+        var expectation_1 = mock.expects("response.render");
+        expectation_1.exactly(1);
+        var expectation_2 = mock.expects("response.status");
+        expectation_2.atMost(1);
+        task.login(request, function(errors, result) {
             assert.equal(errors, null);
             assert.equal(result, false);
         })
+        mock.verify();
+
     });
 
 });
@@ -75,10 +91,18 @@ describe("Iniciar sesion correcto", function () {
             
         };
 
-        task.login(request,function(errors, result) {
+        // mock para que no llame a render
+        var mock = sinon.mock(task);
+        var expectation_1 = mock.expects("response.render");
+        expectation_1.exactly(1);
+        var expectation_2 = mock.expects("response.status");
+        expectation_2.atMost(1);
+        task.login(request, function(errors, result) {
             assert.equal(errors, null);
             assert.equal(result, false);
         })
+        mock.verify();
+        
     });
 
 });
