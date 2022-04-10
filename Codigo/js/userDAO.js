@@ -35,28 +35,6 @@ class DaoUsers{
                 }
             });
         });
-        // this.pool.getConnection(function(err,connection){
-        //     if(err){
-        //         callback(new ErrorEvent("Error de conexión a la base de datos"));
-        //     }
-        //     else{//HOOOOOLA
-        //         console.log("Comprobacion si existe usuario: "+usuario.nombre+" "+usuario.correo+" "+usuario.pass); 
-        //         const existeName = "SELECT * FROM back2study.users where username = ?";
-        //         connection.query(existeName,[usuario.nombre],
-        //         function(err, result){
-                
-        //             if(err){
-        //                 console.log("ERROR: "+err.message);
-        //                 callback(new Error("Error de acceso a la base de datos"));
-        //             }
-        //             else{
-                        
-        //                 if (result.length==1)   callback(null, true);
-        //                 else    callback(null, false);
-        //             }
-        //         });
-        //     }
-        // });
     }
     
     /*
@@ -68,6 +46,7 @@ class DaoUsers{
         return new Promise((resolve, reject) => {
             this.pool.getConnection(function(err,connection){
                 if(err){
+                    console.log("Hay un error");
                     reject(new Error("Error de conexión a la base de datos"));
                 }
                 else{
@@ -83,8 +62,14 @@ class DaoUsers{
                         }
                         else{
                             
-                            if (result2.length==1)  resolve(true);
-                            else    resolve(false);
+                            if (result2.length==1){
+                                console.log("Devuelvo true")
+                                resolve(true);
+                            }  
+                            else {
+                                console.log("Devuelvo false")
+                                resolve(false);
+                            }
                         }
                     });
                 }

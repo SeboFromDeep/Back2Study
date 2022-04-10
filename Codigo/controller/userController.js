@@ -116,12 +116,12 @@ class controllerU{
             users.existeUsuario(usuario)
             .then(value => {
                 console.log("1: " + value);
-                if (value == false) users.existeCorreo(usuario);
+                if (value == false) return users.existeCorreo(usuario);
                 else throw "Nombre de Usuario no disponible";
             })
             .then(value => {
                 console.log("2: " + value);
-                if (value == false) users.registro(usuario);
+                if (value == false) return users.registro(usuario);
                 else throw "Ya existe un usuario con ese correo";
             })
             .then(value => {
@@ -138,93 +138,13 @@ class controllerU{
                 else throw value;
             })
             .catch(error => {
-                console.log(error);
                 response.status(500);
                 response.render("signup", {     
                                 title: "¡Registro erroneo!",
-                                errores: errors.mapped(), 
-                                msgRegistro: "Error de registro"
+                                errores: error, 
+                                //msgRegistro: error
                 });
             });
-
-
-
-            //ejecutamos la función registro de el DAO, y después se ejecuta cb_insert
-            // users.existeUsuario(usuario, cb_existeUsu);
-            // function cb_existeUsu(err, existeUsu){
-            //     if (err) {
-            //         //console.log(err.message);
-            //         response.status(500);
-            //         response.render("signup", {     
-            //                         title: "¡Registro erroneo!",
-            //                         errores: errors.mapped(), 
-            //                         msgRegistro: "Error de registro"});
-            //     }
-            //     else if(existeUsu){
-                    
-                    
-            //         response.render("signup", {     
-            //                         title: "¡Registro erroneo!",
-            //                         errores: errors.mapped(), 
-            //                         msgRegistro: "Nombre de usuario existente"});
-            //     }else{
-            //         users.existeCorreo(usuario, cb_existeCor);
-            //         function cb_existeCor(err2, existeCor){
-            //             if(err2){
-            //                 response.status(500);
-            //                 response.render("signup", {     
-            //                         title: "¡Registro erroneo!",
-            //                         errores: errors.mapped(), 
-            //                         msgRegistro: "Error de registro"});
-            //             }
-            //             else if(existeCor){
-            //                 response.render("signup", {     
-            //                     title: "¡Registro erroneo!",
-            //                     errores: errors.mapped(), 
-            //                     msgRegistro: "Correo electronico existente"});
-            //             }
-            //             else{
-            //                 users.registro(usuario, cb_insert);
-            //                 function cb_insert(err2, completed){
-            //                     if (err2) {
-            //                         //console.log(err.message);
-            //                         response.status(200);
-            //                         let msg= "Error de registro";
-            //                         response.render("signup", {   title: "¡Registro erroneo!",
-            //                                                         errores: errors.mapped(), 
-            //                                                         msgRegistro: msg});
-            //                     }
-            //                     else {
-            //                         if(completed){
-            //                             console.log("Registro exitoso.")
-            //                             response.render("login", {  
-            //                                             title: "Registro completado", 
-            //                                             msgRegistro: "Registro completado " + usuario.nombre + ". Ya puedes loguearte.", 
-            //                                             tipoAlert: "alert-success",
-            //                                             errores: errors.mapped()});
-            //                         }
-            //                         else{
-            //                             response.status(200);
-            //                             let msg= "Error de registro";
-            //                             response.render("signup", {   
-            //                                             title: "¡Registro erroneo!",
-            //                                             errores: errors.mapped(), 
-            //                                             msgRegistro: msg});
-            //                         }
-            //                     }
-            //                 }
-
-            //             };
-                        
-            //         }
-                    
-            //     }
-                
-                
-                
-                
-            // }
-             
         } 
         else {
             console.log("ERRORES!");
