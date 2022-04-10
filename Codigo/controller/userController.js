@@ -115,17 +115,14 @@ class controllerU{
 
             users.existeUsuario(usuario)
             .then(value => {
-                console.log("1: " + value);
                 if (value == false) return users.existeCorreo(usuario);
                 else throw "Nombre de Usuario no disponible";
             })
             .then(value => {
-                console.log("2: " + value);
                 if (value == false) return users.registro(usuario);
                 else throw "Ya existe un usuario con ese correo";
             })
             .then(value => {
-                console.log("3: " + value);
                 if (value == true){
                     console.log("Registro exitoso.")
                     response.render("login", {  
