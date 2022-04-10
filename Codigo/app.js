@@ -37,7 +37,6 @@ const session = require("express-session");
 const mysqlSession = require("express-mysql-session");
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(config.databaseConfig);
-
 const middlewareSession = session({
     saveUninitialized: false,
     secret: "foobar34",
@@ -129,3 +128,6 @@ app.listen(PORT, (err) => {
         console.log(`Servidor arrancado en el puerto ${ PORT }`);        
     }
 });
+
+module.exports = app;
+

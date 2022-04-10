@@ -125,6 +125,7 @@ class controllerU{
             .then(value => {
                 if (value == true){
                     console.log("Registro exitoso.")
+                    response.status(200);
                     response.render("login", {  
                                     title: "Registro completado", 
                                     msgRegistro: "Registro completado " + usuario.nombre + ". Ya puedes loguearte.", 
@@ -135,7 +136,6 @@ class controllerU{
                 else throw value;
             })
             .catch(error => {
-                response.status(500);
                 response.render("signup", {     
                                 title: "¡Registro erroneo!",
                                 errores: errors.mapped(), 
@@ -145,6 +145,7 @@ class controllerU{
         } 
         else {
             console.log("ERRORES!");
+            response.status(500);
             response.render("signup", {
                 title: "¡Hay Errores!", 
                 errores: errors.mapped(), 

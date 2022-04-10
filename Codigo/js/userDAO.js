@@ -21,8 +21,9 @@ class DaoUsers{
                     const existeName = "SELECT * FROM back2study.users where username = ?";
                     connection.query(existeName,[usuario.nombre],
                     function(err, result){
-                    
+                        connection.release();
                         if(err){
+                            
                             console.log("ERROR: "+err.message);
                             reject(new Error("Error de acceso a la base de datos"));
                         }
@@ -54,7 +55,7 @@ class DaoUsers{
                     const existeName = "SELECT * FROM back2study.users where email= ?";
                     connection.query(existeName,[usuario.correo],
                         function(err, result2){
-                        
+                        connection.release();
                         if(err){
                             console.log("ERROR: "+err.message);
                             reject(new Error("Error de acceso a la base de datos"));
