@@ -10,28 +10,30 @@ class DaoUsers{
     True --> El usuario/correo existe
     False --> No Existe
     */
-    existeUsuario(usuario, callback){
-        this.pool.getConnection(function(err,connection){
-            if(err){
-                callback(new ErrorEvent("Error de conexión a la base de datos"));
-            }
-            else{//HOOOOOLA
-                console.log("Comprobacion si existe usuario: "+usuario.nombre+" "+usuario.correo+" "+usuario.pass); 
-                const existeName = "SELECT * FROM back2study.users where username = ?";
-                connection.query(existeName,[usuario.nombre],
-                function(err, result){
-                
-                    if(err){
-                        console.log("ERROR: "+err.message);
-                        callback(new Error("Error de acceso a la base de datos"));
-                    }
-                    else{
-                        
-                        if (result.length==1)   callback(null, true);
-                        else    callback(null, false);
-                    }
-                });
-            }
+    existeUsuario(usuario){
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection(function(err,connection){
+                if(err){
+                    reject(new Error("Error de conexión a la base de datos"));
+                }
+                else{//HOOOOOLA
+                    console.log("Comprobacion si existe usuario: "+usuario.nombre+" "+usuario.correo+" "+usuario.pass); 
+                    const existeName = "SELECT * FROM back2study.users where username = ?";
+                    connection.query(existeName,[usuario.nombre],
+                    function(err, result){
+                    
+                        if(err){
+                            console.log("ERROR: "+err.message);
+                            reject(new Error("Error de acceso a la base de datos"));
+                        }
+                        else{
+                            
+                            if (result.length==1)   resolve(true);
+                            else    resolve(false);
+                        }
+                    });
+                }
+            });
         });
     }
     
@@ -40,57 +42,115 @@ class DaoUsers{
     True --> El usuario/correo existe
     False --> No Existe
     */
-    existeCorreo(usuario, callback){
-        this.pool.getConnection(function(err,connection){
-            if(err){
-                callback(new ErrorEvent("Error de conexión a la base de datos"));
-            }
-            else{//HOOOOOLA
-                
-                //El usuario no existe
-                const existeName = "SELECT * FROM back2study.users where email= ?";
-                connection.query(existeName,[usuario.correo],
-                    function(err, result2){
+    existeCorreo(usuario){
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection(function(err,connection){
+                if(err){
+                    console.log("Hay un error");
+                    reject(new Error("Error de conexión a la base de datos"));
+                }
+                else{
                     
-                    if(err){
-                        console.log("ERROR: "+err.message);
-                        callback(new Error("Error de acceso a la base de datos"));
-                    }
-                    else{
+                    //El usuario no existe
+                    const existeName = "SELECT * FROM back2study.users where email= ?";
+                    connection.query(existeName,[usuario.correo],
+                        function(err, result2){
                         
-                        if (result2.length==1)  callback(null, true);
-                        else    callback(null, false);
-                    }
-                });
-            }
+                        if(err){
+                            console.log("ERROR: "+err.message);
+                            reject(new Error("Error de acceso a la base de datos"));
+                        }
+                        else{
+                            
+                            if (result2.length==1){
+                                console.log("Devuelvo true")
+                                resolve(true);
+                            }  
+                            else {
+                                console.log("Devuelvo false")
+                                resolve(false);
+                            }
+                        }
+                    });
+                }
+            });
         });
+        // this.pool.getConnection(function(err,connection){
+        //     if(err){
+        //         callback(new ErrorEvent("Error de conexión a la base de datos"));
+        //     }
+        //     else{//HOOOOOLA
+                
+        //         //El usuario no existe
+        //         const existeName = "SELECT * FROM back2study.users where email= ?";
+        //         connection.query(existeName,[usuario.correo],
+        //             function(err, result2){
+                    
+        //             if(err){
+        //                 console.log("ERROR: "+err.message);
+        //                 callback(new Error("Error de acceso a la base de datos"));
+        //             }
+        //             else{
+                        
+        //                 if (result2.length==1)  callback(null, true);
+        //                 else    callback(null, false);
+        //             }
+        //         });
+        //     }
+        // });
     }
 
-    registro(usuario, callback){
-        this.pool.getConnection(function(err,connection){
-            if(err){
-                callback(new ErrorEvent("Error de conexión a la base de datos"));
-            }
-            else{//HOOOOOLA
-                console.log("Datos registro usuario: "+usuario.nombre+" "+usuario.correo+" "+usuario.pass); 
-                
-                const valor="INSERT INTO users (username, email, password) VALUES (?,?,?);";
-                connection.query(valor,[usuario.nombre, usuario.correo, usuario.pass],
-                function(err2, result2){
-                    connection.release(); //devolver el pool de conexiones.
-                    if(err2){
-                        console.log("ERROR: "+err.message);
-                        callback(new Error("Error de acceso a la base de datos"));
-                    }
-                    else{
-                        
-                        if(result2.affectedRows)    callback(null, true);
-                        else callback(null, false);
-                    }
-                });
-                
-            }
+    registro(usuario){
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection(function(err,connection){
+                if(err){
+                    reject(new Error("Error de conexión a la base de datos"));
+                }
+                else{
+                    console.log("Datos registro usuario: "+usuario.nombre+" "+usuario.correo+" "+usuario.pass); 
+                    
+                    const valor="INSERT INTO users (username, email, password) VALUES (?,?,?);";
+                    connection.query(valor,[usuario.nombre, usuario.correo, usuario.pass],
+                    function(err2, result2){
+                        connection.release(); //devolver el pool de conexiones.
+                        if(err2){
+                            console.log("ERROR: "+err.message);
+                            reject(new Error("Error de acceso a la base de datos"));
+                        }
+                        else{
+                            
+                            if(result2.affectedRows)    resolve(true);
+                            else callback(false);
+                        }
+                    });
+                    
+                }
+            });
         });
+        // this.pool.getConnection(function(err,connection){
+        //     if(err){
+        //         callback(new ErrorEvent("Error de conexión a la base de datos"));
+        //     }
+        //     else{//HOOOOOLA
+        //         console.log("Datos registro usuario: "+usuario.nombre+" "+usuario.correo+" "+usuario.pass); 
+                
+        //         const valor="INSERT INTO users (username, email, password) VALUES (?,?,?);";
+        //         connection.query(valor,[usuario.nombre, usuario.correo, usuario.pass],
+        //         function(err2, result2){
+        //             connection.release(); //devolver el pool de conexiones.
+        //             if(err2){
+        //                 console.log("ERROR: "+err.message);
+        //                 callback(new Error("Error de acceso a la base de datos"));
+        //             }
+        //             else{
+                        
+        //                 if(result2.affectedRows)    callback(null, true);
+        //                 else callback(null, false);
+        //             }
+        //         });
+                
+        //     }
+        // });
     }
 
     
