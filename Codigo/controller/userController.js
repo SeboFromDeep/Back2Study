@@ -138,8 +138,8 @@ class controllerU{
                 response.status(500);
                 response.render("signup", {     
                                 title: "¡Registro erroneo!",
-                                errores: error, 
-                                //msgRegistro: error
+                                errores: errors.mapped(), 
+                                msgRegistro: error
                 });
             });
         } 
