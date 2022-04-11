@@ -28,49 +28,38 @@ class controllerU{
     }
 
     login(request, response){
-        console.log("CONTROLADOR "+request.body.correo+" "+request.body.password);
+        //console.log("CONTROLADOR "+request.body.correo+" "+request.body.password);
+        const errors = validationResult(request);
         
 
-        users.login(request.body.correo, request.body.password, cb_isUser);
-        function cb_isUser(err, datosUsuario){
-            if (err) {
-               
-                response.status(500);
-                response.render("login", {  
-                        title: "Error", 
-                        msgRegistro: "Error en el acceso a la base de datos", 
-                        tipoAlert: "alert-danger",
-                        errores: errors.mapped()});
-            } 
-            else {         
-                
-                if(!datosUsuario){
-                    response.status(200);
-                    response.render("login", {  title: "Error", 
-                                                msgRegistro: "Error en usuario o contraseña", 
-                                                tipoAlert: "alert-danger",
-                                                errores: errors.mapped()});
-                }
-                else{
+        users.login(request.body.correo, request.body.password)
+        .then(value => {
+            if (value != false){
+                request.session.id_=value.id;
+                request.session.mail = value.email;
+                request.session.userName = value.username;
 
-                    request.session.id_=datosUsuario.id;
-                    request.session.mail = datosUsuario.email;
-                    request.session.userName = datosUsuario.username;
+                response.locals.id_=request.session.id_;
+                response.locals.mailID = request.session.mailID;
+                response.locals.userName = request.session.userName;
 
-                    response.locals.id_=request.session.id_;
-                    response.locals.mailID = request.session.mailID;
-                    response.locals.userName = request.session.userName;
-
-                    console.log("DATOS controller: "+datosUsuario.id+"/"+datosUsuario.username+"/"+datosUsuario.email+"/"+datosUsuario.password);
-                    response.render("principal", {  
-                                                title: "Inicio de sesión realizado con éxito", 
-                                                nameUser: request.session.userName, 
-                                                mailUser: request.session.mail,
-                                                tareas: undefined });
-                }
-                
+                //console.log("DATOS controller: "+value.id+"/"+value.username+"/"+value.email+"/"+value.password);
+                response.render("principal", {  
+                                            title: "Inicio de sesión realizado con éxito.", 
+                                            nameUser: request.session.userName, 
+                                            mailUser: request.session.mail,
+                                            tareas: undefined });
             }
-        }
+            else throw "Error en usuario o contraseña."
+        })
+        .catch(error => {
+            response.status(500);
+            response.render("login", {  
+                    title: "Error", 
+                    msgRegistro: error, 
+                    tipoAlert: "alert-danger",
+                    errores: errors.mapped()});
+        });
     }
 
 
