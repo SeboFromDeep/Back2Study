@@ -170,6 +170,7 @@ class controllerTareas {
                                 tareaM: tareaManual
                         });
                         
+                        
             })
             .catch(error => {    response.status(500);      })
             
