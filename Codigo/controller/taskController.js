@@ -157,7 +157,7 @@ class controllerTareas {
         if(request.params.tipo == "m"){
             daoTareas.getDetailsTaskManual( request.session.id_, request.params.id)
             .then(tareaManual => {
-                        
+                        //kjhkjh
                         response.render("verTareaManual",{
                                 title: "Tarea", 
                                 nameUser: request.session.userName, 
