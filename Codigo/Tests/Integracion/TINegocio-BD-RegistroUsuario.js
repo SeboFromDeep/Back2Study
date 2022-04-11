@@ -19,6 +19,7 @@ const dao_aux = new dao(pool);
 describe('hooks', function () {
 
     after(function () {
+        // después de cada test borramos al que se ha insertado para poder ejecutarlos siempre
         dao_aux.delete_user("paco@gmail.com", function (error, result) { });
     });
 
