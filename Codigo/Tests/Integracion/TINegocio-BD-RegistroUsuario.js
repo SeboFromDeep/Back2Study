@@ -56,7 +56,7 @@ describe('hooks', function () {
 
     // describe("Registrarse incorrecto", async function () {
 
-    //     it("Ya hay un usuario registrado con el mismo correo", function (done) {
+    //     it("Ya hay un usuario registrado con el miismo correo", function (done) {
     //         let request = {
     //             body: {
     //                 username: "maria",
