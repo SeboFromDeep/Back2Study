@@ -21,14 +21,15 @@
 <!-- CONTENIDO -->
     <div class="container contenido ">
         
-        <div class="row vh-80 justify-content-center text-center align-items-center">
-            
-            <h1 class="display-6">Tarea Programada</h1>
+        <div class="row vh-80 align-items-center">
+            <div class="col"><h1 class="display-6">Tarea Programada</h1></div>
+                
+            <div class="col text-end"><input type="button" onclick="history.back()" name="volver atrás" value="Atrás" class="btn btn-light btn-sm"></div>
+                
+            <br>
         </div>
         
         <% let color="bg-secondary";%>
-        
-        
         <% if(tareaP){%>
             <% console.log(tareaP.horas) %>
             <% if(typeof(tareaP) !== "undefined"){%>
@@ -49,13 +50,13 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col">#<%=p.idTarea%> <b><%=p.nombre%></div></b>
+                    <div class="col">#<%=idTarea%> <b><%=p.nombre%></div></b>
                     <div class="col text-end"><small>Prioridad: <span class="badge <%=color%>"><%=p.prioridad%></span></small></div>
                 </div>
                  
             </div>
             <div class="card-body">
-              <h5 class="card-title">Tarea <%=p.tipo%> de <%=p.horas%> horas. Fecha Fin: <%=p.fechafin%>    </h5>
+              <h5 class="card-title">Tarea <%=p.tipo%> de <%=p.horas%> horas. Fecha Fin: <%=p.fechafin.toDateString()%>    </h5>
               
               
             </div>

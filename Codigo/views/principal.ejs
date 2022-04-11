@@ -20,26 +20,20 @@
 
 <!-- CONTENIDO -->
     <div class="container contenido ">
-        
-
-        <div class="row vh-80 justify-content-center align-items-center">
+         <!-- <h1>HOLA <%=nameUser %> tu correo de sesion es <%=mailUser %></h1> -->
             
-            <h1>HOLA <%=nameUser %> tu correo de sesion es <%=mailUser %></h1>
-            
-            
-            
-            
-            
-        </div>
-        
             <% let color="bg-secondary";%>
             <% let tipoTarea="";%>
             <% let prioridad="";%>
-            <% if(tareas){%>
+            <% if(tareas===0){%>
+                <div class="row vh-80 justify-content-center align-items-center">
+                    <p class="h3">Sin Tareas </p>
+                </div> 
+            <% }else{%>
                 <% if(typeof(tareas) !== "undefined"){%> 
             <div class="row vh-80 justify-content-center align-items-center">
 
-                HOLA <%=nameUser %> tu correo de sesion es <%=mailUser %>
+                <!-- HOLA <%=nameUser %> tu correo de sesion es <%=mailUser %> -->
                 <p class="h3">Numero de Tareas: <span class="badge bg-warning rounded-circle"><%=tareas.length%></span></p>
             </div>  
 
@@ -70,7 +64,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col">#<%=p.id%> <b><%=p.nombre%></div></b>
+                                <div class="col">#<%=p.id_tarea%> <b><%=p.nombre%></div></b>
                                 <div class="col text-end"><small>Prioridad: <span class="badge <%=color%>"><%=p.prioridad%></span></small></div>
                             </div>
                             </div>
@@ -78,7 +72,7 @@
                           <h5 class="card-title">Tarea <%=tipoTarea%></h5>
                           <p class="card-text">Fecha Fin: <%=p.fechafin.toDateString()%>.</p>
                             <button  type="button" class="btn btn-outline-primary">
-                                <a href="/tareas/taskDetalisBy/<%=p.id%>/<%=p.tipo%>" style=" text-decoration:none;">Ver detalles</a>
+                                <a href="/tareas/taskDetalisBy/<%=p.id_tarea%>/<%=p.tipo%>" style=" text-decoration:none;">Ver detalles</a>
                             </button>
                         </div>
                         <div class="card-footer text-muted">

@@ -14,7 +14,7 @@ class DaoTask{
                     reject(new Error("Error de conexión a la base de datos"));
                 }
                 else{
-                    const valor ="SELECT id, nombre, prioridad, categoria, fechafin ,fechaini, tipo FROM back2study.tareas where usuario= ?";
+                    const valor ="SELECT id_tarea, nombre, prioridad, categoria, fechafin ,fechaini, tipo FROM back2study.tareas where id_usuario= ?";
                     connection.query(valor, [id],
                         function(err, taskList){
                             connection.release();
@@ -23,8 +23,7 @@ class DaoTask{
                                 reject(new Error("Error de acceso a la base de datos"));
                             }
                             else{
-                                console.log("Listado de tareas");
-                                console.log(taskList);
+                                
                                 if(taskList.length>0) resolve(taskList);
                                 else resolve(false);
                                 
@@ -38,30 +37,7 @@ class DaoTask{
         
     }
 
-    // listaTareas(callback, id){
-    //     this.pool.getConnection(function(err,connection){
-    //         if(err){
-    //             callback(new ErrorEvent("Error de conexión a la base de datos"));
-    //         }
-    //         else{
-    //             const valor ="SELECT id, nombre, prioridad, categoria, fechafin ,fechaini, tipo FROM back2study.tareas where usuario= ?";
-    //             connection.query(valor, [id],function(err,result){
-                  
-    //                 connection.release();
-    //                 if(err){
-    //                     console.log("ERROR:"+err.message);
-    //                     callback(new ErrorEvent("Error de acceso a la base de datos"));
-    //                 }
-    //                 else{
-    //                     if(result.length>0) callback(null, result);
-    //                     else callback(null, false);
-                        
-    //                 }
-    //             });
-    //         }
-
-    //     });
-    // }
+    
 
     getDetailsTaskManual(idUsuario, idTarea){
         return new Promise((resolve, reject) => {
@@ -72,7 +48,7 @@ class DaoTask{
                 else{
                     // tareas.id, tareas.nombre, tareas.prioridad, tareas.categoria, tareas.fechafin, tareas.fechaini, tareas.tipo, "
                     const sql="SELECT tareas.nombre, tareas.prioridad, tareas.categoria, tareas.fechafin, tareas.fechaini, tareas.tipo, tareas_manuales.hora_ini, tareas_manuales.hora_fin, tareas_manuales.dias_recurrentes, tareas_manuales.recurrente "+
-                            "FROM back2study.tareas JOIN tareas_manuales on tareas.id= tareas_manuales.id_tarea where tareas.usuario= ? and tareas_manuales.id_tarea= ?";
+                            "FROM back2study.tareas JOIN tareas_manuales on tareas.id_tarea= tareas_manuales.id_tarea where tareas.id_usuario= ? and tareas_manuales.id_tarea= ?";
                         connection.query(sql, [idUsuario, idTarea],
                             function(err,result){
                             connection.release();
@@ -104,8 +80,9 @@ class DaoTask{
                     // tareas.id, tareas.nombre, tareas.prioridad, tareas.categoria, tareas.fechafin, tareas.fechaini, tareas.tipo, "
                     const sql="SELECT tareas.nombre, tareas.prioridad, tareas.categoria, tareas.fechafin, tareas.fechaini, tareas.tipo ,tareas_programadas.horas ,tareas_programadas.tipo " +
                     "FROM back2study.tareas JOIN tareas_programadas "+
-                    "on tareas.id= tareas_programadas.id "+
-                    " where tareas.usuario= ? and tareas_programadas.id=?";connection.query(sql, [idUsuario, idTarea],
+                    "on tareas.id_tarea= tareas_programadas.id_programada "+
+                    " where tareas.id_usuario= ? and tareas_programadas.id_programada=?";
+                    connection.query(sql, [idUsuario, idTarea],
                             function(err,result){
                             connection.release();
                             if(err){
@@ -123,31 +100,7 @@ class DaoTask{
                 }
             })
         })
-        // this.pool.getConnection(function(err,connection){
-        //     if(err){
-        //         callback(new ErrorEvent("Error de conexión a la base de datos"));
-        //     }
-        //     else{
-        //         console.log("AÑADIENDO Y DEVOLVIENDO");
-        //         const sql="SELECT tareas_programadas.horas ,tareas_programadas.tipo " +
-        //             "FROM back2study.tareas JOIN tareas_programadas "+
-        //             "on tareas.id= tareas_programadas.id "+
-        //             " where tareas.usuario= ? and tareas_programadas.id=?";
-                    
-        //             connection.query(sql, [idUsuario, idTarea],function(err,result){
-        //                 connection.release();
-        //                 if(err){
-        //                     console.log("ERROR:"+err.message);
-        //                     callback(new ErrorEvent("Error de acceso a la base de datos"));
-        //                 }
-        //                 else{
-                            
-        //                     console.log("RESULTADOS:"+ result);
-        //                     callback(null, result);
-        //                 }
-        //             });
-        //     }
-        // });
+        
     }
 
     consultarTarea(callback, tarea){
@@ -159,7 +112,7 @@ class DaoTask{
                 console.log("Consultar tarea con nombre:"+id)
 
                 //Insertamos en la tabla padre
-                const valor ="Select count(*) From tareas where fechaini BETWEEN ? AND ? AND (fechafin BETWEEN ? AND ?) AND(usuario=?)";
+                const valor ="Select count(*) From tareas where fechaini BETWEEN ? AND ? AND (fechafin BETWEEN ? AND ?) AND(id_usuario=?)";
                 connection.query(valor,[tarea.fechaIni, tarea.fechaFin, tarea.user],
                 function(err, result){
                     connection.release();
@@ -188,7 +141,7 @@ class DaoTask{
             }
             else{
                 console.log("ID DE USUARIO "+id)
-                const valor ="Insert into tareas (nombre,prioridad,categoria,usuario,fechafin,fechaIni,tipo) values(?, ?, ?, ?, ?, ?, ?)";
+                const valor ="Insert into tareas (nombre,prioridad,categoria,id_usuario,fechafin,fechaIni,tipo) values(?, ?, ?, ?, ?, ?, ?)";
                 connection.query(valor,[tarea.nombre, tarea.prioridad, tarea.categoria, tarea.usuario, tarea.fechaFin, tarea.fechaIni, 'm'],
                 function(err, idtarea){
                     if(err){
@@ -198,7 +151,7 @@ class DaoTask{
                     }
                     else
                     {
-                        const valor ="Insert into tareas_manuales (id,hora_ini,hora_fin,recurrente,dias_recurrentes) values(?, ?, ?, ?, ?)";
+                        const valor ="Insert into tareas_manuales (id_tarea,hora_ini,hora_fin,recurrente,dias_recurrentes) values(?, ?, ?, ?, ?)";
                         connection.query(valor,[idtarea, tarea.horaIni, tarea.horaFin, tarea.recurrente, tarea.diasRecurrentes],
                         function(err, result){
 
@@ -228,7 +181,7 @@ class DaoTask{
             }
             else{
                 console.log("Insertando tarea de usuario " + tarea.usuario);
-                const valor ="Insert into tareas (nombre,prioridad,categoria,usuario,fechafin,fechaIni, tipo) values(?, ?, ?, ?, ?, ?, ?)";
+                const valor ="Insert into tareas (nombre,prioridad,categoria,id_usuario,fechafin,fechaIni, tipo) values(?, ?, ?, ?, ?, ?, ?)";
                 connection.query(valor,[tarea.nombre, tarea.prioridad, tarea.categoria, tarea.usuario, tarea.fechaFin, tarea.fechaIni, 'p'],
                 function(err, tareacreada){
                     if(err){

@@ -20,37 +20,18 @@ class controllerTareas {
 
         daoTareas.listaTareas(request.session.id_)
         .then(value =>{
-            console.log("Contenido value");
-            console.log(value);
+            
             response.render("principal", {
                 title: "", 
                 nameUser: request.session.userName, 
                 mailUser: request.session.mail,
-                tareas: value?value:false //Evaluamos si hay tareas y mandamos a la vista
+                tareas: value?value:0 //Evaluamos si hay tareas y mandamos a la vista
             });
         })
         .catch(error =>{  response.status(500);  });
     }
 
-    // getListTareas(request, response){
-
-    //     daoTareas.listaTareas(listarTareasCallback, request.session.id_);
-    //     function listarTareasCallback(err, tareas) {
-    //         if (err) {
-    //             response.status(500);
-    //         }
-    //         else {
-    //             response.render("principal", {
-    //                     title: "Inicio de sesión realizado con éxito", 
-    //                     nameUser: request.session.userName, 
-    //                     mailUser: request.session.mail,
-    //                     tareas: tareas?tareas:false //Evaluamos si hay tareas y mandamos a la vista
-    //             });
-    //         }
-    //     }
-
-        
-    // }
+    
 
     añadirTareaManual(request, response) {
         console.log("Añadiendo la tarea manual " + request.body.nombre + " a la BBDD");
@@ -152,12 +133,17 @@ class controllerTareas {
         });
     }
 
+
+    
+
     getTask(request, response){
         console.log("obteniendo detalles de tarea "+ request.params.id+ " "+ request.params.tipo);
         if(request.params.tipo == "m"){
             daoTareas.getDetailsTaskManual( request.session.id_, request.params.id)
             .then(tareaManual => {
-                        
+                let tarea_m = createObjectFromRequest(request);
+                console.log("Tarea Manual object");
+                console.log(tarea_m);
                         response.render("verTareaManual",{
                                 title: "Tarea", 
                                 nameUser: request.session.userName, 
@@ -188,13 +174,10 @@ class controllerTareas {
                     });
            })
            .catch(error => {    response.status(500);      })
-            
         }
-        
-
-        
     }
 
+    
 }
 
 module.exports = controllerTareas;

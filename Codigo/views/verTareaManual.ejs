@@ -21,9 +21,13 @@
 <!-- CONTENIDO -->
     <div class="container contenido ">
         
-        <div class="row vh-80 justify-content-center text-center align-items-center">
+        <div class="row vh-80 align-items-center">
             
-            <h1 class="display-6">Tarea Manual</h1>
+            <div class="col "><h1 class="display-6">Tarea Programada</h1></div>
+                
+            <div class="col text-end"><input type="button" onclick="history.back()" name="volver atrás" value="Atrás" class="btn btn-light btn-sm"></div>
+                
+            <br>
         </div>
         
         <% let color="bg-secondary";%>
@@ -52,7 +56,7 @@
                 </div>
             </div>
             <div class="card-body">
-              <p class="card-text">Fecha Fin: <%=fecha%></p>
+              <p class="card-text">Fecha Fin: <%=fecha.toDateString()%></p>
                 <table class="table">
                     <thead>
                         <tr>
@@ -117,15 +121,10 @@
                                     textoRepetir="Recurrente";
                                 }
                                 %>
-                                <!-- <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" <%=marca%> disabled>
-                                <label class="form-check-label" for="flexCheckDisabled">
-                                    Repetir
-                                </label> -->
-
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckCheckedDisabled" <%=marca%> disabled>
                                     <label class="form-check-label" for="flexSwitchCheckCheckedDisabled"><%=textoRepetir%></label>
-                                  </div>
+                                </div>
                                 
                             
                             </td>
