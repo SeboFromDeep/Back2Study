@@ -1,5 +1,7 @@
 "use strict"
 
+const { resolve } = require("path");
+
 class DaoUsers{
     constructor(pool){
         this.pool =pool;
@@ -100,33 +102,35 @@ class DaoUsers{
 
     
 
-    login(email, contrasena, callback) {
-        console.log("DAO "+email+" "+contrasena);
-        this.pool.getConnection(function(err, connection) {
-            if (err) {
-                callback(new Error("Error de conexión a la base de datos"));
-            }
-            else {
-                console.log("Datos log usuario: "+ email +" "+ contrasena);
-                // connection.query('USE back2study;');
-                connection.query("SELECT * FROM users WHERE email = ? AND password= ?" ,
-                    [email,contrasena],
-                    function(err, rows) {
-                        connection.release(); // devolver al pool la conexión
-                        if (err) {
-                            callback(new Error("Error de acceso a la base de datos"));
-                        }
-                        else {
-                            if (rows.length === 0) {
-                                callback(null, false); //no está el usuario con el password proporcionado
+    login(email, password) {
+        return new Promise((resolve, reject) => {
+            //console.log("DAO "+email+" "+password);
+            this.pool.getConnection(function(err, connection) {
+                if (err) {
+                    reject(new Error("Error de conexión a la base de datos"));
+                }
+                else {
+                    //console.log("Datos log usuario: "+ email +" "+ password);
+                    // connection.query('USE back2study;');
+                    connection.query("SELECT * FROM users WHERE email = ? AND password= ?" ,
+                        [email,password],
+                        function(err, rows) {
+                            connection.release(); // devolver al pool la conexión
+                            if (err) {
+                                reject(new Error("Error de acceso a la base de datos"));
                             }
                             else {
-                                // console.log("DATOS DAO: "+rows[0].id+"/"+rows[0].username+"/"+rows[0].email+"/"+rows[0].password);
-                                callback(null, rows[0]);
+                                if (rows.length === 0) {
+                                    resolve(false); //no está el usuario con el password proporcionado
+                                }
+                                else {
+                                    // console.log("DATOS DAO: "+rows[0].id+"/"+rows[0].username+"/"+rows[0].email+"/"+rows[0].password);
+                                    resolve(rows[0]);
+                                }
                             }
-                        }
-                });
-            }
+                        });
+                }
+            });
         });
     }
 }
