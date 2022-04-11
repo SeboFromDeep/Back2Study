@@ -19,22 +19,22 @@ INSERT INTO users(id, username,email,password) values (10, 'userPrueba10','userP
  
  
 #tareas tabla padre
-insert into tareas(id, nombre,prioridad,categoria,usuario,fechafin,fechaini,tipo) values(1, 'TareaPrueba1','alta','prueba',1,(select DATE(sysdate())),'2022-04-07','p');
-insert into tareas(id, nombre,prioridad,categoria,usuario,fechafin,fechaini,tipo) values(4, 'TareaPrueba3','media','prueba',1,(select DATE(sysdate())),'2022-06-10','p');
-insert into tareas(id, nombre,prioridad,categoria,usuario,fechafin,fechaini,tipo) values(5, 'TareaPrueba4','media','prueba',2,(select DATE(sysdate())),'2022-05-10','p');
-insert into tareas(id, nombre,prioridad,categoria,usuario,fechafin,fechaini,tipo) values(6, 'TareaPrueba5','baja','prueba',5,(select DATE(sysdate())),'2022-05-26','p');
+insert into tareas(id, nombre,prioridad,categoria,usuario,fechafin,fechaini,tipo) values(1, 'Proyecto TP','alta','@prueba',1,(select DATE(sysdate())),'2022-04-07','p');
+insert into tareas(id, nombre,prioridad,categoria,usuario,fechafin,fechaini,tipo) values(4, 'Examen GE','media','@prueba',1,(select DATE(sysdate())),'2022-06-10','p');
+insert into tareas(id, nombre,prioridad,categoria,usuario,fechafin,fechaini,tipo) values(5, 'Estudio de Bootstrap','media','@prueba',2,(select DATE(sysdate())),'2022-05-10','p');
+insert into tareas(id, nombre,prioridad,categoria,usuario,fechafin,fechaini,tipo) values(6, 'Practica ABD','baja','@prueba',5,(select DATE(sysdate())),'2022-05-26','p');
 
 #tareas tabla programadas
-insert into tareas_programadas(id, horas,tipo) values (1,2,'Proyecto TP');
-insert into tareas_programadas(id, horas,tipo) values (4,1,'Examen GE');
-insert into tareas_programadas(id, horas,tipo) values (5,5,'Estudio de Bootstrap');
-insert into tareas_programadas(id, horas,tipo) values (6,6,'Practica ABD');
+insert into tareas_programadas(id, horas,tipo) values (1,2,'Diaria');
+insert into tareas_programadas(id, horas,tipo) values (4,1,'Diaria');
+insert into tareas_programadas(id, horas,tipo) values (5,5,'Semanal');
+insert into tareas_programadas(id, horas,tipo) values (6,6,'Diaria');
  
 
-insert into tareas(id, nombre,prioridad,categoria,usuario,fechafin,fechaini,tipo) values(2, 'TareaPrueba2','alta','prueba',1,(select DATE(sysdate())),'2022-04-20','m');
-insert into tareas(id, nombre,prioridad,categoria,usuario,fechafin,fechaini,tipo) values(3, 'TareaPrueba2','alta','prueba',1,(select DATE(sysdate())),'2022-04-20','m');
-insert into tareas(id, nombre,prioridad,categoria,usuario,fechafin,fechaini,tipo) values(7, 'TareaPrueba7','baja','prueba',6,(select DATE(sysdate())),'2022-06-25','m');
-insert into tareas(id, nombre,prioridad,categoria,usuario,fechafin,fechaini,tipo) values(8, 'TareaPrueba7','baja','prueba',7,(select DATE(sysdate())),'2022-05-29','m');
+insert into tareas(id, nombre,prioridad,categoria,usuario,fechafin,fechaini,tipo) values(2, 'Entrenamiento','alta','@prueba',1,(select DATE(sysdate())),'2022-04-20','m');
+insert into tareas(id, nombre,prioridad,categoria,usuario,fechafin,fechaini,tipo) values(3, 'Gimnasio','alta','@prueba',1,(select DATE(sysdate())),'2022-04-20','m');
+insert into tareas(id, nombre,prioridad,categoria,usuario,fechafin,fechaini,tipo) values(7, 'Reunion','baja','@prueba',6,(select DATE(sysdate())),'2022-06-25','m');
+insert into tareas(id, nombre,prioridad,categoria,usuario,fechafin,fechaini,tipo) values(8, 'Descanso','baja','@prueba',7,(select DATE(sysdate())),'2022-05-29','m');
 
 #tareas tabla manuales
 insert into tareas_manuales(id_tarea,hora_ini,hora_fin ,recurrente,dias_recurrentes) values(2,'14:00', '16:00',1,'@L@J');
