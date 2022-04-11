@@ -34,8 +34,7 @@ routerUsers.post("/registro_Usuario",
     
     check("correo","Dirección de correo no válida o vacia").isEmail(),
     check("password", "La logintud minima debe ser 4").isLength({ min: 4}),
-    check("password2", "La logintud minima debe ser 4")
-    .isLength({ min: 4})
+    check("password2")
     .custom((value, { req }) => {
         if (value !== req.body.password) {
             throw new Error('Las contraseñas no son iguales');
