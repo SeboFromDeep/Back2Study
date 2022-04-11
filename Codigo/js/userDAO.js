@@ -133,6 +133,32 @@ class DaoUsers{
             });
         });
     }
+
+    delete_user(email, callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) {
+                callback(new Error("Error de conexión a la base de datos"));
+            }
+            else {
+                connection.query('USE back2study;');
+                connection.query('SET SQL_SAFE_UPDATES = 0;');
+                connection.query("DELETE FROM users WHERE email = ?" ,
+                    [email],
+                    function(err, rows) {
+                        connection.release(); // devolver al pool la conexión
+                        if (err) {
+                            callback(new Error("Error de acceso a la base de datos"));
+                        }
+                        else {
+                                console.log("USUARIO ELIMINADO");
+                                console.log(email);
+                                callback(null, true);
+                        }
+                    });
+            }
+        });
+    }
+    
 }
 
 module.exports =DaoUsers;
