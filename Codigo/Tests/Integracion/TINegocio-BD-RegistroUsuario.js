@@ -11,6 +11,7 @@ const controller = require("../../controller/userController");
 const mysql = require('mysql');
 const config = require('../../js/config');
 const UserController = new controller();
+const dao = require("../../js/userDAO");
 const pool = mysql.createPool(config.databaseConfig);
 const dao_aux = new dao(pool);
 
@@ -45,7 +46,7 @@ describe('hooks', function () {
             .post('/usuarios/registro_Usuario')
             .send({username:"paco", correo: "lucia@gmail.com", password: "1234", password2: "1234"})
             .end(function (err, response) {
-                expect(response).to.have.status(200);
+                expect(response).to.have.status(500);
                 done();
             })
         });
@@ -59,7 +60,7 @@ describe('hooks', function () {
             .post('/usuarios/registro_Usuario')
             .send({username:"maria", correo: "paco@gmail.com", password: "1234", password2: "1234"})
             .end(function (err, response) {
-                expect(response).to.have.status(200);
+                expect(response).to.have.status(500);
                 done();
             })
         });

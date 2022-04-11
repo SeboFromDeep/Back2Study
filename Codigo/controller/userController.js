@@ -136,6 +136,7 @@ class controllerU{
                 else throw value;
             })
             .catch(error => {
+                response.status(500);
                 response.render("signup", {     
                                 title: "¡Registro erroneo!",
                                 errores: errors.mapped(), 
