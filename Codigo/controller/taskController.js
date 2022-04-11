@@ -19,19 +19,17 @@ class controllerTareas {
     getListTareas(request, response){
 
         daoTareas.listaTareas(request.session.id_)
-        .then(taskList =>{
+        .then(value =>{
             console.log("Contenido value");
-            console.log(taskList);
+            console.log(value);
             response.render("principal", {
                 title: "", 
                 nameUser: request.session.userName, 
                 mailUser: request.session.mail,
-                tareas: taskList?taskList:false //Evaluamos si hay tareas y mandamos a la vista
+                tareas: value?value:false //Evaluamos si hay tareas y mandamos a la vista
             });
         })
-        .catch(error =>{
-            response.status(500);
-        })
+        .catch(error =>{  response.status(500);  });
     }
 
     // getListTareas(request, response){
@@ -155,56 +153,41 @@ class controllerTareas {
     }
 
     getTask(request, response){
-        console.log("obteniendo detalles de tarea "+ request.params.id+ " "+ request.params.tipo+ " "+ request.params.nombre+ " "+ request.params.prioridad+ " "+ request.params.fecha+ " "+ request.params.cat );
+        console.log("obteniendo detalles de tarea "+ request.params.id+ " "+ request.params.tipo);
         if(request.params.tipo == "m"){
-            daoTareas.getDetailsTaskManual( request.session.id_, request.params.id, request.params.tipo, cb_verTareaM);
-            function cb_verTareaM(err, tarea_M){
-                if(err){
-                    
-                    response.status(500);
-                   
-                }
-                else{
-
-                    response.render("verTareaManual",{
-                        title: "Tarea", 
-                        nameUser: request.session.userName, 
-                        mailUser: request.session.mail,
-                        idTarea: request.params.id,
-                        nombre: request.params.nombre,
-                        prioridad: request.params.prioridad, 
-                        fecha: request.params.fecha,
-                        cat: request.params.cat,
-                        tareaM: tarea_M
-                    });
-                    console.log(tarea_M);
-                }
-            }
+            daoTareas.getDetailsTaskManual( request.session.id_, request.params.id)
+            .then(tareaManual => {
+                        console.log("parametros padre");
+                        console.log(request.params);
+                        console.log(tareaManual[0]);
+                        response.render("verTareaManual",{
+                                title: "Tarea", 
+                                nameUser: request.session.userName, 
+                                mailUser: request.session.mail,
+                                idTarea: request.params.id,
+                                tareaPadreM: tareaManual[0],
+                                tareaM: tareaManual
+                        });
+                        
+            })
+            .catch(error => {    response.status(500);      })
+            
         }
         else if(request.params.tipo = "p"){
-           daoTareas.getDetailsTaskProgram( request.session.id_, request.params.id, request.params.tipo, cb_verTareaP);
-            function cb_verTareaP(err, tarea_P){
-                if(err){
-                    
-                    response.status(500);
-                   
-                }
-                else{
+           daoTareas.getDetailsTaskProgram( request.session.id_, request.params.id)
+           .then(tareaProgramada => {
                     console.log("TAREA PROGRAMADA");
-                    console.log(tarea_P);
+                    console.log(tareaProgramada);
                     response.render("verTareaProgramada",{
                         title: "Tarea Programada", 
                         nameUser: request.session.userName, 
                         mailUser: request.session.mail,
                         idTarea: request.params.id,
-                        nombre: request.params.nombre,
-                        prioridad: request.params.prioridad, 
-                        fecha: request.params.fecha,
-                        cat: request.params.cat,
-                        tareaP: tarea_P
+                        tareaP: tareaProgramada
                     });
-                }
-            }
+           })
+           .catch(error => {    response.status(500);      })
+            
         }
         
 
