@@ -120,6 +120,7 @@ class DaoUsers{
                                 reject(new Error("Error de acceso a la base de datos"));
                             }
                             else {
+                                console.log(rows);
                                 if (rows.length === 0) {
                                     resolve(false); //no está el usuario con el password proporcionado
                                 }

@@ -1,4 +1,5 @@
 "use strict"
+const { resolve } = require("path");
 
 class DaoTask{
     constructor(pool){
@@ -6,31 +7,62 @@ class DaoTask{
         
     }
 
-    listaTareas(callback, id){
-        this.pool.getConnection(function(err,connection){
-            if(err){
-                callback(new ErrorEvent("Error de conexión a la base de datos"));
-            }
-            else{
-                console.log("ID DE USUARIO "+id)
-                const valor ="SELECT id, nombre, prioridad, categoria, fechafin ,fechaini, tipo FROM back2study.tareas where usuario= ?";
-                connection.query(valor, [id],function(err,result){
-                  
-                    connection.release();
-                    if(err){
-                        console.log("ERROR:"+err.message);
-                        callback(new ErrorEvent("Error de acceso a la base de datos"));
-                    }
-                    else{
-                        
-                        console.log(result);
-                        callback(null, result);
-                    }
-                });
-            }
+    listaTareas(id){
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection(function(err,connection){
+                if(err){
+                    reject(new Error("Error de conexión a la base de datos"));
+                }
+                else{
+                    const valor ="SELECT id, nombre, prioridad, categoria, fechafin ,fechaini, tipo FROM back2study.tareas where usuario= ?";
+                    connection.query(valor, [id],
+                        function(err, taskList){
+                            connection.release();
+                            if(err){
+                                console.log("ERROR:"+err.message);
+                                reject(new Error("Error de acceso a la base de datos"));
+                            }
+                            else{
+                                console.log("Listado de tareas");
+                                console.log(taskList);
+                                if(taskList.length>0) resolve(taskList);
+                                else resolve(false);
+                                
+                            }
+                    });
+                }
+    
+            });
 
         });
+        
     }
+
+    // listaTareas(callback, id){
+    //     this.pool.getConnection(function(err,connection){
+    //         if(err){
+    //             callback(new ErrorEvent("Error de conexión a la base de datos"));
+    //         }
+    //         else{
+    //             const valor ="SELECT id, nombre, prioridad, categoria, fechafin ,fechaini, tipo FROM back2study.tareas where usuario= ?";
+    //             connection.query(valor, [id],function(err,result){
+                  
+    //                 connection.release();
+    //                 if(err){
+    //                     console.log("ERROR:"+err.message);
+    //                     callback(new ErrorEvent("Error de acceso a la base de datos"));
+    //                 }
+    //                 else{
+    //                     if(result.length>0) callback(null, result);
+    //                     else callback(null, false);
+                        
+    //                 }
+    //             });
+    //         }
+
+    //     });
+    // }
+
     getDetailsTaskManual(idUsuario, idTarea, tipoTarea, callback){
         this.pool.getConnection(function(err,connection){
             if(err){
