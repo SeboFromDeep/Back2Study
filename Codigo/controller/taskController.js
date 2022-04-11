@@ -157,15 +157,16 @@ class controllerTareas {
         if(request.params.tipo == "m"){
             daoTareas.getDetailsTaskManual( request.session.id_, request.params.id)
             .then(tareaManual => {
-                        console.log("parametros padre");
-                        console.log(request.params);
-                        console.log(tareaManual[0]);
+                        
                         response.render("verTareaManual",{
                                 title: "Tarea", 
                                 nameUser: request.session.userName, 
                                 mailUser: request.session.mail,
                                 idTarea: request.params.id,
-                                tareaPadreM: tareaManual[0],
+                                nombre: tareaManual[0].nombre,
+                                prioridad: tareaManual[0].prioridad, 
+                                fecha: tareaManual[0].fechafin,
+                                cat: tareaManual[0].categoria,
                                 tareaM: tareaManual
                         });
                         

@@ -30,7 +30,6 @@
         <% let tipoTarea="";%>
         
         <% if(tareaM){%>
-            
             <% if(typeof(tareaM) !== "undefined"){%>   
                 <% if(prioridad == "ALTA"){
                         color="bg-danger";
@@ -48,7 +47,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col">#<%=idTarea[0]%> <b><%=nombre%></div></b>
+                    <div class="col">#<%=idTarea%> <b><%=nombre%></div></b>
                     <div class="col text-end"><small>Prioridad: <span class="badge <%=color%>"><%=prioridad%></span></small></div>
                 </div>
             </div>
@@ -137,7 +136,11 @@
               <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
             </div>
             <div class="card-footer text-muted">
-                
+                <%cat.split('@').forEach( tag => {%>
+                    <% if(tag != ''){%>
+                        <a href="/porTagManual/<%=tag%>" class="badge bg-info">#<%=tag%></a>
+                    <%} %>
+                <%});%>
             </div>
           </div>
           
