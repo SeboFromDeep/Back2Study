@@ -63,62 +63,91 @@ class DaoTask{
     //     });
     // }
 
-    getDetailsTaskManual(idUsuario, idTarea, tipoTarea, callback){
-        this.pool.getConnection(function(err,connection){
-            if(err){
-                callback(new ErrorEvent("Error de conexión a la base de datos"));
-            }
-            else{
-                // tareas.id, tareas.nombre, tareas.prioridad, tareas.categoria, tareas.fechafin, tareas.fechaini, tareas.tipo, "
-                
-                    const sql="SELECT tareas_manuales.hora_ini, tareas_manuales.hora_fin, tareas_manuales.dias_recurrentes, tareas_manuales.recurrente "+
+    getDetailsTaskManual(idUsuario, idTarea){
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection(function(err,connection){
+                if(err){
+                    reject(new Error("Error de conexión a la base de datos"));
+                }
+                else{
+                    // tareas.id, tareas.nombre, tareas.prioridad, tareas.categoria, tareas.fechafin, tareas.fechaini, tareas.tipo, "
+                    const sql="SELECT tareas.nombre, tareas.prioridad, tareas.categoria, tareas.fechafin, tareas.fechaini, tareas.tipo, tareas_manuales.hora_ini, tareas_manuales.hora_fin, tareas_manuales.dias_recurrentes, tareas_manuales.recurrente "+
                             "FROM back2study.tareas JOIN tareas_manuales on tareas.id= tareas_manuales.id_tarea where tareas.usuario= ? and tareas_manuales.id_tarea= ?";
-                        connection.query(sql, [idUsuario, idTarea],function(err,result){
+                        connection.query(sql, [idUsuario, idTarea],
+                            function(err,result){
                             connection.release();
                             if(err){
                                 console.log("ERROR:"+err.message);
-                                callback(new ErrorEvent("Error de acceso a la base de datos"));
+                                reject(new Error("Error de acceso a la base de datos"));
                             }
                             else{
+                                console.log("RESULTADOS Manual:"); 
+                                console.log(result.length);
+                                if(result.length>=1)    resolve(result);
+                                else resolve(false);
                                 
-                                console.log("RESULTADOS:"+ result);
-                                callback(null, result);
                             }
                         });
-                
-                
-                    
-                
-            }
-        })
+                }
+            })
+        });
+        
     }
 
-    getDetailsTaskProgram(idUsuario, idTarea, tipoTarea, callback){
-        this.pool.getConnection(function(err,connection){
-            if(err){
-                callback(new ErrorEvent("Error de conexión a la base de datos"));
-            }
-            else{
-                console.log("AÑADIENDO Y DEVOLVIENDO");
-                const sql="SELECT tareas_programadas.horas ,tareas_programadas.tipo " +
+    getDetailsTaskProgram(idUsuario, idTarea){
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection(function(err,connection){
+                if(err){
+                    reject(new Error("Error de conexión a la base de datos"));
+                }
+                else{
+                    // tareas.id, tareas.nombre, tareas.prioridad, tareas.categoria, tareas.fechafin, tareas.fechaini, tareas.tipo, "
+                    const sql="SELECT tareas.nombre, tareas.prioridad, tareas.categoria, tareas.fechafin, tareas.fechaini, tareas.tipo ,tareas_programadas.horas ,tareas_programadas.tipo " +
                     "FROM back2study.tareas JOIN tareas_programadas "+
                     "on tareas.id= tareas_programadas.id "+
-                    " where tareas.usuario= ? and tareas_programadas.id=?";
+                    " where tareas.usuario= ? and tareas_programadas.id=?";connection.query(sql, [idUsuario, idTarea],
+                            function(err,result){
+                            connection.release();
+                            if(err){
+                                console.log("ERROR:"+err.message);
+                                reject(new Error("Error de acceso a la base de datos"));
+                            }
+                            else{
+                                console.log("RESULTADOS Programada:"); 
+                                console.log(result.length);
+                                if(result.length==1)    resolve(result);
+                                else resolve(false);
+                                
+                            }
+                        });
+                }
+            })
+        })
+        // this.pool.getConnection(function(err,connection){
+        //     if(err){
+        //         callback(new ErrorEvent("Error de conexión a la base de datos"));
+        //     }
+        //     else{
+        //         console.log("AÑADIENDO Y DEVOLVIENDO");
+        //         const sql="SELECT tareas_programadas.horas ,tareas_programadas.tipo " +
+        //             "FROM back2study.tareas JOIN tareas_programadas "+
+        //             "on tareas.id= tareas_programadas.id "+
+        //             " where tareas.usuario= ? and tareas_programadas.id=?";
                     
-                    connection.query(sql, [idUsuario, idTarea],function(err,result){
-                        connection.release();
-                        if(err){
-                            console.log("ERROR:"+err.message);
-                            callback(new ErrorEvent("Error de acceso a la base de datos"));
-                        }
-                        else{
+        //             connection.query(sql, [idUsuario, idTarea],function(err,result){
+        //                 connection.release();
+        //                 if(err){
+        //                     console.log("ERROR:"+err.message);
+        //                     callback(new ErrorEvent("Error de acceso a la base de datos"));
+        //                 }
+        //                 else{
                             
-                            console.log("RESULTADOS:"+ result);
-                            callback(null, result);
-                        }
-                    });
-            }
-        });
+        //                     console.log("RESULTADOS:"+ result);
+        //                     callback(null, result);
+        //                 }
+        //             });
+        //     }
+        // });
     }
 
     consultarTarea(callback, tarea){
