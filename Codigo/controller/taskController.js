@@ -158,6 +158,13 @@ class controllerTareas {
         });
     }
 
+    renderAddManualTask(request, response){
+        response.status(200);
+        response.render("addManualTask", {
+                        nameUser: request.session.userName,
+        });
+    }
+
     getTask(request, response){
         console.log("obteniendo detalles de tarea "+ request.params.id+ " "+ request.params.tipo+ " "+ request.params.nombre+ " "+ request.params.prioridad+ " "+ request.params.fecha+ " "+ request.params.cat );
         if(request.params.tipo == "m"){
