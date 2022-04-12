@@ -11,7 +11,7 @@ class DaoTask{
         return new Promise((resolve, reject) => {
             this.pool.getConnection(function(err,connection){
                 if(err){
-                    reject(new Error("Error de conexión a la base de datos"));
+                    reject(new Error("Error de conexión a la base de datos",));
                 }
                 else{
                     const valor ="SELECT id_tarea, nombre, prioridad, categoria, fechafin ,fechaini, tipo FROM back2study.tareas where id_usuario= ?";
@@ -145,9 +145,7 @@ class DaoTask{
                 connection.query(valor,[tarea.nombre, tarea.prioridad, tarea.categoria, tarea.usuario, tarea.fechaFin, tarea.fechaIni, 'm'],
                 function(err, idtarea){
                     if(err){
-                        console.log("ERROR:"+err.message);
-                        callback(new ErrorEvent
-                            ("Error de acceso a la base de datos"));
+                        callback(new ErrorEvent("Error de acceso a la base de datos", err.message));
                     }
                     else
                     {
@@ -174,45 +172,43 @@ class DaoTask{
     }
 
 
-    addTaskProgram(tarea, callback){
-        this.pool.getConnection(function(err,connection){
-            if(err){
-                callback(new ErrorEvent("Error de conexión a la base de datos"));
-            }
-            else{
-                console.log("Insertando tarea de usuario " + tarea.usuario);
-                const valor ="Insert into tareas (nombre,prioridad,categoria,id_usuario,fechafin,fechaIni, tipo) values(?, ?, ?, ?, ?, ?, ?)";
-                connection.query(valor,[tarea.nombre, tarea.prioridad, tarea.categoria, tarea.usuario, tarea.fechaFin, tarea.fechaIni, 'p'],
-                function(err, tareacreada){
-                    if(err){
-                        console.log("ERROR:"+err.message);
-                        callback(new Error
-                            ("Error de acceso a la base de datos"));
-                    }
-                    else
-                    {
-                        console.log("Tarea creada con id " + tareacreada.insertId);
-                        const valor ="Insert into tareas_programadas (id, horas, tipo) values(?, ?, ?)";
-                        connection.query(valor,[tareacreada.insertId, tarea.horas, tarea.tipo],
-                        function(err, result){
-                            connection.release();
-                            if(err){
-                                console.log("ERROR:"+err.message);
-                                callback(new Error
-                                    ("Error al insertar tarea"));
-                            }
-                            else
-                            {
-                                console.log("Tarea programada añadida");
-                                callback(null, tareacreada.insertId);
-                            }
-
-                        });
-                    }
-                });
-            }
-
+    addTaskProgram(tarea){
+        return new Promise((resolve, reject) =>{
+            this.pool.getConnection(function(err,connection){
+                if(err){
+                    reject(new Error("Error de conexión a la base de datos"));
+                }
+                else{
+                    console.log("Insertando tarea de usuario " + tarea.usuario);
+                    const valor ="Insert into tareas (nombre,prioridad,categoria,id_usuario,fechafin,fechaIni, tipo) values(?, ?, ?, ?, ?, ?, ?)";
+                    connection.query(valor,
+                    [tarea.nombre, tarea.prioridad, tarea.categoria, tarea.usuario, tarea.fechaFin, tarea.fechaIni, 'p'],
+                    function(err, tareacreada){
+                        if(err){
+                            
+                            reject(new Error("Error de conexión a la base de datos"));
+                            
+                        }
+                        else if(tareacreada.affectedRows===1){
+                            const valor ="Insert into tareas_programadas (id_programada, horas, tipo) values(?, ?, ?)";
+                            connection.query(valor,[tareacreada.insertId, tarea.horas, tarea.tipo],
+                            function(err, tareaHijaP){
+                                connection.release();
+                                if(err){
+                                    console.log("ERROR:"+err.message);
+                                    reject(new Error("Error al insertar tarea"));
+                                }
+                                else if(tareaHijaP.affectedRows===1)    resolve(tareacreada.insertId);
+                                else resolve(false);
+                            });
+                        }
+                        else resolve(false);
+                    });
+                }
+    
+            });
         });
+        
     }
     
 }

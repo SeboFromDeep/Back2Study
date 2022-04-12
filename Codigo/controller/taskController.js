@@ -82,47 +82,16 @@ class controllerTareas {
         request.body.category = request.body.categoria.toUpperCase();
         request.body.tipo = request.body.tipo.toUpperCase();
         let tareaProgramada = createObjectFromRequest(request);
-        // console.log("request.body");
-        // console.log(tareaProgramada);
-        // console.log(request);
-        /*
-        let tareaProgramada = {
-            usuario: request.session.id_,
-            nombre: request.body.nombre,
-            prioridad: request.body.prioridad,
-            categoria: request.body.categoria,
-            tipo: request.body.tipo,
-            horas: request.body.horas,
-            fechaIni: request.body.fechaIni,
-            fechaFin: request.body.fechaFin
-        }*/
         
-        // añadimos la tarea a la BBDD
-        //NO USAR Ñ!!! Me sangran los ojos
-        daoTareas.addTaskProgram(tareaProgramada, cb_addTaskP);
-        // aquí planearíamos la tarea llamando al algoritmo de ordenación
-
-        
-        
-        function cb_addTaskP(errors, result){
-            if (errors){
-                //render y mssg pueden cambiar de nombre 
-                response.render("add_tarea_programada", createResponseLocals(false, "Error en la creación de la tarea"));
-
-            }
-            else {
-                if (result) {
-                    console.log("RESULTADO");
-                    console.log(result);
-                    
-                    response.redirect("/tareas/taskList");
-                }
-                else { 
-                    response.render("add-scheduled-task", createResponseLocals(false, "Error en la creación de la tarea"));
-                }
-            }
-        }
-
+        daoTareas.addTaskProgram(tareaProgramada)
+        .then(tarea => {
+            if(tarea)   response.redirect("/tareas/taskDetalisBy/"+tarea+"/p");
+            else response.render("add-scheduled-task", createResponseLocals(false, "Error en la creación de la tarea"));
+        })
+        .catch( error =>{
+            response.status(500);
+            response.render("add_tarea_programada", createResponseLocals(false, "Error en la creación de la tarea"));
+        })
         
     }
 
