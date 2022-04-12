@@ -35,6 +35,8 @@ app.use(express.urlencoded({extended: true}));//Devuelve middleware que solo ana
 app.use(morgan("dev"));//Al realizar cambios en los archivos, se reinicia la aplicacion automaticamente (Para programar)
 //Se indica a express donde se encuentan las vistas
 
+
+
 //---------------------------------Sesion---------------------------------
 const session = require("express-session");
 const mysqlSession = require("express-mysql-session");
@@ -97,6 +99,11 @@ app.get("/signup", (request, response) => {
 
 app.get("/forgot-password", (req, res, next) => {
     res.render("forgot-password");
+});
+
+app.get("/reset-password/:id/:token", (request, response) => {
+    
+    cP.modPass
 });
 
 /*app.post("/forgot-password", (req, res, next) => {

@@ -112,6 +112,39 @@ class DaoUsers{
             }
         });
     }
+
+    existePass(pass, callback){
+        console.log("Buscando usuario con correo " + email + " en la BBDD");
+        this.pool.getConnection(function(error, connection){
+            if(error){
+                callback(new Error("Error de acceso a la base de datos"));
+            }
+            else{
+                connection.query("USE back2study;");
+                connection.query("SELECT * FROM users WHERE email = ?;", [email],
+                function(errors, user){
+                    connection.release();
+                    if(errors){
+                        callback(new Error("Error de acceso a la base de datos"));
+                    }
+                    else {
+                        if(user.length === 0){
+                            console.log("Usuario no encontrado");
+                            callback(null, false);
+                        }
+                        else{
+                            console.log("Usuario encontrado");
+                            callback(null, user[0]);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    modPass(pass, callback){
+
+    }
     
  
 }

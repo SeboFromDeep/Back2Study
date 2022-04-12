@@ -170,7 +170,12 @@ class controllerU{
                     };
             
                     const token = jwt.sign(payload, secret, {expiresIn: '15m'});
-                    const link = `http://localhost:3300/reset-password/${user.id}/${token}`; // localhost:3300 hay que cambiarlo por back2study.herokuapp.com cuando este todo listo
+
+                    request.session.tokenMail = token;
+
+                    response.locals.tokenMail=request.session.tokenMail;
+
+                    const link = `http://localhost:3300/usuarios/reset-password/${user.id}/${token}`; // localhost:3300 hay que cambiarlo por back2study.herokuapp.com cuando este todo listo
                     console.log("Link creado: " + link);
             
                     // send mail with defined transport object
@@ -178,11 +183,25 @@ class controllerU{
                         from: '"Recuperar contraseña 👻" <back2study.gps@gmail.com>', // sender address
                         to: request.body.email, // list of receivers
                         subject: "Recuperar contraseña ✔", // Subject line
-                        html: "<b>Correo enviado desde back2study. Link: " + link + "</b>", // html body
+                        html: "<b>Correo enviado desde back2study. <br>Link: " + link + "</b>", // html body
                     });
                 }   
             }
         }
+    }
+
+    goTochangeEmail(request, response){
+        console.log("caaaambiamos paaaas");
+        response.status(200);
+        response.render("change_pass");
+    }
+
+    changeEmail(request, response){
+        console.log(request.body.pass1+" <<->>  "+ request.body.pass2);
+        //  VERIFICAMOS EN ROUTER, que son iguales y tienen la longitud minima
+        //Aqui comprobamos que no es la antigua contraseña junto con el correo, si lo es debe modificarla si asi lo quiere
+        //Si todo va correcto llamamos al metodo del dao modPass que hara el update
+        //Finalmente reenviamos a login para que acceda con su nueva contraseña
     }
     
 }
