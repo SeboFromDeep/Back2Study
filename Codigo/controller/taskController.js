@@ -76,9 +76,7 @@ class controllerTareas {
     //REVISAR LOS RENDER
     addTareaProgramada(request, response){
         console.log("Añadiendo la tarea " + request.body.nombre +  " a la BBDD");
-        
-        
-        // inicializamos el objeto de tarea
+         // inicializamos el objeto de tarea
         request.body.category = request.body.categoria.toUpperCase();
         request.body.tipo = request.body.tipo.toUpperCase();
         let tareaProgramada = createObjectFromRequest(request);
