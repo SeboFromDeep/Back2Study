@@ -24,42 +24,49 @@
                         <%=msgRegistro%>
                     </div>
                 <% } %>
+                <% if (errores) { %>
+                    <% if(typeof(errores) !== "undefined"){%>
+                       <% if(errores.correo){%>
+                            <div class="alert alert-danger" role="alert">
+                                <%=errores.correo.msg%>
+                            </div>
+                        <%}%>
+                        <% if(errores.password){%>
+                            <div class="alert alert-danger" role="alert">
+                                <%=errores.password.msg%>
+                            </div>
+                        <%}%>
+                        <% if(errores.password2){%>
+                            <div class="alert alert-danger" role="alert">
+                                <%=errores.password2.msg%>
+                            </div>
+                        <%}%>
+                    <%}%>
+                <%}%>
                 <form action="/usuarios/registro_Usuario" method="POST" enctype="multipart/form-data">
                     <h1 class="display-6 text-center">Registrarse</h1>
                     <!--Los campos vacios se comprueban con el campo 'required'-->
                     <div class="input-group p-2">
-                        <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Nombre de usuario" >
+                        <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Nombre de usuario">
                     </div>
                     <div class="input-group p-2">
-                        <input type="email" name="correo" class="form-control" id="floatingInput" placeholder="nombre@ejemplo.com" >
+                        <input type="email" name="correo" class="form-control" id="floatingInput" placeholder="nombre@ejemplo.com">
                         
                     </div>
                     <div class="input-group">
-                        <% if (errores.correo) { %>
-                            <div>
-                                <p style="color:#FF0000";><%= errores.correo.msg %></p>
-                            </div>
-                        <% } %>
+                        
                     </div>
                     <div class="input-group p-2">
                         <input type="password" name="password" class="form-control" id="floatingInput" placeholder="Contraseña" >
                     </div>
                     <div class="input-group">
-                        <% if (errores.password) { %>
-                            <div>
-                                <p style="color:#FF0000";><%= errores.password.msg %></p>
-                            </div>
-                        <% } %>
+                        
                     </div>
                     <div class="input-group p-2">
                         <input type="password" name="password2" class="form-control" id="floatingInput" placeholder="Confirmar contraseña" >
                     </div>
                     <div class="input-group">
-                        <% if (errores.password2) { %>
-                            <div>
-                                <p style="color:#FF0000";><%= errores.password2.msg %></p>
-                            </div>
-                        <% } %>
+                        
                     </div>
                     <br>
 

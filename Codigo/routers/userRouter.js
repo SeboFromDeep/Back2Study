@@ -5,8 +5,7 @@ const express = require("express");
 const routerUsers = express.Router();
 
 const multer = require("multer"); // npm install multer --save
-const controllerU = require("../controller/userController");
-const cU = new controllerU();
+const controllerUsuario = new (require("../controller/userController"))();
 const multerFactory = multer({ storage: multer.memoryStorage() });
 
 //Validar npm install express-validator --save
@@ -14,35 +13,35 @@ const { check, validationResult } = require("express-validator"); // https://www
 
 routerUsers.post("/login_user", 
                 multerFactory.none(),
-                cU.login);
+                
+                controllerUsuario.login);
 
 // Cierre de sesion------------
 routerUsers.get("/CloseSession", 
-                cU.usuarioLogeado, 
-                cU.cierreSesion);
+                controllerUsuario.usuarioLogeado, 
+                controllerUsuario.cierreSesion);
 
 routerUsers.get("/principal",
-                cU.usuarioLogeado,
-                cU.probando);
+                controllerUsuario.usuarioLogeado,
+                controllerUsuario.probando);
 
 routerUsers.get("/prueba2",
-                cU.usuarioLogeado,
-                cU.probando2);
+                controllerUsuario.usuarioLogeado,
+                controllerUsuario.probando2);
 
 routerUsers.post("/registro_Usuario",
     multerFactory.none(),
     
     check("correo","Dirección de correo no válida o vacia").isEmail(),
     check("password", "La logintud minima debe ser 4").isLength({ min: 4}),
-    check("password2", "La logintud minima debe ser 4")
-    .isLength({ min: 4})
+    check("password2")
     .custom((value, { req }) => {
-         if (value !== req.body.password) {
-             throw new Error('Las contraseñas no son iguales');
-         }
-         return true;
-     }),
-    cU.registroUsu);
+        if (value !== req.body.password) {
+            throw new Error('Las contraseñas no son iguales');
+        }
+        return true;
+    }),
+    controllerUsuario.registroUsu);
 
     routerUsers.post("/forgot_password",
         multerFactory.none(),

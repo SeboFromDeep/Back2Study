@@ -8,6 +8,15 @@ h1 {
   font-size: 300%;
 }
 
+.encabezado{
+  height: 80px !important;
+}
+
+
+.contenido{
+  margin-top: 100px;
+  
+}
 /*.abs-center {
     margin-top: 15%;
     display: flex;
