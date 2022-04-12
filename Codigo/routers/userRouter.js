@@ -45,13 +45,13 @@ routerUsers.post("/registro_Usuario",
 
     routerUsers.post("/forgot_password",
         multerFactory.none(),
-        cU.sendEmail
+        controllerUsuario.sendEmail
         //res.send(email);
     );
 
     routerUsers.get("/reset-password/:id/:token",
         // multerFactory.none(),
-        cU.goTochangeEmail
+        controllerUsuario.goTochangeEmail
         //res.send(email);
     );
 
@@ -68,7 +68,7 @@ routerUsers.post("/registro_Usuario",
         //  }
         //  return true;
         // }),
-        cU.changeEmail
+        controllerUsuario.changeEmail
         //res.send(email);
     );
 
