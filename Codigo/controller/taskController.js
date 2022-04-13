@@ -33,7 +33,7 @@ class controllerTareas {
 
     
 
-    añadirTareaManual(request, response) {
+    addTareaManual(request, response) {
         console.log("Añadiendo la tarea manual " + request.body.nombre + " a la BBDD");
 
         function añadirTareaManualCallback(err, result) {
@@ -112,8 +112,12 @@ class controllerTareas {
         });
     }
 
-
-    
+    renderAddManualTask(request, response){
+        response.status(200);
+        response.render("addManualTask", {
+                        nameUser: request.session.userName,
+        });
+    }
 
     getTask(request, response){
         console.log("obteniendo detalles de tarea "+ request.params.id+ " "+ request.params.tipo);

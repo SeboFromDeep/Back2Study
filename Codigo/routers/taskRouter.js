@@ -17,9 +17,14 @@ taskRouter.get("/taskList",
                 controllerTareas.getListTareas);
 
 // Falta hacer el post de tarea manual
-taskRouter.get("/tasks", 
+// taskRouter.get("/tasks", 
+//                 controllerUsuario.usuarioLogeado, 
+//                 controllerTareas.añadirTareaManual);
+
+//Menu --> Formulario Añadir Tarea Programada
+taskRouter.get("/addManualTask", 
                 controllerUsuario.usuarioLogeado, 
-                controllerTareas.añadirTareaManual);
+                controllerTareas.renderAddManualTask);
 
 //Menu --> Formulario Añadir Tarea Programada
 taskRouter.get("/add_scheduled_task", 
@@ -52,6 +57,12 @@ taskRouter.post("/add_scheduled_task",
                 else throw Error("Fecha de finalización no válida.");
             }),
             controllerTareas.addTareaProgramada);
+
+//Formulario Añadir Manual --> Tarea bbdd --> Mostrar Tarea
+taskRouter.get("/addManualTask", 
+            multerFactory.none(),
+            controllerUsuario.usuarioLogeado,
+            controllerTareas.renderAddManualTask);
 
 // taskRouter.get("/taskDetalisBy/:id/:tipo/:nombre/:prioridad/:fecha/:cat", 
 taskRouter.get("/taskDetalisBy/:id/:tipo", 
