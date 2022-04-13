@@ -23,10 +23,10 @@ describe('hooks', function () {
                 correo: "paco@gmail.com",
                 pass: "pacopass",
             };
-            task.registro(nuevoUsuario, function (errors, result) {
-                assert.equal(errors, null);
-                assert.equal(result, true);
+            task.registro(nuevoUsuario).then(value => {
+                assert.equal(value, true);
             });
+
         });
 
     });

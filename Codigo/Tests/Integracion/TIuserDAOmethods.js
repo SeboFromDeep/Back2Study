@@ -19,7 +19,7 @@ describe("Existe usuario", function () {
         };
         task.existeUsuario(usuario).then(value => {
             assert.equal(value, true);
-        })
+        });
     });
 
     it("Ya existe un usuario con ese correo", function () {
@@ -30,7 +30,7 @@ describe("Existe usuario", function () {
         };
         task.existeCorreo(usuario).then(value => {
             assert.equal(value, true);
-        })
+        });
     });
 
 });
@@ -45,7 +45,7 @@ describe("No existe usuario", function () {
         };
         task.existeUsuario(usuario).then(value => {
             assert.equal(value, false);
-        })
+        });
     });
 
     it("No existe un usuario con ese correo", function () {
@@ -56,7 +56,7 @@ describe("No existe usuario", function () {
         };
         task.existeCorreo(usuario).then(value => {
             assert.equal(value, false);
-        })
+        });
     });
 
 });
