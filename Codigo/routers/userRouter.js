@@ -43,4 +43,33 @@ routerUsers.post("/registro_Usuario",
     }),
     controllerUsuario.registroUsu);
 
+    routerUsers.post("/forgot_password",
+        multerFactory.none(),
+        controllerUsuario.sendEmail
+        //res.send(email);
+    );
+
+    routerUsers.get("/reset-password/:id/:token",
+        // multerFactory.none(),
+        controllerUsuario.goTochangeEmail
+        //res.send(email);
+    );
+
+    
+
+    routerUsers.post("/change_password",
+        multerFactory.none(),
+        // check("pass1", "La logintud minima debe ser 4").isLength({ min: 4}),
+        // check("pass2", "La logintud minima debe ser 4")
+        // .isLength({ min: 4})
+        // .custom((value, { req }) => {
+        //  if (value !== req.body.pass1) {
+        //      throw new Error('Las contraseñas no son iguales');
+        //  }
+        //  return true;
+        // }),
+        controllerUsuario.changeEmail
+        //res.send(email);
+    );
+
 module.exports = routerUsers;
