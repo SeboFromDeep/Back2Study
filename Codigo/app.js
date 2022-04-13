@@ -32,12 +32,13 @@ app.use(express.urlencoded({extended: true}));//Devuelve middleware que solo ana
 app.use(morgan("dev"));//Al realizar cambios en los archivos, se reinicia la aplicacion automaticamente (Para programar)
 //Se indica a express donde se encuentan las vistas
 
+
+
 //---------------------------------Sesion---------------------------------
 const session = require("express-session");
 const mysqlSession = require("express-mysql-session");
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(config.databaseConfig);
-
 const middlewareSession = session({
     saveUninitialized: false,
     secret: "foobar34",
@@ -64,6 +65,7 @@ const routerUser = require("./routers/userRouter");
 app.use("/usuarios", routerUser);
 
 const routerTask = require("./routers/taskRouter");
+const { render } = require("express/lib/response");
 app.use("/tareas", routerTask);
 
 
@@ -94,6 +96,21 @@ app.get("/signup", (request, response) => {
                                 msgRegistro: false});//False para usu que no existe True si ya existe 
 });
 
+app.get("/forgot-password", (req, res, next) => {
+    res.render("forgot-password");
+});
+
+app.get("/reset-password/:id/:token", (request, response) => {
+    
+    cP.modPass
+});
+
+/*app.post("/forgot-password", (req, res, next) => {
+    const { email } = req.body;
+
+    res.send(email);
+});
+*/
 // ping browser on Express boot, once browser has reconnected and handshaken
 liveReloadServer.server.once("connection", () => {
     console.log("Refrescando browser");
@@ -129,3 +146,6 @@ app.listen(PORT, (err) => {
         console.log(`Servidor arrancado en el puerto ${ PORT }`);        
     }
 });
+
+module.exports = app;
+

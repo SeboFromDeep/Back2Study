@@ -17,46 +17,21 @@ const { check, validationResult } = require("express-validator");
 class controllerTareas {
   
     getListTareas(request, response){
-        function listarTareasCallback(err, tareas) {
-            if (err) {
-                response.status(500);
-            }
-            else {
-                if (tareas) {
-                    // response.render("preguntas", {
-                    //     consult: "Todas las Preguntas",
-                    //     nameUser: request.session.userName,
-                    //     imageUser: request.session.mailID, 
-                    //     preguntas: preguntas
-                    // });
-                  
-                    //daoTareaslistarTareasEspecifica(cb_listaTareasESP, tareas[0].tipo);
-                    // function cb_listaTareasESP(err, tab){
-                    //     if(err){
-                
-                    //         response.status(500);
-                           
-                    //     }
-                    //     else{
-                            
-                    //     }
-                    // }
-                  
-                    response.render("principal", {
-                        title: "Inicio de sesión realizado con éxito", 
-                        nameUser: request.session.userName, 
-                        mailUser: request.session.mail,
-                        tareas: tareas
-                    });
 
-                    // console.log(tareas);
-                    
-                }
-            }
-        }
-
-        daoTareas.listaTareas(listarTareasCallback, request.session.id_);
+        daoTareas.listaTareas(request.session.id_)
+        .then(value =>{
+            
+            response.render("principal", {
+                title: "", 
+                nameUser: request.session.userName, 
+                mailUser: request.session.mail,
+                tareas: value?value:0 //Evaluamos si hay tareas y mandamos a la vista
+            });
+        })
+        .catch(error =>{  response.status(500);  });
     }
+
+    
 
     añadirTareaManual(request, response) {
         console.log("Añadiendo la tarea manual " + request.body.nombre + " a la BBDD");
@@ -101,53 +76,20 @@ class controllerTareas {
     //REVISAR LOS RENDER
     addTareaProgramada(request, response){
         console.log("Añadiendo la tarea " + request.body.nombre +  " a la BBDD");
-        
-        
-        // inicializamos el objeto de tarea
+         // inicializamos el objeto de tarea
         request.body.category = request.body.categoria.toUpperCase();
         request.body.tipo = request.body.tipo.toUpperCase();
         let tareaProgramada = createObjectFromRequest(request);
-        // console.log("request.body");
-        // console.log(tareaProgramada);
-        // console.log(request);
-        /*
-        let tareaProgramada = {
-            usuario: request.session.id_,
-            nombre: request.body.nombre,
-            prioridad: request.body.prioridad,
-            categoria: request.body.categoria,
-            tipo: request.body.tipo,
-            horas: request.body.horas,
-            fechaIni: request.body.fechaIni,
-            fechaFin: request.body.fechaFin
-        }*/
         
-        // añadimos la tarea a la BBDD
-        //NO USAR Ñ!!! Me sangran los ojos
-        daoTareas.addTaskProgram(tareaProgramada, cb_addTaskP);
-        // aquí planearíamos la tarea llamando al algoritmo de ordenación
-
-        
-        
-        function cb_addTaskP(errors, result){
-            if (errors){
-                //render y mssg pueden cambiar de nombre 
-                response.render("add_tarea_programada", createResponseLocals(false, "Error en la creación de la tarea"));
-
-            }
-            else {
-                if (result) {
-                    console.log("RESULTADO");
-                    console.log(result);
-                    
-                    response.redirect("/tareas/taskList");
-                }
-                else { 
-                    response.render("add-scheduled-task", createResponseLocals(false, "Error en la creación de la tarea"));
-                }
-            }
-        }
-
+        daoTareas.addTaskProgram(tareaProgramada)
+        .then(tarea => {
+            if(tarea)   response.redirect("/tareas/taskDetalisBy/"+tarea+"/p");
+            else response.render("add-scheduled-task", createResponseLocals(false, "Error en la creación de la tarea"));
+        })
+        .catch( error =>{
+            response.status(500);
+            response.render("add_tarea_programada", createResponseLocals(false, "Error en la creación de la tarea"));
+        })
         
     }
 
@@ -158,63 +100,51 @@ class controllerTareas {
         });
     }
 
-    getTask(request, response){
-        console.log("obteniendo detalles de tarea "+ request.params.id+ " "+ request.params.tipo+ " "+ request.params.nombre+ " "+ request.params.prioridad+ " "+ request.params.fecha+ " "+ request.params.cat );
-        if(request.params.tipo == "m"){
-            daoTareas.getDetailsTaskManual( request.session.id_, request.params.id, request.params.tipo, cb_verTareaM);
-            function cb_verTareaM(err, tarea_M){
-                if(err){
-                    
-                    response.status(500);
-                   
-                }
-                else{
 
-                    response.render("verTareaManual",{
-                        title: "Tarea", 
-                        nameUser: request.session.userName, 
-                        mailUser: request.session.mail,
-                        idTarea: request.params.id,
-                        nombre: request.params.nombre,
-                        prioridad: request.params.prioridad, 
-                        fecha: request.params.fecha,
-                        cat: request.params.cat,
-                        tareaM: tarea_M
-                    });
-                    console.log(tarea_M);
-                }
-            }
+    
+
+    getTask(request, response){
+        console.log("obteniendo detalles de tarea "+ request.params.id+ " "+ request.params.tipo);
+        if(request.params.tipo == "m"){
+            daoTareas.getDetailsTaskManual( request.session.id_, request.params.id)
+            .then(tareaManual => {
+                let tarea_m = createObjectFromRequest(request);
+                console.log("Tarea Manual object");
+                console.log(tarea_m);
+                        response.render("verTareaManual",{
+                                title: "Tarea", 
+                                nameUser: request.session.userName, 
+                                mailUser: request.session.mail,
+                                idTarea: request.params.id,
+                                nombre: tareaManual[0].nombre,
+                                prioridad: tareaManual[0].prioridad, 
+                                fecha: tareaManual[0].fechafin,
+                                cat: tareaManual[0].categoria,
+                                tareaM: tareaManual
+                        });
+                        
+            })
+            .catch(error => {    response.status(500);      })
+            
         }
         else if(request.params.tipo = "p"){
-           daoTareas.getDetailsTaskProgram( request.session.id_, request.params.id, request.params.tipo, cb_verTareaP);
-            function cb_verTareaP(err, tarea_P){
-                if(err){
-                    
-                    response.status(500);
-                   
-                }
-                else{
+           daoTareas.getDetailsTaskProgram( request.session.id_, request.params.id)
+           .then(tareaProgramada => {
                     console.log("TAREA PROGRAMADA");
-                    console.log(tarea_P);
+                    console.log(tareaProgramada);
                     response.render("verTareaProgramada",{
                         title: "Tarea Programada", 
                         nameUser: request.session.userName, 
                         mailUser: request.session.mail,
                         idTarea: request.params.id,
-                        nombre: request.params.nombre,
-                        prioridad: request.params.prioridad, 
-                        fecha: request.params.fecha,
-                        cat: request.params.cat,
-                        tareaP: tarea_P
+                        tareaP: tareaProgramada
                     });
-                }
-            }
+           })
+           .catch(error => {    response.status(500);      })
         }
-        
-
-        
     }
 
+    
 }
 
 module.exports = controllerTareas;

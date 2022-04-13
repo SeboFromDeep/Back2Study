@@ -34,8 +34,7 @@ routerUsers.post("/registro_Usuario",
     
     check("correo","Dirección de correo no válida o vacia").isEmail(),
     check("password", "La logintud minima debe ser 4").isLength({ min: 4}),
-    check("password2", "La logintud minima debe ser 4")
-    .isLength({ min: 4})
+    check("password2")
     .custom((value, { req }) => {
         if (value !== req.body.password) {
             throw new Error('Las contraseñas no son iguales');
@@ -43,5 +42,34 @@ routerUsers.post("/registro_Usuario",
         return true;
     }),
     controllerUsuario.registroUsu);
+
+    routerUsers.post("/forgot_password",
+        multerFactory.none(),
+        controllerUsuario.sendEmail
+        //res.send(email);
+    );
+
+    routerUsers.get("/reset-password/:id/:token",
+        // multerFactory.none(),
+        controllerUsuario.goTochangeEmail
+        //res.send(email);
+    );
+
+    
+
+    routerUsers.post("/change_password",
+        multerFactory.none(),
+        // check("pass1", "La logintud minima debe ser 4").isLength({ min: 4}),
+        // check("pass2", "La logintud minima debe ser 4")
+        // .isLength({ min: 4})
+        // .custom((value, { req }) => {
+        //  if (value !== req.body.pass1) {
+        //      throw new Error('Las contraseñas no son iguales');
+        //  }
+        //  return true;
+        // }),
+        controllerUsuario.changeEmail
+        //res.send(email);
+    );
 
 module.exports = routerUsers;

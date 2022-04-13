@@ -32,8 +32,8 @@ taskRouter.post("/add_scheduled_task",
             controllerUsuario.usuarioLogeado,
             controllerTareas.addTareaProgramada);
 
-
-taskRouter.get("/taskDetalisBy/:id/:tipo/:nombre/:prioridad/:fecha/:cat", 
+// taskRouter.get("/taskDetalisBy/:id/:tipo/:nombre/:prioridad/:fecha/:cat", 
+taskRouter.get("/taskDetalisBy/:id/:tipo", 
                 controllerUsuario.usuarioLogeado, 
                 controllerTareas.getTask);
 

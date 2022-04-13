@@ -6,6 +6,10 @@ const mysql = require("mysql");
 
 const pool = mysql.createPool(config.databaseConfig);
 
+const transporter = require("../js/mailer");    // para enviar correos
+const jwt = require("jsonwebtoken");    // para crear un link
+const JWT_SECRET = "supersecreto";  // esto habria que moverlo a otro sitio tal vez pero de momento funciona
+
 const DaoUsers = require('../js/userDAO');
 const users =new DaoUsers(pool);
 
@@ -28,49 +32,38 @@ class controllerU{
     }
 
     login(request, response){
-        console.log("CONTROLADOR "+request.body.correo+" "+request.body.password);
+        //console.log("CONTROLADOR "+request.body.correo+" "+request.body.password);
+        const errors = validationResult(request);
         
 
-        users.login(request.body.correo, request.body.password, cb_isUser);
-        function cb_isUser(err, datosUsuario){
-            if (err) {
-               
-                response.status(500);
-                response.render("login", {  
-                        title: "Error", 
-                        msgRegistro: "Error en el acceso a la base de datos", 
-                        tipoAlert: "alert-danger",
-                        errores: errors.mapped()});
-            } 
-            else {         
-                
-                if(!datosUsuario){
-                    response.status(200);
-                    response.render("login", {  title: "Error", 
-                                                msgRegistro: "Error en usuario o contraseña", 
-                                                tipoAlert: "alert-danger",
-                                                errores: errors.mapped()});
-                }
-                else{
+        users.login(request.body.correo, request.body.password)
+        .then(value => {
+            if (value != false){
+                request.session.id_=value.id;
+                request.session.mail = value.email;
+                request.session.userName = value.username;
 
-                    request.session.id_=datosUsuario.id;
-                    request.session.mail = datosUsuario.email;
-                    request.session.userName = datosUsuario.username;
+                response.locals.id_=request.session.id_;
+                response.locals.mailID = request.session.mailID;
+                response.locals.userName = request.session.userName;
 
-                    response.locals.id_=request.session.id_;
-                    response.locals.mailID = request.session.mailID;
-                    response.locals.userName = request.session.userName;
-
-                    console.log("DATOS controller: "+datosUsuario.id+"/"+datosUsuario.username+"/"+datosUsuario.email+"/"+datosUsuario.password);
-                    response.render("principal", {  
-                                                title: "Inicio de sesión realizado con éxito", 
-                                                nameUser: request.session.userName, 
-                                                mailUser: request.session.mail,
-                                                tareas: undefined });
-                }
-                
+                //console.log("DATOS controller: "+value.id+"/"+value.username+"/"+value.email+"/"+value.password);
+                response.render("principal", {  
+                                            title: "Inicio de sesión realizado con éxito.", 
+                                            nameUser: request.session.userName, 
+                                            mailUser: request.session.mail,
+                                            tareas: undefined });
             }
-        }
+            else throw "Error en usuario o contraseña."
+        })
+        .catch(error => {
+            response.status(500);
+            response.render("login", {  
+                    title: "Error", 
+                    msgRegistro: error, 
+                    tipoAlert: "alert-danger",
+                    errores: errors.mapped()});
+        });
     }
 
 
@@ -112,90 +105,98 @@ class controllerU{
                 pass: request.body.password,
                 pass2: request.body.password2,
             };
-            //ejecutamos la función registro de el DAO, y después se ejecuta cb_insert
-            users.existeUsuario(usuario, cb_existeUsu);
-            function cb_existeUsu(err, existeUsu){
-                if (err) {
-                    //console.log(err.message);
-                    response.status(500);
-                    response.render("signup", {     
-                                    title: "¡Registro erroneo!",
-                                    errores: errors.mapped(), 
-                                    msgRegistro: "Error de registro"});
+
+            users.existeUsuario(usuario)
+            .then(value => {
+                if (value == false) return users.existeCorreo(usuario);
+                else throw "Nombre de Usuario no disponible";
+            })
+            .then(value => {
+                if (value == false) return users.registro(usuario);
+                else throw "Ya existe un usuario con ese correo";
+            })
+            .then(value => {
+                if (value == true){
+                    console.log("Registro exitoso.")
+                    response.status(200);
+                    response.render("login", {  
+                                    title: "Registro completado", 
+                                    msgRegistro: "Registro completado " + usuario.nombre + ". Ya puedes loguearte.", 
+                                    tipoAlert: "alert-success",
+                                    errores: errors.mapped()
+                    });
                 }
-                else if(existeUsu){
-                    
-                    
-                    response.render("signup", {     
-                                    title: "¡Registro erroneo!",
-                                    errores: errors.mapped(), 
-                                    msgRegistro: "Nombre de usuario existente"});
-                }else{
-                    users.existeCorreo(usuario, cb_existeCor);
-                    function cb_existeCor(err2, existeCor){
-                        if(err2){
-                            response.status(500);
-                            response.render("signup", {     
-                                    title: "¡Registro erroneo!",
-                                    errores: errors.mapped(), 
-                                    msgRegistro: "Error de registro"});
-                        }
-                        else if(existeCor){
-                            response.render("signup", {     
+                else throw value;
+            })
+            .catch(error => {
+                response.status(500);
+                response.render("signup", {     
                                 title: "¡Registro erroneo!",
                                 errores: errors.mapped(), 
-                                msgRegistro: "Correo electronico existente"});
-                        }
-                        else{
-                            users.registro(usuario, cb_insert);
-                            function cb_insert(err2, completed){
-                                if (err2) {
-                                    //console.log(err.message);
-                                    response.status(200);
-                                    let msg= "Error de registro";
-                                    response.render("signup", {   title: "¡Registro erroneo!",
-                                                                    errores: errors.mapped(), 
-                                                                    msgRegistro: msg});
-                                }
-                                else {
-                                    if(completed){
-                                        console.log("Registro exitoso.")
-                                        response.render("login", {  
-                                                        title: "Registro completado", 
-                                                        msgRegistro: "Registro completado " + usuario.nombre + ". Ya puedes loguearte.", 
-                                                        tipoAlert: "alert-success",
-                                                        errores: errors.mapped()});
-                                    }
-                                    else{
-                                        response.status(200);
-                                        let msg= "Error de registro";
-                                        response.render("signup", {   
-                                                        title: "¡Registro erroneo!",
-                                                        errores: errors.mapped(), 
-                                                        msgRegistro: msg});
-                                    }
-                                }
-                            }
-
-                        };
-                        
-                    }
-                    
-                }
-                
-                
-                
-                
-            }
-             
+                                msgRegistro: error
+                });
+            });
         } 
         else {
             console.log("ERRORES!");
+            response.status(500);
             response.render("signup", {
                 title: "¡Hay Errores!", 
                 errores: errors.mapped(), 
                 msgRegistro: false});
         }
+    }
+
+    sendEmail(request, response){
+        users.findUserByEmail(request.body.email, cb_sendEmail);    // buscamos el usuario en la BBDD
+
+        function cb_sendEmail(errors, user){
+            if (errors){
+                response.render("forgot-password", {}); // falta por hacer
+            }
+            else{
+                if(user){
+                    console.log("Enviando correo a: " + request.body.email);
+                    const secret = JWT_SECRET + user.password;
+                    const payload = {
+                        email: request.body.email,
+                        id: user.id
+                    };
+            
+                    const token = jwt.sign(payload, secret, {expiresIn: '15m'});
+
+                    request.session.tokenMail = token;
+
+                    response.locals.tokenMail=request.session.tokenMail;
+
+                    const link = `http://localhost:3300/usuarios/reset-password/${user.id}/${token}`; // localhost:3300 hay que cambiarlo por back2study.herokuapp.com cuando este todo listo
+                    console.log("Link creado: " + link);
+            
+                    // send mail with defined transport object
+                    let info = transporter.sendMail({
+                        from: '"Recuperar contraseña 👻" <back2study.gps@gmail.com>', // sender address
+                        to: request.body.email, // list of receivers
+                        subject: "Recuperar contraseña ✔", // Subject line
+                        html: "<b>Correo enviado desde back2study. <br>Link: " + link + "</b>", // html body
+                    });
+                }   
+            }
+        }
+    }
+
+    goTochangeEmail(request, response){
+        console.log("caaaambiamos paaaas");
+        response.status(200);
+        //AQUI SE DEBERIA COMPROBAR QUE EL TOKEN QUE SE RECIBE CONICIDE CON EL CREADO GLOBALMENTE
+        response.render("change_pass");
+    }
+
+    changeEmail(request, response){
+        console.log(request.body.pass1+" <<->>  "+ request.body.pass2);
+        //  VERIFICAMOS EN ROUTER, que son iguales y tienen la longitud minima, POR TANTO aqui no se hacen esas comprobaciones
+        //Aqui comprobamos que no es la antigua contraseña junto con el correo, si lo es debe modificarla si asi lo quiere
+        //Si todo va correcto llamamos al metodo del dao modPass que hara el update
+        //Finalmente reenviamos a login para que acceda con su nueva contraseña
     }
     
 }
