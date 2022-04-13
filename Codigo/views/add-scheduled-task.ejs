@@ -24,6 +24,40 @@
         <div class="col-auto bg-light p-5 rounded">
             <form action="/tareas/add_scheduled_task" method="POST" enctype="multipart/form-data">
                 <h1 class="display-6 text-center">Añadir Tarea Programada</h1>
+
+                <% if(typeof(errors) !== "undefined"){%>
+                    <% if(errors.nombre){%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errors.nombre.msg%>
+                        </div>
+                    <%}%>
+                    <% if(errors.prioridad){%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errors.prioridad.msg%>
+                        </div>
+                    <%}%>
+                    <% if(errors.tipo){%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errors.tipo.msg%>
+                        </div>
+                    <%}%>
+                    <% if(errors.horas){%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errors.horas.msg%>
+                        </div>
+                    <%}%>
+                    <% if(errors.fechaIni){%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errors.fechaIni.msg%>
+                        </div>
+                    <%}%>
+                    <% if(errors.fechaFin){%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errors.fechaFin.msg%>
+                        </div>
+                    <%}%>
+                <%}%>
+
                 <div class="row input-group p-2">
                     <input type="text" name="nombre" class="form-control" id="floatingInput" placeholder="Nombre de la Tarea">  
                 </div>
