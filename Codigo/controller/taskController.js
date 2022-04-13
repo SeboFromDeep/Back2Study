@@ -100,8 +100,12 @@ class controllerTareas {
         });
     }
 
-
-    
+    renderAddManualTask(request, response){
+        response.status(200);
+        response.render("addManualTask", {
+                        nameUser: request.session.userName,
+        });
+    }
 
     getTask(request, response){
         console.log("obteniendo detalles de tarea "+ request.params.id+ " "+ request.params.tipo);

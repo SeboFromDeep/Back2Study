@@ -22,6 +22,11 @@ taskRouter.get("/tasks",
                 controllerTareas.añadirTareaManual);
 
 //Menu --> Formulario Añadir Tarea Programada
+taskRouter.get("/addManualTask", 
+                controllerUsuario.usuarioLogeado, 
+                controllerTareas.renderAddManualTask);
+
+//Menu --> Formulario Añadir Tarea Programada
 taskRouter.get("/add_scheduled_task", 
                 controllerUsuario.usuarioLogeado, 
                 controllerTareas.renderAddScheduledTask);
