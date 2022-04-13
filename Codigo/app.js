@@ -96,14 +96,16 @@ app.get("/signup", (request, response) => {
                                 msgRegistro: false});//False para usu que no existe True si ya existe 
 });
 
+// Recuperar Contraseña-----------------------
 app.get("/forgot-password", (req, res, next) => {
-    res.render("forgot-password");
+    res.render("forgot-password",{   msgRegistro: false });
 });
 
 app.get("/reset-password/:id/:token", (request, response) => {
     
     cP.modPass
 });
+//-----------------------------------------
 
 /*app.post("/forgot-password", (req, res, next) => {
     const { email } = req.body;
