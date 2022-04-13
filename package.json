@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./Codigo/app.js",
     "watch": "nodemon ./Codigo/app.js --ext ejs --ignore public",
-    "test": "mocha ./Codigo/Tests/Integracion/TINegocio-BD-Login.js"
+    "test": "mocha ./Codigo/Tests/Integracion/TINegocio-BD-RegistroUsuario.js"
   },
   "repository": {
     "type": "git",

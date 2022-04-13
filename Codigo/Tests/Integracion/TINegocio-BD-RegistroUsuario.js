@@ -67,4 +67,56 @@ describe('hooks', function () {
 
     });
 
+    describe("Registrarse incorrecto", function () {
+
+        it("Nombre de usuario vacío", function () {
+            chai.request('http://localhost:3300')
+            .post('/usuarios/registro_Usuario')
+            .send({username:"", correo: "paco@gmail.com", password: "1234", password2: "1234"})
+            .end(function (err, response) {
+                expect(response).to.have.status(500);
+            })
+        });
+
+    });
+
+    describe("Registrarse incorrecto", function () {
+
+        it("Correo vacío", function () {
+            chai.request('http://localhost:3300')
+            .post('/usuarios/registro_Usuario')
+            .send({username:"paco", correo: "", password: "1234", password2: "1234"})
+            .end(function (err, response) {
+                expect(response).to.have.status(500);
+            })
+        });
+
+    });
+
+    describe("Registrarse incorrecto", function () {
+
+        it("Contraseña menor de 4 caracteres", function () {
+            chai.request('http://localhost:3300')
+            .post('/usuarios/registro_Usuario')
+            .send({username:"paco", correo: "paco@gmail.com", password: "123", password2: "123"})
+            .end(function (err, response) {
+                expect(response).to.have.status(500);
+            })
+        });
+
+    });
+
+    describe("Registrarse incorrecto", function () {
+
+        it("Contraseñas distintas", function () {
+            chai.request('http://localhost:3300')
+            .post('/usuarios/registro_Usuario')
+            .send({username:"paco", correo: "paco@gmail.com", password: "1234", password2: "4321"})
+            .end(function (err, response) {
+                expect(response).to.have.status(500);
+            })
+        });
+
+    });
+
 });
