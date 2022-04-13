@@ -170,6 +170,57 @@ class DaoTask{
 
         });
     }
+    addTaskManual(tarea){
+        return new Promise((resolve, reject) =>{
+            this.pool.getConnection(function(err,connection){
+                if(err){
+                    reject(new Error("Error de conexion a la base de datos"));
+                }
+                else{
+                    console.log("Insertando tarea de usuario" + tarea.usuario);
+                    const valor ="Insert into tareas(nombre,prioridad,categoria,usuario,fechafin,fechaIni,tipo) values( ?, ?, ?, ?, ?, ?, ?)";
+                    connection.query(valor,[tarea.nombre,tarea.prioridad,tarea.categoria,tarea.usuario,tarea.fechaFin,tarea.fechaIni,'p'],
+                    function(err, tareacreada){
+                        if(err){
+                            reject(new Error ("Error de conexion con la base de datos"));
+
+                        }
+                        else if (tareacreada.affectedRows===1){
+                            const valor ="Insert into tareas_manuales(id_tarea,hora_ini,hora_fin,recurrente,dias_recurrentes) values( ?, ?, ?, ?, ?)";
+                            connection.query(valor,[tareacreada.insertId,tarea.horaIni,tarea.horaFin,tarea.recurrente,tarea.diasRecurrentes],
+                                function(err, tareaHijaP){
+                                    if(err){
+                                        console.log ("ERROR"+err.message);
+                                        reject(new Error("Error al insertar tarea"));
+
+                                    }
+                                    else if(tareaHijaP.affectedRows===1)  resolve(tareacreada.insertId);
+                                    else resolve (false);
+
+
+                                });
+                        }
+                        else resolve(false);
+
+                    });
+                }
+
+
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
+    }
+
 
 
     addTaskProgram(tarea){
