@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./Codigo/app.js",
     "watch": "nodemon ./Codigo/app.js --ext ejs --ignore public",
-    "test": "mocha ./Codigo/Tests/Integracion/TINegocio-BD-RegistroUsuario.js"
+    "test": "mocha --timeout 10000 ./Codigo/Tests/Integracion/TIuserDAOmethods.js"
   },
   "repository": {
     "type": "git",
@@ -24,9 +24,12 @@
     "chai-http": "^4.3.0",
     "ejs": "^3.1.6",
     "express": "^4.17.3",
-    "moment": "^2.29.1",
+"jsonwebtoken": "^8.5.1",
+ "moment": "^2.29.1",
+
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
+    "nodemailer": "^6.7.3",
     "nodemon": "^2.0.15",
     "path": "^0.12.7"
   },

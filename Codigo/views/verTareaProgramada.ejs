@@ -21,46 +21,47 @@
 <!-- CONTENIDO -->
     <div class="container contenido ">
         
-        <div class="row vh-80 justify-content-center text-center align-items-center">
-            
-            <h1 class="display-6">Tarea Programada</h1>
+        <div class="row vh-80 align-items-center">
+            <div class="col"><h1 class="display-6">Tarea Programada</h1></div>
+                
+            <div class="col text-end"><input type="button" onclick="history.back()" name="volver atrás" value="Atrás" class="btn btn-light btn-sm"></div>
+                
+            <br>
         </div>
         
         <% let color="bg-secondary";%>
-        
-        
         <% if(tareaP){%>
             <% console.log(tareaP.horas) %>
             <% if(typeof(tareaP) !== "undefined"){%>
                 <% tareaP.forEach(function(p) {%>   
-                <% if(prioridad == "ALTA"){
-                        color="bg-danger";
-                        
-                    }
-                    else if(prioridad == "MEDIA") {
-                        color="bg-warning";
-                        
-                    }
-                    else if(prioridad == "BAJA") {
-                        color="bg-success";
-                        
-                    }%>
+                    <% if(p.prioridad == "ALTA"){
+                            color="bg-danger";
+                            
+                        }
+                        else if(p.prioridad == "MEDIA") {
+                            color="bg-warning";
+                            
+                        }
+                        else if(p.prioridad == "BAJA") {
+                            color="bg-success";
+                            
+                        }%>
                     
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col">#<%=idTarea%> <b><%=nombre%></div></b>
-                    <div class="col text-end"><small>Prioridad: <span class="badge <%=color%>"><%=prioridad%></span></small></div>
+                    <div class="col">#<%=idTarea%> <b><%=p.nombre%></div></b>
+                    <div class="col text-end"><small>Prioridad: <span class="badge <%=color%>"><%=p.prioridad%></span></small></div>
                 </div>
                  
             </div>
             <div class="card-body">
-              <h5 class="card-title">Tarea <%=p.tipo%> de <%=p.horas%> horas. Fecha Fin: <%=fecha%>    </h5>
+              <h5 class="card-title">Tarea <%=p.tipo%> de <%=p.horas%> horas. Fecha Fin: <%=p.fechafin.toLocaleDateString("es-ES", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })%>    </h5>
               
               
             </div>
             <div class="card-footer text-muted">
-                <%cat.split('@').forEach( tag => {%>
+                <%p.categoria.split('@').forEach( tag => {%>
                     <% if(tag != ''){%>
                         <a href="/porTagProgramada/<%=tag%>" class="badge bg-info">#<%=tag%></a>
                     <%} %>

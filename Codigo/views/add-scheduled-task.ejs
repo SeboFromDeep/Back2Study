@@ -28,12 +28,16 @@
                     <input type="text" name="nombre" class="form-control" id="floatingInput" placeholder="Nombre de la Tarea">  
                 </div>
                 <div class="row input-group p-2">
-                    <select class="col form-select" name="prioridad" aria-label="Selector de prioridad">
-                        <option selected>Prioridad</option>
-                        <option value="BAJA" class="bg-success text-white">Baja</option>
-                        <option value="MEDIA" class="bg-warning text-dark">Media</option>
-                        <option value="ALTA" class="bg-danger text-white">Alta</option>
-                    </select>
+                    <div class="col btn-group" role="group" aria-label="Selector de prioridad">
+                        <input type="radio" class="btn-check" name="prioridad" value="BAJA" id="btnradio1" autocomplete="off">
+                        <label class="btn btn-outline-success" for="btnradio1">Baja</label>
+                      
+                        <input type="radio" class="btn-check" name="prioridad" value="MEDIA" id="btnradio2" autocomplete="off">
+                        <label class="btn btn-outline-warning" for="btnradio2">Media</label>
+                      
+                        <input type="radio" class="btn-check" name="prioridad" value="ALTA" id="btnradio3" autocomplete="off">
+                        <label class="btn btn-outline-danger" for="btnradio3">Alta</label>
+                      </div>
 
                     <input class="col" type="text" name="categoria" id="floatingInput" placeholder="@CATEGORIA">
                 </div>
