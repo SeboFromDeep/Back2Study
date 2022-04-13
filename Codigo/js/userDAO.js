@@ -91,7 +91,7 @@ class DaoUsers{
                         }
                         else{     
                             if(result2.affectedRows) resolve(true);
-                            else callback(false);
+                            else reject(false);
                         }
                     });
                     
