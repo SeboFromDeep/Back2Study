@@ -33,7 +33,7 @@ class controllerTareas {
 
     
 
-    añadirTareaManual(request, response) {
+    /*añadirTareaManual(request, response) {
         console.log("Añadiendo la tarea manual " + request.body.nombre + " a la BBDD");
 
         function añadirTareaManualCallback(err, result) {
@@ -48,7 +48,7 @@ class controllerTareas {
                 }
             }
         }   
-        
+      
         function franjaHorariaCallback(err, franjaDisponible) {
             if (err) {
                 response.status(500);
@@ -72,6 +72,42 @@ class controllerTareas {
         daoTareas.consultarTareasEnFranjaHoraria(franjaHorariaCallback, request.body.fechaIni, request.body.fechaFin);
     }
     
+    */añadirTareaManual(request, response) {
+        console.log("Añadiendo la tarea manual " + request.body.nombre + " a la BBDD");
+          // inicializamos el objeto de tarea
+          request.body.category = request.body.categoria.toUpperCase();
+          request.body.tipo = request.body.tipo.toUpperCase();
+          let tareaManual = createObjectFromRequest(request);
+          daoTareas.addTaskManual(tareaManual)
+          .then (tarea =>{
+              if(tarea) response.redirect("/tareas/taskDetalisBy/"+tarea+"/p");
+              else response.render("add-scheduled-task",createResponseLocals(false,"Error en la creacion de tarea"));
+          })
+          .catch(error =>{
+              if (error){
+              response.status(500);
+              response.render("add_tarea_manual",createResponseLocals(false,"Error en la creacion de la tarea"));
+              }
+          })
+          function franjaHoraria(err, franjaDisponible) {
+            if (err) {
+                response.status(500);
+                response.render("add_tarea_manual", createResponseLocals(false, "Error: no se pudo consultar la franja horaria en la BBDD"));   
+            }
+            else {
+                if (franjaDisponible) {
+                    console.log("La franja horaria esta disponible");
+                    request.body.category = request.body.categoria.toUpperCase()
+                    daoTareas.añadirTareas(añadirTareaManual, createObjectFromRequest(request));
+                }
+                else {
+                    response.status(500);
+                    response.render("add_tarea_manual", createResponseLocals(false, "Error: franja horaria no disponible"));   
+                }
+            }
+        } 
+        daoTareas.consultarTareasEnFranjaHoraria(franjaHoraria, request.body.fechaIni, request.body.fechaFin);
+    }
 
     //REVISAR LOS RENDER
     addTareaProgramada(request, response){

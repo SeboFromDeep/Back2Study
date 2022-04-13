@@ -134,7 +134,7 @@ class DaoTask{
 
   
 
-    addTaskManual(callback, tarea){
+    /*addTaskManual(callback, tarea){
         this.pool.getConnection(function(err,connection){
             if(err){
                 callback(new ErrorEvent("Error de conexión a la base de datos"));
@@ -170,6 +170,7 @@ class DaoTask{
 
         });
     }
+*/
     addTaskManual(tarea){
         return new Promise((resolve, reject) =>{
             this.pool.getConnection(function(err,connection){
@@ -204,7 +205,6 @@ class DaoTask{
 
                     });
                 }
-
 
             });
         });
