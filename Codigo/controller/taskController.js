@@ -33,7 +33,7 @@ class controllerTareas {
 
     
 
-    añadirTareaManual(request, response) {
+    addTareaManual(request, response) {
         console.log("Añadiendo la tarea manual " + request.body.nombre + " a la BBDD");
 
         function añadirTareaManualCallback(err, result) {

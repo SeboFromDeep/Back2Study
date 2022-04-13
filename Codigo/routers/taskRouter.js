@@ -17,9 +17,9 @@ taskRouter.get("/taskList",
                 controllerTareas.getListTareas);
 
 // Falta hacer el post de tarea manual
-taskRouter.get("/tasks", 
-                controllerUsuario.usuarioLogeado, 
-                controllerTareas.añadirTareaManual);
+// taskRouter.get("/tasks", 
+//                 controllerUsuario.usuarioLogeado, 
+//                 controllerTareas.añadirTareaManual);
 
 //Menu --> Formulario Añadir Tarea Programada
 taskRouter.get("/addManualTask", 
@@ -36,6 +36,12 @@ taskRouter.post("/add_scheduled_task",
             multerFactory.none(),
             controllerUsuario.usuarioLogeado,
             controllerTareas.addTareaProgramada);
+
+//Formulario Añadir Manual --> Tarea bbdd --> Mostrar Tarea
+taskRouter.get("/addManualTask", 
+            multerFactory.none(),
+            controllerUsuario.usuarioLogeado,
+            controllerTareas.renderAddManualTask);
 
 // taskRouter.get("/taskDetalisBy/:id/:tipo/:nombre/:prioridad/:fecha/:cat", 
 taskRouter.get("/taskDetalisBy/:id/:tipo", 
