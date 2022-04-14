@@ -41,6 +41,9 @@ describe('hooks', function () {
         });
      });
 
+     /*Este último test falla, creo es problema del controller ya que quiero probar ver detalles de una tarea
+     de un usuario que no tiene ninguna tarea asignada, me tendría que devolver un status de 500 al no tener ninguna pero 
+     me devuelve uno de 200 como si la tuviese. */
      describe("Error ver detalle de tarea", function () {
 
         it("Error al intentar ver detalle de alguna determinada tarea de un usuario que no tiene tareas", async function () {
@@ -51,7 +54,7 @@ describe('hooks', function () {
             .then((res) => {
                     this.timeout(30000);
                     console.log(res.boody);
-                    agent.get('/tareas/taskDetalisBy/1/m')
+                    agent.get('/tareas/taskDetalisBy/1/p')
                     .end((err, res, body) => {
                         expect(res).to.have.status(500);
                     });
