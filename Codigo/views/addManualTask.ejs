@@ -12,6 +12,80 @@
     
 </head>
 
+<script type="text/javascript">
+    var count = 0;
+
+    // Se utiliza para determinar si se debe eliminar o aumentar el botón para poder calcular el valor de conteo
+    function checkCount(boolOK, coun) {
+       if (boolOK == true) {
+            return count++;
+        }
+       else {
+            count--;
+     }
+    }
+    // Agrega una etiqueta de entrada y también asigna valores a su ID y Nombre.
+    function AddTareas() {
+        countAA = checkCount(true, count);
+        var question = document.getElementById("tareaManual");
+            var hr = document.createElement("hr");
+            question.appendChild(hr);
+
+            var rowDiasRecu = document.createElement("div");
+            rowDiasRecu.setAttribute("id", "contenidoDiasRe");
+            rowDiasRecu.setAttribute("class", "row input-group p-2");
+            question.appendChild(rowDiasRecu);
+            
+                var dias = document.createElement("div");
+                dias.setAttribute("id", "dias");
+                dias.setAttribute("class", "col btn-group");
+                dias.setAttribute("role", "group");
+                dias.setAttribute("aria-label", "Basic checkbox toggle button group");
+                rowDiasRecu.appendChild(dias);
+
+                var lunesInput= document.createElement("input");
+                lunesInput.setAttribute("type", "checkbox");
+                lunesInput.setAttribute("class", "btn-check");
+                lunesInput.setAttribute("value", "@L");
+        // Crear entrada
+            // var dias = document.createElement("input");
+            // dias.type = "text";
+            // dias.id = "questions[" + count + "]_text";
+            // dias.name = "questions[" + count + "].name";
+            // question.appendChild(dias);                                     // Añadir un nodo hijo al elemento, el último nodo hijo
+
+
+            // var input = document.createElement("input");
+            // input.type = "button";
+            // input.id = "questions[" + count + "]_btn";
+            // input.name = "questions[" + count + "].name";
+            // input.value="Botón";
+
+        // question.appendChild(input);
+
+        // // Crea un espacio
+        // var br = document.createElement("br");
+        // br.id ="questions[" + count + "]_br"
+        // question.appendChild(br);
+    }
+
+
+    // function DealInput(){
+    //       // Eliminar el último conjunto de elementos agregados: texto del botón br
+    //          var inputdel = document.getElementById("questions[" + count + "]_text");
+    //         question.removeChild(inputdel)
+    //          var inputde2 = document.getElementById("questions[" + count + "]_btn");
+    //         question.removeChild(inputde2)
+    //         var inputde3 = document.getElementById("questions[" + count + "]_br");
+
+    //         question.removeChild(inputde3)
+
+    //           countAA = checkCount(false, count);  
+
+    // }
+</script>
+
+
 <body>
     
      
@@ -30,62 +104,72 @@
                     <div class="col btn-group" role="group" aria-label="Selector de prioridad">
                         <input type="radio" class="btn-check" name="prioridad" value="BAJA" id="btnradio1" autocomplete="off">
                         <label class="btn btn-outline-success" for="btnradio1">Baja</label>
-                      
+                    
                         <input type="radio" class="btn-check" name="prioridad" value="MEDIA" id="btnradio2" autocomplete="off">
                         <label class="btn btn-outline-warning" for="btnradio2">Media</label>
-                      
+                    
                         <input type="radio" class="btn-check" name="prioridad" value="ALTA" id="btnradio3" autocomplete="off">
                         <label class="btn btn-outline-danger" for="btnradio3">Alta</label>
                     </div>
-
-                    <input class="col" type="text" name="categoria" id="floatingInput" placeholder="@CATEGORIA">
+                    
+                    <input type="text" class="col form-control" name="categoria" id="formGroupExampleInput" placeholder="@Categoria">
+                    
+                    
                 </div>
-                <span class="border border-5">
-                    <div class="row input-group p-2">
+                <div class="row input-group p-2">
+                    <div class="col input-group">
+                        <span class="input-group-text">Fecha Inicio y final</span>
+                        <input type="date" class="form-control" name="fechaIni">
+                        <input type="date" class="form-control" name="fechaFin">
+                    </div>
+                   
+                </div>
+                <div id="tareaManual">
+                    <hr>
+                    <div id="contenidoDiasRe" class="row input-group p-2">
+                    
+                    
+                        <div id="dias" class="col btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                            <input type="checkbox" class="btn-check" value="@L" id="btncheck1" >
+                            <label class="btn btn-outline-dark" for="btncheck1">Lunes</label>
                         
-                        <div class="col btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                            <input type="checkbox" class="btn-check" value="@M" id="btncheck2" autocomplete="off">
+                            <label class="btn btn-outline-dark" for="btncheck2">Martes</label>
+                        
+                            <input type="checkbox" class="btn-check" value="@X" id="btncheck3" autocomplete="off">
+                            <label class="btn btn-outline-dark" for="btncheck3">Miércoles</label>
+
+                            <input type="checkbox" class="btn-check" value="@J"id="btncheck4" autocomplete="off">
+                            <label class="btn btn-outline-dark" for="btncheck4">Jueves</label>
+
+                            <input type="checkbox" class="btn-check" value="@V" id="btncheck5" autocomplete="off">
+                            <label class="btn btn-outline-dark" for="btncheck5">Viernes</label>
+
+                            <input type="checkbox" class="btn-check" value="@S" id="btncheck6" autocomplete="off">
+                            <label class="btn btn-outline-secondary" for="btncheck6">Sábado</label>
+
+                            <input type="checkbox" class="btn-check" value="@D" id="btncheck7" autocomplete="off">
+                            <label class="btn btn-outline-secondary" for="btncheck7">Domingo</label>
+                        </div>
+                        <div class="col-2 btn-group" role="group" aria-label="Basic checkbox toggle button group">
                             <input type="checkbox" class="btn-check" value="" id="recur" autocomplete="off">
-                            <label class="btn btn-outline-dark" for="recur">Recurrente</label>
-                        </div> 
-                        <div class="col btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                        <input type="checkbox" class="btn-check" value="@L" id="btncheck1" autocomplete="off">
-                        <label class="btn btn-outline-dark" for="btncheck1">Lunes</label>
-                    
-                        <input type="checkbox" class="btn-check" value="@M" id="btncheck2" autocomplete="off">
-                        <label class="btn btn-outline-dark" for="btncheck2">Martes</label>
-                    
-                        <input type="checkbox" class="btn-check" value="@X" id="btncheck3" autocomplete="off">
-                        <label class="btn btn-outline-dark" for="btncheck3">Miércoles</label>
-
-                        <input type="checkbox" class="btn-check" value="@J"id="btncheck4" autocomplete="off">
-                        <label class="btn btn-outline-dark" for="btncheck4">Jueves</label>
-
-                        <input type="checkbox" class="btn-check" value="@V" id="btncheck5" autocomplete="off">
-                        <label class="btn btn-outline-dark" for="btncheck5">Viernes</label>
-
-                        <input type="checkbox" class="btn-check" value="@S" id="btncheck6" autocomplete="off">
-                        <label class="btn btn-outline-dark" for="btncheck6">Sábado</label>
-
-                        <input type="checkbox" class="btn-check" value="@D" id="btncheck7" autocomplete="off">
-                        <label class="btn btn-outline-dark" for="btncheck7">Domingo</label>
+                            <label class="btn btn-outline-info" for="recur">Recurrente</label>
+                        </div>
                     </div>
-                    </div>
+
                     <div class="row input-group p-2">
-                        <div class="col">
-                            <label for="fechaIni">Fecha de inicio</label>
-                            <input id="fechaIni" class="form-control" type="date" name="fechaIni"/>
-                            <span id="fechaIniSeleccionada"></span>
+                        <div class="col input-group">
+                            <span class="input-group-text">Hora Inicio y final</span>
+                            <input type="time"  class="form-control">
+                            <input type="time"  class="form-control">
                         </div>
-                        <div class="col">
-                            <label for="fechaFin">Fecha de finalización</label>
-                            <input id="fechaFin" class="form-control" type="date" name="fechaFin"/>
-                            <span id="fechaFinSeleccionada"></span>
+                        <div class="col-2 d-grid">
+                            <!-- <button type="button" class="btn btn-danger ">-</button> -->
+                            <button type="button" class="btn btn-success" onclick="AddTareas()">+</button>
                         </div>
                     </div>
-                    <div>
-                </span>
-                    <button type="button" class="btn btn-success w-10">+</button>
-                </div><br>
+                </div> <!-- FIN TAREA MANUAL-->
+                <br>
                 <button type="submit" class="btn btn-primary w-100">Añadir</button>
             </form>
         </div>
