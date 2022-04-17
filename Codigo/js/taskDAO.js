@@ -210,6 +210,35 @@ class DaoTask{
         });
         
     }
+
+    buscarTareasporCategoria(categoria, id){
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection(function(err,connection){
+                if(err){
+                    reject(new Error("Error de conexión a la base de datos",));
+                }
+                else{
+                    const valor ="SELECT id_tarea, nombre, prioridad, categoria, fechafin ,fechaini, tipo FROM back2study.tareas where categoria LIKE '%?%' && id_usuario = ?";
+                    connection.query(valor, [categoria, id],
+                        function(err, resultado){
+                            connection.release();
+                            if(err){
+                                console.log("ERROR:"+err.message);
+                                reject(new Error("Error de acceso a la base de datos"));
+                            }
+                            else{
+                                
+                                if(resultado.length>0) resolve(resultado);
+                                else resolve(false); 
+                            }
+                    });
+                }
+    
+            });
+
+        });
+        
+    }
     
 }
 
