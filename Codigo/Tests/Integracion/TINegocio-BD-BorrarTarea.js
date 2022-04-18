@@ -18,21 +18,18 @@ const pool = mysql.createPool(config.databaseConfig);
 const UserDao = new dao(pool);
 
 // tests
-describe("Añadir Tarea Programada", function () {
+describe("Borrar tarea", function () {
 
-    it("Tarea Programada correcta", async function () {
+    it("Borrar tarea", async function () {
 
         let agent = chai.request.agent(url);
         await agent.post('/usuarios/login_user')
-            .send({ correo: 'prueba@gmail.com', password: '1234' })
+            .send({ correo: 'userPrueba1@email.com', password: '1234' })
             .then((res) => {
                 this.timeout(30000);
-                console.log(res.body);
-                agent.post('/tareas/add_scheduled_task')
-                    .send({ nombre: "prueba", prioridad: "Media", tipo: "Diaria", categoria: "@prueba", horas: "1", fechaIni: "12/04/2022", fechaFin: "13/04/2022" })
-                    .redirects(0)
+                agent.get('/tareas/deleteTask/1/p')
                     .end((err, res, body) => {
-                        expect(res).to.have.status(302);
+                        expect(res).to.have.status(200);
                     });
             });
     });
