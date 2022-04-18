@@ -244,7 +244,7 @@ class DaoTask{
     }
         
     
-        deleteTaskManual(idUsuario, idTarea, callback) {
+        deleteTaskManual(idUsuario, idTarea) {
             return new Promise((resolve, reject) => {
              this.pool.getConnection(function(err, connection) {
                 if (err) {
@@ -286,7 +286,7 @@ class DaoTask{
             });
        }
     
-       deleteTaskProgram(idUsuario, idTarea, callback) {
+       deleteTaskProgram(idUsuario, idTarea) {
         return new Promise((resolve, reject) => {
         this.pool.getConnection(function(err, connection) {
             if (err) {
