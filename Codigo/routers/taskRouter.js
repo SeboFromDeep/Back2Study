@@ -69,10 +69,10 @@ taskRouter.get("/taskDetalisBy/:id/:tipo",
                 controllerUsuario.usuarioLogeado, 
                 controllerTareas.getTask);
 
-// //Borrar Tarea 
-// taskRouter.get("/deleteTask/:id/:tipo", 
-//                 controllerUsuario.usuarioLogeado, 
-//                 controllerTareas.deleteTask);
+//Borrar Tarea 
+taskRouter.get("/deleteTask/:id/:tipo", 
+                controllerUsuario.usuarioLogeado, 
+                controllerTareas.borrarTarea);
 
 // taskRouter.get("/taskBy/:id", 
 //                 cU.usuarioLogeado, 

@@ -22,10 +22,11 @@ class controllerTareas {
         .then(value =>{
             
             response.render("principal", {
-                title: "", 
-                nameUser: request.session.userName, 
-                mailUser: request.session.mail,
-                tareas: value?value:0 //Evaluamos si hay tareas y mandamos a la vista
+                            title: "", 
+                            nameUser: request.session.userName, 
+                            mailUser: request.session.mail,
+                            tareas: value?value:0,
+                            deleteId: false 
             });
         })
         .catch(error =>{  response.status(500);  });
@@ -168,22 +169,45 @@ class controllerTareas {
      * @returns {Promise} - Devuelve una cadena de promesas que comienza en el DAO de Tareas
      */
     borrarTarea(request, response) {
-        return daoTareas.existeTarea(request.session.id_, request.body.id).then(function(value) {
-            // tarea existe -> nueva promesa
-            if (value == true) {
-                if (request.body.type == "Manual")
-                    return daoTareas.deleteTaskManual(request.session.id_, request.body.id);
-                else
-                    return daoTareas.deleteTaskProgram(request.session.id_, request.body.id);
-            } else { // tarea no existe en base de datos
-               return Promise.reject(new Error("Error: la tarea con id ", request.body.id, " no existe"));
-            }
-        }).then(function() {
-            response.render("borrar_tarea", createResponseLocals(true, "Tarea ", request.body.id, " borrada con exito"));
-        }).catch(function(error) {
-            console.log("Error Borrar Tarea: ", error)
-            response.status(500);
-            response.render("borrar_tarea", createResponseLocals(false, error));  
+        // return daoTareas.existeTarea(request.session.id_, request.body.id)
+        // .then(function(value) {
+        //     // tarea existe -> nueva promesa
+        //     // if (value == true) {
+        //     //     if (request.body.type == "Manual")
+        //     //         return daoTareas.deleteTaskManual(request.session.id_, request.body.id);
+        //     //     else
+        //     //         return daoTareas.deleteTaskProgram(request.session.id_, request.body.id);
+        //     // } else { // tarea no existe en base de datos
+        //     //    return Promise.reject(new Error("Error: la tarea con id ", request.body.id, " no existe"));
+        //     // }
+        //     if (value == true) return daoTareas.deleteTask(request.session.id_, request.body.id);
+        //     else return Promise.reject(new Error("Error: la tarea con id ", request.body.id, " no existe"));
+        // }).then(function() {
+        //     response.render("borrar_tarea", createResponseLocals(true, "Tarea ", request.body.id, " borrada con exito"));
+        // }).catch(function(error) {
+        //     console.log("Error Borrar Tarea: ", error)
+        //     response.status(500);
+        //     response.render("borrar_tarea", createResponseLocals(false, error));  
+        // })
+        // console.log("Borrando tarea: "+request.params.id);
+        daoTareas.deleteTask(request.session.id_, request.params.id)
+        .then(tareaBorrada =>{
+            console.log("tareaBorrada. "+tareaBorrada);
+            // console.log(createResponseLocals(true, "Tarea ", request.params.id, " borrada con exito"));
+            // response.render("borrar_tarea", createResponseLocals(true, "Tarea ", request.params.id, " borrada con exito"));
+            response.render("principal", {
+                title: "", 
+                nameUser: request.session.userName, 
+                mailUser: request.session.mail,
+                tareas: undefined,
+                deleteId: request.params.id //Evaluamos si hay tareas y mandamos a la vista
+            });
+        })
+        .catch(function(error) {
+                //Hacer este render
+                console.log("Error Borrar Tarea: ", error)
+                response.status(500);
+                response.render("borrar_tarea", createResponseLocals(false, error));  
         })
     }
 }

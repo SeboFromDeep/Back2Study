@@ -52,7 +52,8 @@ class controllerU{
                                             title: "Inicio de sesión realizado con éxito.", 
                                             nameUser: request.session.userName, 
                                             mailUser: request.session.mail,
-                                            tareas: undefined });
+                                            tareas: undefined,
+                                            deleteId: false });
             }
             else throw "Error en usuario o contraseña."
         })
@@ -80,7 +81,8 @@ class controllerU{
             title: "Inicio de sesión realizado con éxito", 
             nameUser: request.session.userName, 
             mailUser: request.session.mail,
-            tareas: undefined });
+            tareas: undefined,
+            deleteId: false });
     }
 
     probando2(request, response){
