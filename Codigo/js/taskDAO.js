@@ -234,6 +234,123 @@ class DaoTask{
             }
         });
     }
+
+     /*
+    Comprueba que existe una tarea en la base de datos
+    True --> La tarea existe
+    False --> No Existe
+    */
+
+    existeTarea(idUsuario, idTarea) {
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection(function(err,connection){
+                if(err){
+                    reject(new ErrorEvent("Error de conexión a la base de datos"));
+                }
+                else{
+                    const existeTarea = "SELECT * FROM back2study.tareas WHERE id = ? && usuario = ?";
+                    connection.query(existeTarea,[idTarea, idUsuario],
+                    function(err, result){
+                    
+                        if(err){
+                            console.log("ERROR: "+err.message);
+                            reject(new Error("Error de acceso a la base de datos"));
+                        }
+                        else{
+                            
+                            if (result.length==1)   resolve(true);
+                            else resolve(false);
+                        }
+                    });
+                }
+            });
+        });
+    }
+        
+    
+        deleteTaskManual(idUsuario, idTarea) {
+            return new Promise((resolve, reject) => {
+             this.pool.getConnection(function(err, connection) {
+                if (err) {
+                    reject(new Error("Error de conexión a la base de datos"));
+                }
+                else {
+                    connection.query('USE back2study;');
+                    connection.query('SET SQL_SAFE_UPDATES = 0;');
+                    //Borramos en la tabla hija
+                    const valor ="DELETE FROM tareas_manuales WHERE id_tarea = ?"; //borrado físico
+                    connection.query(valor ,[idTarea],
+                        function(err, rows) {
+                            connection.release(); // devolver al pool la conexión
+                            if (err) {
+                                reject(new Error("Error de acceso a la base de datos"));
+                            }
+                            else {
+                                    //Borramos en la tabla padre
+                                    const valor ="DELETE FROM tareas WHERE usuario = ? && id = ?";
+                                    connection.query(valor,[idUsuario, idTarea],
+                                        function(err, rows){
+                                            connection.release();
+                                            if(err){
+                                                reject(new Error
+                                                    ("Error de acceso a la base de datos"));
+                                            }
+                                            else
+                                            {
+                                                console.log("Tarea eliminada con éxito");
+                                                resolve(true);
+                                            }
+                                        });
+                                  }
+                        });
+                    
+                    }
+                
+             });
+            });
+       }
+    
+       deleteTaskProgram(idUsuario, idTarea) {
+        return new Promise((resolve, reject) => {
+        this.pool.getConnection(function(err, connection) {
+            if (err) {
+                reject(new Error("Error de conexión a la base de datos"));
+            }
+            else {
+                connection.query('USE back2study;');
+                connection.query('SET SQL_SAFE_UPDATES = 0;');
+                //Borramos en la tabla hija
+                const valor ="DELETE FROM tareas_programadas WHERE id = ?";
+                connection.query(valor ,[idTarea],
+                    function(err, rows) {
+                        connection.release(); // devolver al pool la conexión
+                        if (err) {
+                            reject(new Error("Error de acceso a la base de datos"));
+                        }
+                        else {
+                                //Borramos en la tabla padre
+                                const valor ="DELETE FROM tareas WHERE usuario = ? && id = ?";
+                                connection.query(valor,[idUsuario, idTarea],
+                                    function(err, rows){
+                                        connection.release();
+                                        if(err){
+                                            reject(new Error
+                                                ("Error de acceso a la base de datos"));
+                                        }
+                                        else
+                                        {
+                                            console.log("Tarea eliminada con éxito");
+                                            resolve(true);
+                                        }
+                                    });
+                              }
+                    });
+                
+                }
+            
+         });
+        });
+    }
     
 }
 
