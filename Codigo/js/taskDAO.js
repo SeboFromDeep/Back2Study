@@ -81,8 +81,43 @@ class DaoTask{
                     const sql="SELECT tareas.nombre, tareas.prioridad, tareas.categoria, tareas.fechafin, tareas.fechaini, tareas.tipo ,tareas_programadas.horas ,tareas_programadas.tipo " +
                     "FROM back2study.tareas JOIN tareas_programadas "+
                     "on tareas.id_tarea= tareas_programadas.id_programada "+
-                    " where tareas.id_usuario= ? and tareas_programadas.id_programada=?";
+                    " where tareas.id_usuario= ? and tareas.id_tarea=?";
                     connection.query(sql, [idUsuario, idTarea],
+                            function(err,result){
+                            connection.release();
+                            if(err){
+                                console.log("ERROR:"+err.message);
+                                reject(new Error("Error de acceso a la base de datos"));
+                            }
+                            else{
+                                console.log("RESULTADOS Programada:"); 
+                                console.log(result.length);
+                                if(result.length==1)    resolve(result);
+                                else resolve(false);
+                                
+                            }
+                        });
+                }
+            })
+        })
+        
+    }
+
+    //Hay que ver si coge directamente la columna de JSON
+    getOrganizacionProgram(idUsuario, idTarea){
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection(function(err,connection){
+                if(err){
+                    reject(new Error("Error de conexión a la base de datos"));
+                }
+                else{
+                    var date = new Date(Date.now());
+                    // tareas.id, tareas.nombre, tareas.prioridad, tareas.categoria, tareas.fechafin, tareas.fechaini, tareas.tipo, "
+                    const sql="SELECT tarea.nombre, tarea.prioridad, tarea.categoria, tarea.id_usuario, tarea.fechafin, tarea.fechaini, id_subtarea, hora_ini, hora_fin " +
+                    "FROM back2study.tareas JOIN tareas_organizadas "+
+                    "on tareas.id_tarea= tareas_organizadas.id_programada "+
+                    " where tareas.id_usuario= ? and tareas.fechafin>=? order by hora_fin";
+                    connection.query(sql, [idUsuario, date.toISOString().slice(0, 19).replace('T', ' ')],
                             function(err,result){
                             connection.release();
                             if(err){
