@@ -119,6 +119,7 @@ class controllerTareas {
 
     getTask(request, response){
         console.log("obteniendo detalles de tarea "+ request.params.id+ " "+ request.params.tipo);
+        moment.locale("es");
         if(request.params.tipo == "m"){
             daoTareas.getDetailsTaskManual( request.session.id_, request.params.id)
             .then(tareaManual => {
@@ -132,7 +133,7 @@ class controllerTareas {
                                 idTarea: request.params.id,
                                 nombre: tareaManual[0].nombre,
                                 prioridad: tareaManual[0].prioridad, 
-                                fecha: tareaManual[0].fechafin,
+                                fecha: moment(tareaManual[0].fechafin).fromNow(),
                                 cat: tareaManual[0].categoria,
                                 tareaM: tareaManual
                         });
@@ -145,7 +146,7 @@ class controllerTareas {
            daoTareas.getDetailsTaskProgram( request.session.id_, request.params.id)
            .then(tareaProgramada => {
                     console.log("TAREA PROGRAMADA");
-                    moment.locale("es");
+                    
                     tareaProgramada[0].fechafin = moment(tareaProgramada[0].fechafin).fromNow();
                     console.log(tareaProgramada);
                     response.render("verTareaProgramada",{
