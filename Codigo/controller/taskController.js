@@ -76,7 +76,6 @@ class controllerTareas {
     //REVISAR LOS RENDER
     addTareaProgramada(request, response){
         const errors = validationResult(request);
-        console.log(errors);
         if(errors.isEmpty()){
             console.log("Añadiendo la tarea " + request.body.nombre +  " a la BBDD");
             // inicializamos el objeto de tarea
@@ -95,7 +94,6 @@ class controllerTareas {
             });
         }
         else{
-            console.log("errorfecha")
             response.status(200);
             response.render("add-scheduled-task", {
                 nameUser: request.session.userName,
@@ -147,6 +145,8 @@ class controllerTareas {
            daoTareas.getDetailsTaskProgram( request.session.id_, request.params.id)
            .then(tareaProgramada => {
                     console.log("TAREA PROGRAMADA");
+                    moment.locale("es");
+                    tareaProgramada[0].fechafin = moment(tareaProgramada[0].fechafin).fromNow();
                     console.log(tareaProgramada);
                     response.render("verTareaProgramada",{
                         title: "Tarea Programada", 
