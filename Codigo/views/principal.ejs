@@ -24,8 +24,10 @@
             <!-- Para borrado de tareas -->
             <% if(deleteId!=false){%>
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong>Borrado exitoso</strong> Tarea con id <%=deleteId%>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <strong>Borrado tarea con ID <%=deleteId%> exitoso</strong> 
+                    <button  type="button" class="btn btn-outline-primary"  >
+                        <a href="/tareas/taskList">OK</a>
+                    </button>
                 </div>
             <% }%>
 
