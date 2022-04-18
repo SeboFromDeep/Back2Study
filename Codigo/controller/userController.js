@@ -116,7 +116,7 @@ class controllerU{
                 else throw "Ya existe un usuario con ese correo";
             })
             .then(value => {
-                if (value == true){
+                if (value){
                     console.log("Registro exitoso.")
                     response.status(200);
                     response.render("login", {  

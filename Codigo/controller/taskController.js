@@ -32,7 +32,7 @@ class controllerTareas {
     }
 
     
-
+    //Cambiar para promesas
     addTareaManual(request, response) {
         console.log("Añadiendo la tarea manual " + request.body.nombre + " a la BBDD");
 
