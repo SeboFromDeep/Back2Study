@@ -161,7 +161,31 @@ class controllerTareas {
         }
     }
 
-    
+    /**
+     * Borra una tarea especifica seleccionada por el usuario (el usuario vera nombres y horarios, pero internamente trabajamos con id)
+     * @param {Object[]} request - Contiene el ID de la Tarea en .body
+     * @param {Object[]} response - 
+     * @returns {Promise} - Devuelve una cadena de promesas que comienza en el DAO de Tareas
+     */
+    borrarTarea(request, response) {
+        return daoTareas.existeTarea(request.session.id_, request.body.id).then(function(value) {
+            // tarea existe -> nueva promesa
+            if (value == true) {
+                if (request.body.type == "Manual")
+                    return daoTareas.deleteTaskManual(request.session.id_, request.body.id);
+                else
+                    return daoTareas.deleteTaskProgram(request.session.id_, request.body.id);
+            } else { // tarea no existe en base de datos
+               return Promise.reject(new Error("Error: la tarea con id ", request.body.id, " no existe"));
+            }
+        }).then(function() {
+            response.render("borrar_tarea", createResponseLocals(true, "Tarea ", request.body.id, " borrada con exito"));
+        }).catch(function(error) {
+            console.log("Error Borrar Tarea: ", error)
+            response.status(500);
+            response.render("borrar_tarea", createResponseLocals(false, error));  
+        })
+    }
 }
 
 module.exports = controllerTareas;
