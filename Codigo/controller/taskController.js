@@ -19,13 +19,13 @@ class controllerTareas {
     getListTareas(request, response){
 
         daoTareas.listaTareas(request.session.id_)
-        .then(value =>{
+        .then(tareas =>{
             
             response.render("principal", {
                             title: "", 
                             nameUser: request.session.userName, 
                             mailUser: request.session.mail,
-                            tareas: value?value:0,
+                            tareas: tareas?tareas:0,
                             deleteId: false 
             });
         })
@@ -195,6 +195,7 @@ class controllerTareas {
             console.log("tareaBorrada. "+tareaBorrada);
             // console.log(createResponseLocals(true, "Tarea ", request.params.id, " borrada con exito"));
             // response.render("borrar_tarea", createResponseLocals(true, "Tarea ", request.params.id, " borrada con exito"));
+            
             response.render("principal", {
                 title: "", 
                 nameUser: request.session.userName, 
