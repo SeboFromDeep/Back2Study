@@ -22,10 +22,11 @@ class controllerTareas {
         .then(value =>{
             
             response.render("principal", {
-                title: "", 
-                nameUser: request.session.userName, 
-                mailUser: request.session.mail,
-                tareas: value?value:0 //Evaluamos si hay tareas y mandamos a la vista
+                            title: "", 
+                            nameUser: request.session.userName, 
+                            mailUser: request.session.mail,
+                            tareas: value?value:0,
+                            deleteId: false 
             });
         })
         .catch(error =>{  response.status(500);  });
@@ -76,7 +77,6 @@ class controllerTareas {
     //REVISAR LOS RENDER
     addTareaProgramada(request, response){
         const errors = validationResult(request);
-        console.log(errors);
         if(errors.isEmpty()){
             console.log("Añadiendo la tarea " + request.body.nombre +  " a la BBDD");
             // inicializamos el objeto de tarea
@@ -95,7 +95,6 @@ class controllerTareas {
             });
         }
         else{
-            console.log("errorfecha")
             response.status(200);
             response.render("add-scheduled-task", {
                 nameUser: request.session.userName,
@@ -121,6 +120,7 @@ class controllerTareas {
 
     getTask(request, response){
         console.log("obteniendo detalles de tarea "+ request.params.id+ " "+ request.params.tipo);
+        moment.locale("es");
         if(request.params.tipo == "m"){
             daoTareas.getDetailsTaskManual( request.session.id_, request.params.id)
             .then(tareaManual => {
@@ -134,7 +134,7 @@ class controllerTareas {
                                 idTarea: request.params.id,
                                 nombre: tareaManual[0].nombre,
                                 prioridad: tareaManual[0].prioridad, 
-                                fecha: tareaManual[0].fechafin,
+                                fecha: moment(tareaManual[0].fechafin).fromNow(),
                                 cat: tareaManual[0].categoria,
                                 tareaM: tareaManual
                         });
@@ -147,6 +147,8 @@ class controllerTareas {
            daoTareas.getDetailsTaskProgram( request.session.id_, request.params.id)
            .then(tareaProgramada => {
                     console.log("TAREA PROGRAMADA");
+                    
+                    tareaProgramada[0].fechafin = moment(tareaProgramada[0].fechafin).fromNow();
                     console.log(tareaProgramada);
                     response.render("verTareaProgramada",{
                         title: "Tarea Programada", 
@@ -160,7 +162,54 @@ class controllerTareas {
         }
     }
 
-    
+    /**
+     * Borra una tarea especifica seleccionada por el usuario (el usuario vera nombres y horarios, pero internamente trabajamos con id)
+     * @param {Object[]} request - Contiene el ID de la Tarea en .body
+     * @param {Object[]} response - 
+     * @returns {Promise} - Devuelve una cadena de promesas que comienza en el DAO de Tareas
+     */
+    borrarTarea(request, response) {
+        // return daoTareas.existeTarea(request.session.id_, request.body.id)
+        // .then(function(value) {
+        //     // tarea existe -> nueva promesa
+        //     // if (value == true) {
+        //     //     if (request.body.type == "Manual")
+        //     //         return daoTareas.deleteTaskManual(request.session.id_, request.body.id);
+        //     //     else
+        //     //         return daoTareas.deleteTaskProgram(request.session.id_, request.body.id);
+        //     // } else { // tarea no existe en base de datos
+        //     //    return Promise.reject(new Error("Error: la tarea con id ", request.body.id, " no existe"));
+        //     // }
+        //     if (value == true) return daoTareas.deleteTask(request.session.id_, request.body.id);
+        //     else return Promise.reject(new Error("Error: la tarea con id ", request.body.id, " no existe"));
+        // }).then(function() {
+        //     response.render("borrar_tarea", createResponseLocals(true, "Tarea ", request.body.id, " borrada con exito"));
+        // }).catch(function(error) {
+        //     console.log("Error Borrar Tarea: ", error)
+        //     response.status(500);
+        //     response.render("borrar_tarea", createResponseLocals(false, error));  
+        // })
+        // console.log("Borrando tarea: "+request.params.id);
+        daoTareas.deleteTask(request.session.id_, request.params.id)
+        .then(tareaBorrada =>{
+            console.log("tareaBorrada. "+tareaBorrada);
+            // console.log(createResponseLocals(true, "Tarea ", request.params.id, " borrada con exito"));
+            // response.render("borrar_tarea", createResponseLocals(true, "Tarea ", request.params.id, " borrada con exito"));
+            response.render("principal", {
+                title: "", 
+                nameUser: request.session.userName, 
+                mailUser: request.session.mail,
+                tareas: undefined,
+                deleteId: request.params.id //Evaluamos si hay tareas y mandamos a la vista
+            });
+        })
+        .catch(function(error) {
+                //Hacer este render
+                console.log("Error Borrar Tarea: ", error)
+                response.status(500);
+                response.render("borrar_tarea", createResponseLocals(false, error));  
+        })
+    }
 }
 
 module.exports = controllerTareas;
