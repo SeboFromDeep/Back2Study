@@ -90,7 +90,7 @@ class DaoUsers{
                             reject(new Error("Error de acceso a la base de datos"));
                         }
                         else{     
-                            if(result2.affectedRows) resolve(result2.insertID);
+                            if(result2.affectedRows) resolve(result2.insertId);
                             else resolve(false);
                         }
                     });
