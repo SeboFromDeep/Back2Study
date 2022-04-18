@@ -18,7 +18,7 @@ const pool = mysql.createPool(config.databaseConfig);
 const UserDao = new dao(pool);
 
     // tests
-    describe("Añadir Tarea Programada",function () {
+    describe("Listar Tareas",function () {
 
         it("Tarea Programada correcta", async function () {
 
