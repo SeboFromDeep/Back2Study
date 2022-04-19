@@ -47,6 +47,7 @@ class controllerTareas {
         // for (var clave in request.body){
         //     console.log("La clave es " + clave+ " y el valor es " + request.body[clave]);
         // }
+        
         const momentoComida = request.body.map(function(comida) {
             return comida.momento;
         });
