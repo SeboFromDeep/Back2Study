@@ -13,7 +13,7 @@
 </head>
 
 <script type="text/javascript">
-    var count = 0;
+    let count = 0;
 
     // Se utiliza para determinar si se debe eliminar o aumentar el botón para poder calcular el valor de conteo
     function checkCount(boolOK, coun) {
@@ -22,7 +22,12 @@
         }
        else {
             count--;
-     }
+        }
+
+    }
+
+    function getCount(){
+        return count;
     }
     // Agrega una etiqueta de entrada y también asigna valores a su ID y Nombre.
     //Para pillar los datos, hay que ASEGURARSE que se generen name´s diferentes por ejemplo lunes1, lunes3 ayudado por el contador.
@@ -224,6 +229,13 @@
                             botonDel.textContent="-";
                             botonDelContenido.appendChild(botonDel);
 
+                            var hidden = document.createElement("input");
+                            hidden.setAttribute("type", "hidden");
+                            hidden.setAttribute("name", "oculto"+count);
+                            hidden.setAttribute("value", count);
+                            
+            contendorTareas.appendChild(hidden);
+
 
     }
 
@@ -323,6 +335,7 @@
                 </div> <!-- FIN TAREA MANUAL en este div se añaden los dias adicionales-->
 
                 <br>
+                
                 <button type="submit" class="btn btn-primary w-100">Añadir</button>
             </form>
         </div>
