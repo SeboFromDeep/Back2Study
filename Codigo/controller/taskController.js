@@ -6,7 +6,7 @@ const mysql = require("mysql");
 const pool = mysql.createPool(config.databaseConfig);
 const taskDao = require('../js/taskDAO');
 const daoTareas = new taskDao(pool);
-
+const _ = require('underscore');
 const moment = require('moment');
 const fecha = moment();
 
@@ -39,11 +39,19 @@ class controllerTareas {
         console.log(request.body);
 
         console.log("Num tareas: "+request.body.oculto);
-        
+        console.log("Tamaño: "+request.body.length);
 
+        // for (var i = 4; i < request.body.length; i++){
+        //     console.log("Valor es " + request.body[i]);
+        // }
         // for (var clave in request.body){
         //     console.log("La clave es " + clave+ " y el valor es " + request.body[clave]);
         // }
+        const momentoComida = request.body.map(function(comida) {
+            return comida.momento;
+        });
+         
+        console.log(momentoComida);
         // console.log("Añadiendo la tarea manual " + request.body.nombre + " a la BBDD");
 
         // function añadirTareaManualCallback(err, result) {
