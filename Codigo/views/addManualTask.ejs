@@ -26,9 +26,7 @@
 
     }
 
-    function getCount(){
-        return count;
-    }
+    
     // Agrega una etiqueta de entrada y también asigna valores a su ID y Nombre.
     //Para pillar los datos, hay que ASEGURARSE que se generen name´s diferentes por ejemplo lunes1, lunes3 ayudado por el contador.
     function AddTareas() {
@@ -167,27 +165,9 @@
                         domLabel.textContent="Domingo";
                         dias.appendChild(domLabel);
 
-                    var recu = document.createElement("div");
-                    recu.setAttribute("id", "recurrente");
-                    recu.setAttribute("class", "col-2 btn-group");
-                    recu.setAttribute("role", "group");
-                    recu.setAttribute("aria-label", "Basic checkbox toggle button group");
-                    rowDiasRecu.appendChild(recu);
-                        //      RECURRENTE
-                        var recuId = "Recu"+count+6;
-                        var recuInput= document.createElement("input");
-                        recuInput.setAttribute("type", "checkbox");
-                        recuInput.setAttribute("class", "btn-check");
-                        recuInput.setAttribute("name", "recu"+count);
-                        recuInput.setAttribute("value", "1");
-                        recuInput.setAttribute("id", "btn"+recuId);
-                        recu.appendChild(recuInput);
+                    
 
-                        var recuLabel= document.createElement("label");
-                        recuLabel.setAttribute("class", "btn btn-outline-info");
-                        recuLabel.setAttribute("for", "btn"+recuId);
-                        recuLabel.textContent="Recurrente";
-                        recu.appendChild(recuLabel);
+
                     // horas
                     var horas = document.createElement("div");
                     horas.setAttribute("id", "horaIniFin");
@@ -218,27 +198,65 @@
                             horaFinInput.setAttribute("class", "form-control");
                             horasContenido.appendChild(horaFinInput);
                         
-                        var botonDelContenido = document.createElement("div");
-                        botonDelContenido.setAttribute("class", "col-2 d-grid");
-                        horas.appendChild(botonDelContenido);
+                        var recu = document.createElement("div");
+                        recu.setAttribute("id", "recurrente");
+                        recu.setAttribute("class", "col-3 btn-group");
+                        recu.setAttribute("role", "group");
+                        recu.setAttribute("aria-label", "Selector de prioridad");
+                        horas.appendChild(recu);
+                        //      RECURRENTE
+                            var recuId = "Recu"+count+6;
+                            var recuInput= document.createElement("input");
+                            recuInput.setAttribute("type", "radio");
+                            recuInput.setAttribute("class", "btn-check");
+                            recuInput.setAttribute("name", "recursivo"+count);
+                            recuInput.setAttribute("value", "1");
+                            recuInput.setAttribute("id", "re1"+recuId);
+                            recu.appendChild(recuInput);
 
-                            var botonDel= document.createElement("button");
-                            botonDel.setAttribute("type", "button");
-                            botonDel.setAttribute("class", "btn btn-danger");
-                            botonDel.setAttribute("onclick", "DealInput()");
-                            botonDel.textContent="-";
-                            botonDelContenido.appendChild(botonDel);
+                            var recuLabel= document.createElement("label");
+                            recuLabel.setAttribute("class", "btn btn-outline-primary");
+                            recuLabel.setAttribute("for", "re1"+recuId);
+                            recuLabel.textContent="Recursivo";
+                            recu.appendChild(recuLabel);
 
-                            var hidden = document.createElement("input");
-                            hidden.setAttribute("type", "hidden");
-                            hidden.setAttribute("name", "oculto"+count);
-                            hidden.setAttribute("value", count);
-                            
-            contendorTareas.appendChild(hidden);
+                            var recuId2 = "Recu"+count+6;
+                            var recuInput2= document.createElement("input");
+                            recuInput2.setAttribute("type", "radio");
+                            recuInput2.setAttribute("class", "btn-check");
+                            recuInput2.setAttribute("name", "recursivo"+count);
+                            recuInput2.setAttribute("value", "0");
+                            recuInput2.setAttribute("id", "re2"+recuId2);
+                            recu.appendChild(recuInput2);
 
+                            var recuLabel2= document.createElement("label");
+                            recuLabel2.setAttribute("class", "btn btn-outline-secondary");
+                            recuLabel2.setAttribute("for", "re2"+recuId2);
+                            recuLabel2.textContent="Una Vez";
+                            recu.appendChild(recuLabel2);
+                        
+                            // var botonDelContenido = document.createElement("div");
+                        // botonDelContenido.setAttribute("class", "col-2 d-grid");
+                        // horas.appendChild(botonDelContenido);
+
+                        //     var botonDel= document.createElement("button");
+                        //     botonDel.setAttribute("type", "button");
+                        //     botonDel.setAttribute("class", "btn btn-danger");
+                        //     botonDel.setAttribute("onclick", "DealInput()");
+                        //     botonDel.textContent="-";
+                        //     botonDelContenido.appendChild(botonDel);
 
     }
 
+    function getCount(){
+        // Sirve para añadir como ultimo campo el numero de configuraciones
+        var contendorConteo = document.getElementById("conteoTareas");
+        var hidden = document.createElement("input");
+            hidden.setAttribute("type", "hidden");
+            hidden.setAttribute("name", "oculto");
+            hidden.setAttribute("value", count+1);
+            contendorConteo.appendChild(hidden);
+    }
 
     function DealInput(){
         const div =document.getElementById("tarea"+count);
@@ -257,11 +275,30 @@
     <div class="container contenido ">
         
         <div class="col-auto bg-light p-5 rounded">
-            <form action="/tareas/addManualTask" method="POST" enctype="multipart/form-data">
+            <form action="/tareas/addManualTask" method="POST" enctype="application/x-www-form-urlencoded">
                 <h1 class="display-6 text-center">Añadir Tarea Manual</h1>
-                <div class="row input-group p-2">
-                    <input type="text" name="nombre" class="form-control" id="floatingInput" placeholder="Nombre de la Tarea">  
+                <div class="row justify-content-end">
+                    <div class="col-1 d-grid">
+                        <button type="button" class="btn btn-success" onclick="AddTareas()">+</button>
+                    </div>
+                    <div class="col-1 d-grid">
+                        <button type="button" class="btn btn-danger" onclick="DealInput()">-</button>
+                    </div>
                 </div>
+                
+                <div class="row input-group p-2">
+                    <div class="col-4">
+                        <input type="text" name="nombre" class="form-control" id="floatingInput" placeholder="Nombre de la Tarea">
+                    </div>
+                    
+                    
+                    <div class="col input-group">
+                        <span class="input-group-text">Fecha Inicio y final</span>
+                        <input type="date" class="form-control" name="fechaIni">
+                        <input type="date" class="form-control" name="fechaFin">
+                    </div>  
+                </div>
+                
                 <div class="row input-group p-2">
                     <div class="col btn-group" role="group" aria-label="Selector de prioridad">
                         <input type="radio" class="btn-check" name="prioridad" value="BAJA" id="btnradio1" autocomplete="off">
@@ -278,14 +315,7 @@
                     
                     
                 </div>
-                <div class="row input-group p-2">
-                    <div class="col input-group">
-                        <span class="input-group-text">Fecha Inicio y final</span>
-                        <input type="date" class="form-control" name="fechaIni">
-                        <input type="date" class="form-control" name="fechaFin">
-                    </div>
-                   
-                </div>
+                
                 <div id="">
                     <hr>
                     <div id="contenidoDiasRe" class="row input-group p-2">
@@ -313,10 +343,11 @@
                             <input type="checkbox" class="btn-check" value="@D" id="btncheck7" autocomplete="off">
                             <label class="btn btn-outline-secondary" for="btncheck7">Domingo</label>
                         </div>
-                        <div id="recurrente" class="col-2 btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                            <input type="checkbox" class="btn-check" name="recu" value="1" id="recur">
+                        <!-- <div id="recurrente" class="col-2 btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                            <input type="radio" class="btn-check" name="recu"  id="recur">
                             <label class="btn btn-outline-info" for="recur">Recurrente</label>
-                        </div>
+                        </div> -->
+                        
                     </div>
 
                     <div id="horaIniFin" class="row input-group p-2">
@@ -325,18 +356,22 @@
                             <input type="time" name="horaIni" class="form-control">
                             <input type="time" name="horaFin" class="form-control">
                         </div>
-                        <div class="col-2 d-grid">
-                            <!-- <button type="button" class="btn btn-danger ">-</button> -->
-                            <button type="button" class="btn btn-success" onclick="AddTareas()">+</button>
+                        <div class="col-3 btn-group" id="recurrente" role="group" aria-label="Selector de prioridad">
+                            <input type="radio" class="btn-check" name="recursivo" value="1" id="re1" autocomplete="off">
+                            <label class="btn btn-outline-primary " for="re1">Recursivo</label>
+                        
+                            <input type="radio" class="btn-check" name="recursivo" value="0" id="re2" autocomplete="off">
+                            <label class="btn btn-outline-secondary" for="re2">Una vez</label>
                         </div>
                     </div>
                 </div>
                 <div id="tareaManual">
                 </div> <!-- FIN TAREA MANUAL en este div se añaden los dias adicionales-->
-
+                <div id="conteoTareas">
+                </div>
                 <br>
                 
-                <button type="submit" class="btn btn-primary w-100">Añadir</button>
+                <button type="submit" class="btn btn-primary w-100" onclick="getCount()">Añadir</button>
             </form>
         </div>
         
