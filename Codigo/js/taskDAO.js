@@ -7,6 +7,35 @@ class DaoTask{
         
     }
 
+    BuscarTareaPorNombre(id){
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection(function(err,connection){
+                if(err){
+                    reject(new Error("Error de conexión a la base de datos",));
+                }
+                else{
+                    const valor ="SELECT  nombre FROM back2study.tareas where id_usuario= ?";
+                    connection.query(valor,[nombre,id],
+                        function(err, nameTask){
+                            connection.release();
+                            if(err){
+                                console.log("ERROR:"+err.message);
+                                reject(new Error("Error de acceso a la base de datos"));
+                            }
+                            else{
+                                
+                                if(nameTask.length>0) resolve(nameTask);
+                                else resolve(false);
+                                
+                            }
+                    });
+                }
+    
+            });
+
+        });
+        
+    }
     listaTareas(id){
         return new Promise((resolve, reject) => {
             this.pool.getConnection(function(err,connection){
