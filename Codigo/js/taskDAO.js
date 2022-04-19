@@ -218,7 +218,7 @@ class DaoTask{
                     reject(new Error("Error de conexión a la base de datos",));
                 }
                 else{
-                    const valor ="SELECT id_tarea, nombre, prioridad, categoria, fechafin ,fechaini, tipo FROM back2study.tareas where categoria LIKE '%?%' && id_usuario = ?";
+                    const valor ="SELECT id_tarea, nombre, prioridad, categoria, fechafin ,fechaini, tipo FROM back2study.tareas where categoria LIKE ? AND id_usuario = ?";
                     connection.query(valor, [categoria, id],
                         function(err, resultado){
                             connection.release();
