@@ -35,42 +35,44 @@ class controllerTareas {
     
     //Cambiar para promesas
     addTareaManual(request, response) {
-        console.log("Añadiendo la tarea manual " + request.body.nombre + " a la BBDD");
+        console.log("DATOS TAREA MANUAL");
+        console.log(request.body);
+        // console.log("Añadiendo la tarea manual " + request.body.nombre + " a la BBDD");
 
-        function añadirTareaManualCallback(err, result) {
-            if (err){
-                response.render("add_tarea_manual", createResponseLocals(false, "Error: creación de tarea manual en BBDD fallida"));   
-            }
-            else {
-                if (result) {
-                    response.render("listar_tareas", createResponseLocals(true, "Exito: tarea manual añadida"));
-                } else {
-                    response.render("add_tarea_manual", createResponseLocals(false, "Error: tarea manual es null"));
-                }
-            }
-        }   
+        // function añadirTareaManualCallback(err, result) {
+        //     if (err){
+        //         response.render("add_tarea_manual", createResponseLocals(false, "Error: creación de tarea manual en BBDD fallida"));   
+        //     }
+        //     else {
+        //         if (result) {
+        //             response.render("listar_tareas", createResponseLocals(true, "Exito: tarea manual añadida"));
+        //         } else {
+        //             response.render("add_tarea_manual", createResponseLocals(false, "Error: tarea manual es null"));
+        //         }
+        //     }
+        // }   
         
-        function franjaHorariaCallback(err, franjaDisponible) {
-            if (err) {
-                response.status(500);
-                response.render("add_tarea_manual", createResponseLocals(false, "Error: no se pudo consultar la franja horaria en la BBDD"));   
-            }
-            else {
-                if (franjaDisponible) {
-                    console.log("La franja horaria esta disponible");
-                    request.body.category = request.body.categoria.toUpperCase()
-                    daoTareas.añadirTareas(añadirTareaManualCallback, createObjectFromRequest(request));
-                }
-                else {
-                    response.status(500);
-                    response.render("add_tarea_manual", createResponseLocals(false, "Error: franja horaria no disponible"));   
-                }
-            }
-        } 
+        // function franjaHorariaCallback(err, franjaDisponible) {
+        //     if (err) {
+        //         response.status(500);
+        //         response.render("add_tarea_manual", createResponseLocals(false, "Error: no se pudo consultar la franja horaria en la BBDD"));   
+        //     }
+        //     else {
+        //         if (franjaDisponible) {
+        //             console.log("La franja horaria esta disponible");
+        //             request.body.category = request.body.categoria.toUpperCase()
+        //             daoTareas.añadirTareas(añadirTareaManualCallback, createObjectFromRequest(request));
+        //         }
+        //         else {
+        //             response.status(500);
+        //             response.render("add_tarea_manual", createResponseLocals(false, "Error: franja horaria no disponible"));   
+        //         }
+        //     }
+        // } 
 
-        // comprobar que no haya tareas en la franja proporcionada
-        // el dao automaticamente llamara a la funcion del DAO de añadir tareas si todo va bien
-        daoTareas.consultarTareasEnFranjaHoraria(franjaHorariaCallback, request.body.fechaIni, request.body.fechaFin);
+        // // comprobar que no haya tareas en la franja proporcionada
+        // // el dao automaticamente llamara a la funcion del DAO de añadir tareas si todo va bien
+        // daoTareas.consultarTareasEnFranjaHoraria(franjaHorariaCallback, request.body.fechaIni, request.body.fechaFin);
     }
     
 

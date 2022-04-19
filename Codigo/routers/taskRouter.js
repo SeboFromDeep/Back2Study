@@ -64,6 +64,11 @@ taskRouter.get("/addManualTask",
             controllerUsuario.usuarioLogeado,
             controllerTareas.renderAddManualTask);
 
+taskRouter.post("/addManualTask", 
+            multerFactory.none(),
+            controllerUsuario.usuarioLogeado,
+            controllerTareas.addTareaManual);
+
 // taskRouter.get("/taskDetalisBy/:id/:tipo/:nombre/:prioridad/:fecha/:cat", 
 taskRouter.get("/taskDetalisBy/:id/:tipo", 
                 controllerUsuario.usuarioLogeado, 
