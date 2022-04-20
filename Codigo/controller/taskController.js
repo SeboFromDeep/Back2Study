@@ -6,7 +6,7 @@ const mysql = require("mysql");
 const pool = mysql.createPool(config.databaseConfig);
 const taskDao = require('../js/taskDAO');
 const daoTareas = new taskDao(pool);
-
+const _ = require('underscore');
 const moment = require('moment');
 const fecha = moment();
 
@@ -19,64 +19,82 @@ class controllerTareas {
     getListTareas(request, response){
 
         daoTareas.listaTareas(request.session.id_)
-        .then(value =>{
+        .then(tareas =>{
             
             response.render("principal", {
-                title: "", 
-                nameUser: request.session.userName, 
-                mailUser: request.session.mail,
-                tareas: value?value:0 //Evaluamos si hay tareas y mandamos a la vista
+                            title: "", 
+                            nameUser: request.session.userName, 
+                            mailUser: request.session.mail,
+                            tareas: tareas?tareas:0,
+                            deleteId: false 
             });
         })
         .catch(error =>{  response.status(500);  });
     }
 
     
-
+    //Cambiar para promesas
     addTareaManual(request, response) {
-        console.log("Añadiendo la tarea manual " + request.body.nombre + " a la BBDD");
+        console.log("DATOS TAREA MANUAL");
+        console.log(request.body);
 
-        function añadirTareaManualCallback(err, result) {
-            if (err){
-                response.render("add_tarea_manual", createResponseLocals(false, "Error: creación de tarea manual en BBDD fallida"));   
-            }
-            else {
-                if (result) {
-                    response.render("listar_tareas", createResponseLocals(true, "Exito: tarea manual añadida"));
-                } else {
-                    response.render("add_tarea_manual", createResponseLocals(false, "Error: tarea manual es null"));
-                }
-            }
-        }   
+        console.log("Num tareas: "+request.body.oculto);
+        console.log("Tamaño: "+request.body.length);
+
+        // for (var i = 4; i < request.body.length; i++){
+        //     console.log("Valor es " + request.body[i]);
+        // }
+        // for (var clave in request.body){
+        //     console.log("La clave es " + clave+ " y el valor es " + request.body[clave]);
+        // }
         
-        function franjaHorariaCallback(err, franjaDisponible) {
-            if (err) {
-                response.status(500);
-                response.render("add_tarea_manual", createResponseLocals(false, "Error: no se pudo consultar la franja horaria en la BBDD"));   
-            }
-            else {
-                if (franjaDisponible) {
-                    console.log("La franja horaria esta disponible");
-                    request.body.category = request.body.categoria.toUpperCase()
-                    daoTareas.añadirTareas(añadirTareaManualCallback, createObjectFromRequest(request));
-                }
-                else {
-                    response.status(500);
-                    response.render("add_tarea_manual", createResponseLocals(false, "Error: franja horaria no disponible"));   
-                }
-            }
-        } 
+        const momentoComida = request.body.map(function(comida) {
+            return comida.momento;
+        });
+         
+        console.log(momentoComida);
+        // console.log("Añadiendo la tarea manual " + request.body.nombre + " a la BBDD");
 
-        // comprobar que no haya tareas en la franja proporcionada
-        // el dao automaticamente llamara a la funcion del DAO de añadir tareas si todo va bien
-        daoTareas.consultarTareasEnFranjaHoraria(franjaHorariaCallback, request.body.fechaIni, request.body.fechaFin);
+        // function añadirTareaManualCallback(err, result) {
+        //     if (err){
+        //         response.render("add_tarea_manual", createResponseLocals(false, "Error: creación de tarea manual en BBDD fallida"));   
+        //     }
+        //     else {
+        //         if (result) {
+        //             response.render("listar_tareas", createResponseLocals(true, "Exito: tarea manual añadida"));
+        //         } else {
+        //             response.render("add_tarea_manual", createResponseLocals(false, "Error: tarea manual es null"));
+        //         }
+        //     }
+        // }   
+        
+        // function franjaHorariaCallback(err, franjaDisponible) {
+        //     if (err) {
+        //         response.status(500);
+        //         response.render("add_tarea_manual", createResponseLocals(false, "Error: no se pudo consultar la franja horaria en la BBDD"));   
+        //     }
+        //     else {
+        //         if (franjaDisponible) {
+        //             console.log("La franja horaria esta disponible");
+        //             request.body.category = request.body.categoria.toUpperCase()
+        //             daoTareas.añadirTareas(añadirTareaManualCallback, createObjectFromRequest(request));
+        //         }
+        //         else {
+        //             response.status(500);
+        //             response.render("add_tarea_manual", createResponseLocals(false, "Error: franja horaria no disponible"));   
+        //         }
+        //     }
+        // } 
+
+        // // comprobar que no haya tareas en la franja proporcionada
+        // // el dao automaticamente llamara a la funcion del DAO de añadir tareas si todo va bien
+        // daoTareas.consultarTareasEnFranjaHoraria(franjaHorariaCallback, request.body.fechaIni, request.body.fechaFin);
     }
     
 
-    //REVISAR LOS RENDER
+    //REVISAR LOS RENDER!
     addTareaProgramada(request, response){
         const errors = validationResult(request);
-        console.log(errors);
         if(errors.isEmpty()){
             console.log("Añadiendo la tarea " + request.body.nombre +  " a la BBDD");
             // inicializamos el objeto de tarea
@@ -95,7 +113,6 @@ class controllerTareas {
             });
         }
         else{
-            console.log("errorfecha")
             response.status(200);
             response.render("add-scheduled-task", {
                 nameUser: request.session.userName,
@@ -121,6 +138,7 @@ class controllerTareas {
 
     getTask(request, response){
         console.log("obteniendo detalles de tarea "+ request.params.id+ " "+ request.params.tipo);
+        moment.locale("es");
         if(request.params.tipo == "m"){
             daoTareas.getDetailsTaskManual( request.session.id_, request.params.id)
             .then(tareaManual => {
@@ -134,7 +152,7 @@ class controllerTareas {
                                 idTarea: request.params.id,
                                 nombre: tareaManual[0].nombre,
                                 prioridad: tareaManual[0].prioridad, 
-                                fecha: tareaManual[0].fechafin,
+                                fecha: moment(tareaManual[0].fechafin).fromNow(),
                                 cat: tareaManual[0].categoria,
                                 tareaM: tareaManual
                         });
@@ -147,6 +165,8 @@ class controllerTareas {
            daoTareas.getDetailsTaskProgram( request.session.id_, request.params.id)
            .then(tareaProgramada => {
                     console.log("TAREA PROGRAMADA");
+                    
+                    tareaProgramada[0].fechafin = moment(tareaProgramada[0].fechafin).fromNow();
                     console.log(tareaProgramada);
                     response.render("verTareaProgramada",{
                         title: "Tarea Programada", 
@@ -160,7 +180,35 @@ class controllerTareas {
         }
     }
 
-    
+    /**
+     * Borra una tarea especifica seleccionada por el usuario (el usuario vera nombres y horarios, pero internamente trabajamos con id)
+     * @param {Object[]} request - Contiene el ID de la Tarea en .body
+     * @param {Object[]} response - 
+     * @returns {Promise} - Devuelve una cadena de promesas que comienza en el DAO de Tareas
+     */
+    borrarTarea(request, response) {
+        
+        daoTareas.deleteTask(request.session.id_, request.params.id)
+        .then(tareaBorrada =>{
+            console.log("tareaBorrada. "+tareaBorrada);
+            // console.log(createResponseLocals(true, "Tarea ", request.params.id, " borrada con exito"));
+            // response.render("borrar_tarea", createResponseLocals(true, "Tarea ", request.params.id, " borrada con exito"));
+            
+            response.render("principal", {
+                title: "", 
+                nameUser: request.session.userName, 
+                mailUser: request.session.mail,
+                tareas: undefined,
+                deleteId: request.params.id //Evaluamos si hay tareas y mandamos a la vista
+            });
+        })
+        .catch(function(error) {
+                //Hacer este render
+                console.log("Error Borrar Tarea: ", error)
+                response.status(500);
+                response.render("borrar_tarea", createResponseLocals(false, error));  
+        })
+    }
 }
 
 module.exports = controllerTareas;

@@ -21,7 +21,16 @@
 <!-- CONTENIDO -->
     <div class="container contenido ">
          <!-- <h1>HOLA <%=nameUser %> tu correo de sesion es <%=mailUser %></h1> -->
-            
+            <!-- Para borrado de tareas -->
+            <% if(deleteId!=false){%>
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Borrado tarea con ID <%=deleteId%> exitoso</strong> 
+                    <button  type="button" class="btn btn-outline-primary"  >
+                        <a href="/tareas/taskList">OK</a>
+                    </button>
+                </div>
+            <% }%>
+
             <% let color="bg-secondary";%>
             <% let tipoTarea="";%>
             <% let prioridad="";%>

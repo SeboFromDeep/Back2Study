@@ -4,7 +4,7 @@ const dao = require("../../js/taskDAO");
 const mysql = require('mysql');
 const config = require('../../js/config');
 const pool = mysql.createPool(config.databaseConfig);
-const task = new dao(pool);
+const taskDao = new dao(pool);
 const moment = require("moment");
 
 const a = moment("1999-1-1");
@@ -24,10 +24,12 @@ describe("Añadir Tarea Programada", function () {
             horas: 13,
             tipo: "DIARIA" // diaria o semanal 
         };
-        task.añadirTareaProgramada(tareaProgramada, function(errors, result) {
+
+        taskDao.addTaskProgram(tareaProgramada, function(errors, result) {
             assert.equal(errors, null);
             assert.notEqual(result, null);
             assert.typeOf(result, "object", "debería devolver un objeto");
         });
+
     });
 });

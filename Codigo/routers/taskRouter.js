@@ -64,15 +64,21 @@ taskRouter.get("/addManualTask",
             controllerUsuario.usuarioLogeado,
             controllerTareas.renderAddManualTask);
 
+taskRouter.post("/addManualTask", 
+            multerFactory.none(),
+            controllerUsuario.usuarioLogeado,
+            controllerTareas.addTareaManual);
+
 // taskRouter.get("/taskDetalisBy/:id/:tipo/:nombre/:prioridad/:fecha/:cat", 
 taskRouter.get("/taskDetalisBy/:id/:tipo", 
                 controllerUsuario.usuarioLogeado, 
                 controllerTareas.getTask);
 
-// //Borrar Tarea 
+//Borrar Tarea 
 taskRouter.get("/deleteTask/:id/:tipo", 
                 controllerUsuario.usuarioLogeado, 
-                controllerTareas.deleteTask);
+                controllerTareas.borrarTarea);
+
 // taskRouter.get("/taskBy/:id", 
 //                 cU.usuarioLogeado, 
 //                 cT.getTask);//Busqueda por tag
