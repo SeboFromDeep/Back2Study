@@ -11,6 +11,11 @@ const task = new dao(pool);
 // tests
 describe("Buscar tareas por categoria", async function () {
 
+    before(function () {
+        //Antes de cada test insertamos un usuario y varias tareas
+    
+    })
+    
     it("Debería devolver exactamente la misma lista", async function () {
         let id_usuario = 2, categoria= "@WEB";
         //Haría la lista de las tareas del usuario 2 con categoria @WEB
@@ -34,7 +39,7 @@ describe("Buscar tareas por categoria", async function () {
         }
 
        await task.buscarTareasporCategoria(categoria, id_usuario).then(value => {
-            expect(value[0]).to.equal(prueba);
+            expect(value[0]).to.deep.equal(prueba);
         });
 
     });
