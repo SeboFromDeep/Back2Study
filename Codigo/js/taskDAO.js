@@ -211,30 +211,6 @@ class DaoTask{
   
     }
 
-    insert_task(tarea, callback) {
-        this.pool.getConnection(function(err, connection) {
-            if (err) {
-                callback(new Error("Error de conexión a la base de datos"));
-            }
-            else {
-                connection.query('USE back2study;');
-                const valor = "INSERT INTO tareas VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-                connection.query(valor,
-                    [tarea.id_tarea, tarea.nombre, tarea.prioridad, tarea.categoria, tarea.id_usuario, tarea.fechafin, tarea.fechaini, tarea.tipo],
-                    function(err, rows) {
-                        connection.release(); // devolver al pool la conexión
-                        if (err) {
-                            callback(new Error("Error de acceso a la base de datos"));
-                        }
-                        else {
-                                console.log("TAREA INSERTADA");
-                                callback(null, true);
-                        }
-                    });
-            }
-        });
-    }
-
      /*
     Comprueba que existe una tarea en la base de datos
     True --> La tarea existe
