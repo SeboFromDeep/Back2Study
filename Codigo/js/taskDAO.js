@@ -7,7 +7,7 @@ class DaoTask{
         
     }
 
-    BuscarTareaPorNombre(id){
+    BuscarTareaPorNombre(nombre,id){
         return new Promise((resolve, reject) => {
             this.pool.getConnection(function(err,connection){
                 if(err){
