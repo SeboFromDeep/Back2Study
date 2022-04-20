@@ -277,6 +277,8 @@
         <div class="col-auto bg-light p-5 rounded">
             <form action="/tareas/addManualTask" method="POST" enctype="application/x-www-form-urlencoded">
                 <h1 class="display-6 text-center">Añadir Tarea Manual</h1>
+                <div id="conteoTareas">
+                </div>
                 <div class="row justify-content-end">
                     <div class="col-1 d-grid">
                         <button type="button" class="btn btn-success" onclick="AddTareas()">+</button>
@@ -367,8 +369,7 @@
                 </div>
                 <div id="tareaManual">
                 </div> <!-- FIN TAREA MANUAL en este div se añaden los dias adicionales-->
-                <div id="conteoTareas">
-                </div>
+                
                 <br>
                 
                 <button type="submit" class="btn btn-primary w-100" onclick="getCount()">Añadir</button>

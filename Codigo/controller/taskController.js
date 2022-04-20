@@ -40,19 +40,38 @@ class controllerTareas {
 
         console.log("Num tareas: "+request.body.oculto);
         console.log("Tamaño: "+request.body.length);
-
+        let tareaPadre = {
+            nombre : request.body.nombre,
+            fechaIni : request.body.fechaIni,
+            fechaFin : request.body.fechaFin,
+            prioridad : request.body.prioridad,
+            categoria : request.body.categoria
+        }
         // for (var i = 4; i < request.body.length; i++){
         //     console.log("Valor es " + request.body[i]);
         // }
+        let keys = Object.keys(request.body);
+        let x=0;
+        keys.forEach(function (k) {
+            x++;
+            if (x>6){
+                for (var i = 0; i < 9; i++) {
+                    n += i;
+                    mifuncion(n);
+                 } 
+                console.log(i + " " +k + ":"+request.body[k]);
+            }   
+            //console.log(request.body[k]); //Contenido
+        });
         // for (var clave in request.body){
         //     console.log("La clave es " + clave+ " y el valor es " + request.body[clave]);
         // }
         
-        const momentoComida = request.body.map(function(comida) {
-            return comida.momento;
-        });
+        // const momentoComida = request.body.map(function(comida) {
+        //     return comida.momento;
+        // });
          
-        console.log(momentoComida);
+        // console.log(momentoComida);
         // console.log("Añadiendo la tarea manual " + request.body.nombre + " a la BBDD");
 
         // function añadirTareaManualCallback(err, result) {
