@@ -189,7 +189,7 @@ class controllerU{
     goTochangeEmail(request, response){
         console.log("caaaambiamos paaaas");
         response.status(200);
-        //AQUI SE DEBERIA COMPROBAR QUE EL TOKEN QUE SE RECIBE CONICIDE CON EL CREADO GLOBALMENTE
+        //AQUI SE DEBERIA COMPROBAR QUE EL TOKEN QUE SE RECIBE CONICIDE CON EL CREADO GLOBALMENTE mirar en response.locals.tokenMail o request.session.tokenMail
         response.render("change_pass");
     }
 
