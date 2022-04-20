@@ -134,40 +134,52 @@ class DaoTask{
 
   
 
-    addTaskManual(callback, tarea){
-        this.pool.getConnection(function(err,connection){
-            if(err){
-                callback(new ErrorEvent("Error de conexión a la base de datos"));
-            }
-            else{
-                console.log("ID DE USUARIO "+id)
-                const valor ="Insert into tareas (nombre,prioridad,categoria,id_usuario,fechafin,fechaIni,tipo) values(?, ?, ?, ?, ?, ?, ?)";
-                connection.query(valor,[tarea.nombre, tarea.prioridad, tarea.categoria, tarea.usuario, tarea.fechaFin, tarea.fechaIni, 'm'],
-                function(err, idtarea){
-                    if(err){
-                        callback(new ErrorEvent("Error de acceso a la base de datos", err.message));
-                    }
-                    else
-                    {
-                        const valor ="Insert into tareas_manuales (id_tarea,hora_ini,hora_fin,recurrente,dias_recurrentes) values(?, ?, ?, ?, ?)";
-                        connection.query(valor,[idtarea, tarea.horaIni, tarea.horaFin, tarea.recurrente, tarea.diasRecurrentes],
-                        function(err, result){
+    addTaskManual(tarea, tareasM, usuario){
+        return new Promise((resolve, reject) =>{
+            this.pool.getConnection(function(err,connection){
+                if(err){
+                    reject(new Error("Error de conexión a la base de datos"));
+                }
+                else{
+                    console.log("Insertando tarea de usuario " + tarea.usuario);
+                    const valor ="Insert into tareas (nombre,prioridad,categoria,id_usuario,fechafin,fechaIni, tipo) values(?, ?, ?, ?, ?, ?, ?)";
+                    connection.query(valor,
+                    [tarea.nombre, tarea.prioridad, tarea.categoria, usuario, tarea.fechaFin, tarea.fechaIni, 'm'],
+                    function(err, tareacreada){
+                        if(err){
+                            
+                            reject(new Error("Error de conexión a la base de datos"));
+                            
+                        }
+                        else if(tareacreada.affectedRows===1){
 
-                            if(err){
-                                console.log("ERROR:"+err.message);
-                                callback(new ErrorEvent
-                                    ("Error al insertar tarea"));
+                            for (let i = 0; i < tareasM.length; i++) {
+                                // console.log(tareas[i].dia.replace(/(,)/gm,"")+" "+tareas[i].horaIni+" "+tareas[i].horaFin+" "+tareas[i].recursivo);
+                                const valor ="Insert into tareas_manuales (id_tarea, hora_ini, hora_fin, recurrente, dias_recurrentes) values(?, ?, ?, ?, ?)";
+                                connection.query(valor,[tareacreada.insertId, tareasM[i].horaIni, tareasM[i].horaFin, tareasM[i].recursivo, tareasM[i].dia.replace(/(,)/gm,"")],
+                                function(err, tareaHijaP){
+                                    
+                                    if(err){
+                                        console.log("ERROR:"+err.message);
+                                        reject(new Error("Error al insertar tarea"));
+                                    }
+                                    else{
+                                        console.log(tareaHijaP);
+                                        resolve(tareacreada.insertId);
+                                        // if(tareaHijaP.affectedRows===1)    
+                                        // else resolve(false);
+                                    } 
+                                });
                             }
-                            else
-                            {
-                                console.log("RESULTADOS:"+ result);
-                                callback(null, result);
-                            }
-                        });
-                    }
-                });
-            }
-
+                            connection.release();
+                            
+                            
+                        }
+                        else resolve(false);
+                    });
+                }
+    
+            });
         });
     }
 

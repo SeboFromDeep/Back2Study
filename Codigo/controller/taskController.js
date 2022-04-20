@@ -45,70 +45,58 @@ class controllerTareas {
             fechaIni : request.body.fechaIni,
             fechaFin : request.body.fechaFin,
             prioridad : request.body.prioridad,
-            categoria : request.body.categoria
+            categoria : request.body.categoria.toUpperCase()
         }
-        // for (var i = 4; i < request.body.length; i++){
-        //     console.log("Valor es " + request.body[i]);
-        // }
-        let keys = Object.keys(request.body);
-        let x=0;
-        keys.forEach(function (k) {
-            x++;
-            if (x>6){
-                for (var i = 0; i < 9; i++) {
-                    n += i;
-                    mifuncion(n);
-                 } 
-                console.log(i + " " +k + ":"+request.body[k]);
-            }   
-            //console.log(request.body[k]); //Contenido
+        //Tratamos las distintas configuraciones para hacer el insert
+        let objectToFix = request.body;
+        let initialLines = 6;
+        let linesPerTask = 4;
+
+        var newObject = { tasks: [] }
+        var initialCount = initialLines // inicializamos el initialCount a lineas iniciales para saber cuando pasar a la fase de tareas
+        var currentlyAddedTasks = 0 // cuantas tareas tiene el newObject incluidas actualmente 
+        var tasksToAdd = parseInt(request.body.oculto) // las tareas que tiene el objectToFix
+        var currentTaskLine = 0 // linea actual a procesar
+        var currentTask // el objeto de la tarea actual que se esta procesando
+        for (const key in objectToFix) {
+            if (initialCount > 0) { // fase de lineas iniciales (copiamos las lineas tal cual)
+                newObject[key] = objectToFix[key]
+                initialCount--;
+            } else { // fase de tareas (aqui procesamos todo linea a linea)
+                let newVar = objectToFix[key] // cogemos el valor de la nueva linea a procesar
+                if (currentTaskLine == 0) { // si empezamos en una linea nueva, creamos el objeto de la tarea que vamos a guardar
+                    if (tasksToAdd == currentlyAddedTasks) return newObject;
+                    currentTask = {}
+                    newObject.tasks[currentlyAddedTasks] = currentTask // se incluye aqui, pero las tablas van por referencia, se pueden modificar mas adelante
+                    currentlyAddedTasks++;
+                    // si la currentTaskLine es 0, estamos procesando el dia
+                    // aprovechamos y ya metemos aqui
+                    let fixedVar = ""
+                    for (const newKey in newVar) // vamos string por string concatenando con separador
+                        fixedVar = fixedVar + newVar[newKey] + ",";
+                    // actualizamos el valor de esa linea ya que lo hemos procesado
+                    newVar = fixedVar.slice(0, -1); // quita la ultima coma del string (esto si fuera necesario formatear con un separador)
+                }
+                currentTask[key.replace(/\d+/g, '')] = newVar // ese replace quita los numeros del string para dejar solo "dia", etc
+                currentTaskLine = (currentTaskLine+1)%linesPerTask; // 4 son las lineas por cada tarea
+            }
+            }
+        let tareas = newObject.tasks;
+        for (let i = 0; i < tareas.length; i++) {
+            console.log(tareas[i].dia.replace(/(,)/gm,"")+" "+tareas[i].horaIni+" "+tareas[i].horaFin+" "+tareas[i].recursivo);
+        }
+        daoTareas.addTaskManual(tareaPadre, newObject.tasks, request.session.id_)
+        .then(tareaManualId => {
+            if(tareaManualId)   response.redirect("/tareas/taskDetalisBy/"+tareaManualId+"/m");
+            else console.log("NO INTRODUCIDA");
+        })
+        .catch( error =>{
+            response.status(500);
+            console.log("ERROR GARRAFAL");
+            // response.render("add-scheduled-task", createResponseLocals(false, "Error en la creación de la tarea"));
         });
-        // for (var clave in request.body){
-        //     console.log("La clave es " + clave+ " y el valor es " + request.body[clave]);
-        // }
-        
-        // const momentoComida = request.body.map(function(comida) {
-        //     return comida.momento;
-        // });
-         
-        // console.log(momentoComida);
-        // console.log("Añadiendo la tarea manual " + request.body.nombre + " a la BBDD");
-
-        // function añadirTareaManualCallback(err, result) {
-        //     if (err){
-        //         response.render("add_tarea_manual", createResponseLocals(false, "Error: creación de tarea manual en BBDD fallida"));   
-        //     }
-        //     else {
-        //         if (result) {
-        //             response.render("listar_tareas", createResponseLocals(true, "Exito: tarea manual añadida"));
-        //         } else {
-        //             response.render("add_tarea_manual", createResponseLocals(false, "Error: tarea manual es null"));
-        //         }
-        //     }
-        // }   
-        
-        // function franjaHorariaCallback(err, franjaDisponible) {
-        //     if (err) {
-        //         response.status(500);
-        //         response.render("add_tarea_manual", createResponseLocals(false, "Error: no se pudo consultar la franja horaria en la BBDD"));   
-        //     }
-        //     else {
-        //         if (franjaDisponible) {
-        //             console.log("La franja horaria esta disponible");
-        //             request.body.category = request.body.categoria.toUpperCase()
-        //             daoTareas.añadirTareas(añadirTareaManualCallback, createObjectFromRequest(request));
-        //         }
-        //         else {
-        //             response.status(500);
-        //             response.render("add_tarea_manual", createResponseLocals(false, "Error: franja horaria no disponible"));   
-        //         }
-        //     }
-        // } 
-
-        // // comprobar que no haya tareas en la franja proporcionada
-        // // el dao automaticamente llamara a la funcion del DAO de añadir tareas si todo va bien
-        // daoTareas.consultarTareasEnFranjaHoraria(franjaHorariaCallback, request.body.fechaIni, request.body.fechaFin);
     }
+    
     
 
     //REVISAR LOS RENDER!
@@ -122,8 +110,8 @@ class controllerTareas {
             let tareaProgramada = createObjectFromRequest(request);
             
             daoTareas.addTaskProgram(tareaProgramada)
-            .then(tarea => {
-                if(tarea)   response.redirect("/tareas/taskDetalisBy/"+tarea+"/p");
+            .then(tareaId => {
+                if(tareaId)   response.redirect("/tareas/taskDetalisBy/"+tareaId+"/p");
                 else response.render("add-scheduled-task", createResponseLocals(false, "Error en la creación de la tarea"));
             })
             .catch( error =>{
