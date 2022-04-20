@@ -81,43 +81,8 @@ class DaoTask{
                     const sql="SELECT tareas.nombre, tareas.prioridad, tareas.categoria, tareas.fechafin, tareas.fechaini, tareas.tipo ,tareas_programadas.horas ,tareas_programadas.tipo " +
                     "FROM back2study.tareas JOIN tareas_programadas "+
                     "on tareas.id_tarea= tareas_programadas.id_programada "+
-                    " where tareas.id_usuario= ? and tareas.id_tarea=?";
+                    " where tareas.id_usuario= ? and tareas_programadas.id_programada=?";
                     connection.query(sql, [idUsuario, idTarea],
-                            function(err,result){
-                            connection.release();
-                            if(err){
-                                console.log("ERROR:"+err.message);
-                                reject(new Error("Error de acceso a la base de datos"));
-                            }
-                            else{
-                                console.log("RESULTADOS Programada:"); 
-                                console.log(result.length);
-                                if(result.length==1)    resolve(result);
-                                else resolve(false);
-                                
-                            }
-                        });
-                }
-            })
-        })
-        
-    }
-
-    //Hay que ver si coge directamente la columna de JSON
-    getOrganizacionProgram(idUsuario, idTarea){
-        return new Promise((resolve, reject) => {
-            this.pool.getConnection(function(err,connection){
-                if(err){
-                    reject(new Error("Error de conexión a la base de datos"));
-                }
-                else{
-                    var date = new Date(Date.now());
-                    // tareas.id, tareas.nombre, tareas.prioridad, tareas.categoria, tareas.fechafin, tareas.fechaini, tareas.tipo, "
-                    const sql="SELECT tarea.nombre, tarea.prioridad, tarea.categoria, tarea.id_usuario, tarea.fechafin, tarea.fechaini, id_subtarea, hora_ini, hora_fin " +
-                    "FROM back2study.tareas JOIN tareas_organizadas "+
-                    "on tareas.id_tarea= tareas_organizadas.id_programada "+
-                    " where tareas.id_usuario= ? and tareas.fechafin>=? order by hora_fin";
-                    connection.query(sql, [idUsuario, date.toISOString().slice(0, 19).replace('T', ' ')],
                             function(err,result){
                             connection.release();
                             if(err){
@@ -215,18 +180,19 @@ class DaoTask{
                 }
                 else{
                     console.log("Insertando tarea de usuario " + tarea.usuario);
-                    const valor ="Insert into tareas (nombre,prioridad,categoria,id_usuario,fechafin,fechaIni, tipo) values(?, ?, ?, ?, ?, ?, ?)";
+                    const valor ="Insert into tareas (nombre,prioridad,categoria,id_usuario,fechafin,fechaIni,horas, modo_estudio, tipo) values(?, ?, ?, ?, ?, ?, ?)";
                     connection.query(valor,
-                    [tarea.nombre, tarea.prioridad, tarea.categoria, tarea.usuario, tarea.fechaFin, tarea.fechaIni, 'p'],
+                    [tarea.nombre, tarea.prioridad, tarea.categoria, tarea.usuario, tarea.fechaFin, tarea.fechaIni, tarea.horas, tarea.tipo, 'p'],
                     function(err, tareacreada){
                         if(err){
                             
                             reject(new Error("Error de conexión a la base de datos"));
                             
                         }
+                        //esto va a cambiar ya que se va a hacer un after insert en la tarea padre
                         else if(tareacreada.affectedRows===1){
-                            const valor ="Insert into tareas_programadas (id_programada, horas, tipo) values(?, ?, ?)";
-                            connection.query(valor,[tareacreada.insertId, tarea.horas, tarea.tipo],
+                            const valor ="Insert into tareas_programadas (id_programada) values(?)";
+                            connection.query(valor,[tareacreada.insertId],
                             function(err, tareaHijaP){
                                 connection.release();
                                 if(err){
@@ -243,8 +209,157 @@ class DaoTask{
     
             });
         });
-        
+  
     }
+
+     /*
+    Comprueba que existe una tarea en la base de datos
+    True --> La tarea existe
+    False --> No Existe
+    */
+    //Es posible que esta comprobacion sobre
+    existeTarea(idUsuario, idTarea) {
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection(function(err,connection){
+                if(err){
+                    reject(new ErrorEvent("Error de conexión a la base de datos"));
+                }
+                else{
+                    const existeTarea = "SELECT * FROM back2study.tareas WHERE id_tarea = ? && id_usuario = ?";
+                    connection.query(existeTarea,[idTarea, idUsuario],
+                    function(err, result){
+                    
+                        if(err){
+                            console.log("ERROR: "+err.message);
+                            reject(new Error("Error de acceso a la base de datos"));
+                        }
+                        else{
+                            
+                            if (result.length==1){
+                                console.log("La tarea existe")
+                                resolve(true);
+                            }   
+                            else resolve(false);
+                        }
+                    });
+                }
+            });
+        });
+    }
+    
+    deleteTask(idUsuario, idTarea){
+        return new Promise((resolve, reject) =>{
+            this.pool.getConnection(function(err, connection) {
+                if (err) reject(new Error("Error de conexión a la base de datos"));
+                else{
+                    const valor ="DELETE FROM tareas WHERE tareas.id_usuario = ? and tareas.id_tarea = ?";
+                    // const valor ="DELETE FROM tareas_manuales WHERE id_tarea = ?"; //borrado físico
+                    connection.query(valor ,[idUsuario, idTarea],
+                        function(err, rows) {
+                            if(err){
+                                console.log("ERROR:"+err.message);
+                                reject(new Error("Error al borrar tarea"));
+                            }
+                            else{
+                                
+                                if(rows.affectedRows===1)    resolve(idTarea);
+                                else resolve(false);
+                            } 
+                                
+
+                        });
+
+                }
+
+
+            });
+        });
+    }
+    
+    //     deleteTaskManual(idUsuario, idTarea) {
+    //         return new Promise((resolve, reject) => {
+    //          this.pool.getConnection(function(err, connection) {
+    //             if (err) {
+    //                 reject(new Error("Error de conexión a la base de datos"));
+    //             }
+    //             else {
+    //                 connection.query('USE back2study;');
+    //                 connection.query('SET SQL_SAFE_UPDATES = 0;');
+    //                 //Borramos en la tabla hija
+    //                 const valor ="DELETE FROM tareas_manuales WHERE id_tarea = ?"; //borrado físico
+    //                 connection.query(valor ,[idTarea],
+    //                     function(err, rows) {
+    //                         connection.release(); // devolver al pool la conexión
+    //                         if (err) {
+    //                             reject(new Error("Error de acceso a la base de datos"));
+    //                         }
+    //                         else {
+    //                                 //Borramos en la tabla padre
+    //                                 const valor ="DELETE FROM tareas WHERE usuario = ? && id = ?";
+    //                                 connection.query(valor,[idUsuario, idTarea],
+    //                                     function(err, rows){
+    //                                         connection.release();
+    //                                         if(err){
+    //                                             reject(new Error
+    //                                                 ("Error de acceso a la base de datos"));
+    //                                         }
+    //                                         else
+    //                                         {
+    //                                             console.log("Tarea eliminada con éxito");
+    //                                             resolve(true);
+    //                                         }
+    //                                     });
+    //                               }
+    //                     });
+                    
+    //                 }
+                
+    //          });
+    //         });
+    //    }
+       
+    //     //    DELETE FROM tareas WHERE where tareas.id_usuario= ? and tareas.id_tarea=?
+    //    deleteTaskProgram(idUsuario, idTarea) {
+    //     return new Promise((resolve, reject) => {
+    //     this.pool.getConnection(function(err, connection) {
+    //         if (err) {
+    //             reject(new Error("Error de conexión a la base de datos"));
+    //         }
+    //         else {
+    //             // connection.query('USE back2study;');
+    //             // connection.query('SET SQL_SAFE_UPDATES = 0;');
+    //             //Borramos en la tabla hija
+    //             const valor ="DELETE FROM tareas_programadas WHERE id = ?";
+    //             connection.query(valor ,[idTarea],
+    //                 function(err, rows) {
+    //                     connection.release(); // devolver al pool la conexión
+    //                     if (err) {
+    //                         reject(new Error("Error de acceso a la base de datos"));
+    //                     }
+    //                     else {
+    //                             //Borramos en la tabla padre
+    //                             const valor ="DELETE FROM tareas WHERE usuario = ? && id = ?";
+    //                             connection.query(valor,[idUsuario, idTarea],
+    //                                 function(err, rows){
+    //                                     connection.release();
+    //                                     if(err){
+    //                                         reject(new Error
+    //                                             ("Error de acceso a la base de datos"));
+    //                                     }
+    //                                     else
+    //                                     {
+    //                                         console.log("Tarea eliminada con éxito");
+    //                                         resolve(true);
+    //                                     }
+    //                                 });
+    //                           }
+    //                 });
+                
+    //             }
+            
+    //      });
+    //     });
+    // }
     
 }
 
