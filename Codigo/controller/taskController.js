@@ -6,7 +6,7 @@ const mysql = require("mysql");
 const pool = mysql.createPool(config.databaseConfig);
 const taskDao = require('../js/taskDAO');
 const daoTareas = new taskDao(pool);
-
+const _ = require('underscore');
 const moment = require('moment');
 const fecha = moment();
 
@@ -37,6 +37,22 @@ class controllerTareas {
     addTareaManual(request, response) {
         console.log("DATOS TAREA MANUAL");
         console.log(request.body);
+
+        console.log("Num tareas: "+request.body.oculto);
+        console.log("Tamaño: "+request.body.length);
+
+        // for (var i = 4; i < request.body.length; i++){
+        //     console.log("Valor es " + request.body[i]);
+        // }
+        // for (var clave in request.body){
+        //     console.log("La clave es " + clave+ " y el valor es " + request.body[clave]);
+        // }
+        
+        const momentoComida = request.body.map(function(comida) {
+            return comida.momento;
+        });
+         
+        console.log(momentoComida);
         // console.log("Añadiendo la tarea manual " + request.body.nombre + " a la BBDD");
 
         // function añadirTareaManualCallback(err, result) {
@@ -76,7 +92,7 @@ class controllerTareas {
     }
     
 
-    //REVISAR LOS RENDER
+    //REVISAR LOS RENDER!
     addTareaProgramada(request, response){
         const errors = validationResult(request);
         if(errors.isEmpty()){
@@ -171,27 +187,7 @@ class controllerTareas {
      * @returns {Promise} - Devuelve una cadena de promesas que comienza en el DAO de Tareas
      */
     borrarTarea(request, response) {
-        // return daoTareas.existeTarea(request.session.id_, request.body.id)
-        // .then(function(value) {
-        //     // tarea existe -> nueva promesa
-        //     // if (value == true) {
-        //     //     if (request.body.type == "Manual")
-        //     //         return daoTareas.deleteTaskManual(request.session.id_, request.body.id);
-        //     //     else
-        //     //         return daoTareas.deleteTaskProgram(request.session.id_, request.body.id);
-        //     // } else { // tarea no existe en base de datos
-        //     //    return Promise.reject(new Error("Error: la tarea con id ", request.body.id, " no existe"));
-        //     // }
-        //     if (value == true) return daoTareas.deleteTask(request.session.id_, request.body.id);
-        //     else return Promise.reject(new Error("Error: la tarea con id ", request.body.id, " no existe"));
-        // }).then(function() {
-        //     response.render("borrar_tarea", createResponseLocals(true, "Tarea ", request.body.id, " borrada con exito"));
-        // }).catch(function(error) {
-        //     console.log("Error Borrar Tarea: ", error)
-        //     response.status(500);
-        //     response.render("borrar_tarea", createResponseLocals(false, error));  
-        // })
-        // console.log("Borrando tarea: "+request.params.id);
+        
         daoTareas.deleteTask(request.session.id_, request.params.id)
         .then(tareaBorrada =>{
             console.log("tareaBorrada. "+tareaBorrada);

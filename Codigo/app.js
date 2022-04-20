@@ -71,29 +71,60 @@ app.use("/tareas", routerTask);
 
 //-- Pagina inicial
 app.get("/", (request, response) => {
-    response.status(200);
+    if(request.session.userName===undefined){
+        response.status(200);
+        response.render("login", {  
+                title: "Página de inicio de sesión",
+                msgRegistro: false});
+    }
+    else{
+        response.render("principal", {  
+            title: "Back2Study", 
+            nameUser: request.session.userName, 
+            mailUser: request.session.mail,
+            tareas: undefined,
+            deleteId: false });
+    }
     
-    response.render("login", {  title: "Página de inicio de sesión",
-                                msgRegistro: false});
 });
 
 
 //-----------------------------------Registro --> Login--------------
 app.get("/login", (request, response) => {
-    response.status(200);
-    
-    response.render("login", {  title: "Pagina de logeo", 
-                                    msgRegistro: false});
+    if(request.session.userName===undefined){
+        response.status(200);
+        response.render("login", {  
+                title: "Página de inicio de sesión",
+                msgRegistro: false});
+    }
+    else{
+        response.render("principal", {  
+            title: "Back2Study", 
+            nameUser: request.session.userName, 
+            mailUser: request.session.mail,
+            tareas: undefined,
+            deleteId: false });
+    }
     
 });
 
 //-- Pagina de registro Login --> Registro
 app.get("/signup", (request, response) => {     
-    response.status(200);
-    const errors = validationResult(request);
-    response.render("signup", { title: "Página de registro",
-                                errores: errors.mapped() ,
-                                msgRegistro: false});//False para usu que no existe True si ya existe 
+    if(request.session.userName===undefined){
+        response.status(200);
+        const errors = validationResult(request);
+        response.render("signup", { title: "Página de registro",
+                                    errores: errors.mapped() ,
+                                    msgRegistro: false});//False para usu que no existe True si ya existe 
+    }
+    else{
+        response.render("principal", {  
+            title: "Back2Study", 
+            nameUser: request.session.userName, 
+            mailUser: request.session.mail,
+            tareas: undefined,
+            deleteId: false });
+    }                                
 });
 
 // Recuperar Contraseña-----------------------
