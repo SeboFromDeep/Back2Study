@@ -17,25 +17,25 @@ describe("Buscar tareas por Nombre", async function () {
     })
     
     it("Debería devolver exactamente la misma lista", async function () {
-        let id_usuario = 2, nombre= "Estudio de Bootstrap";
+        let id_usuario = 1, nombre= "Estudio de Bootstrap";
         //Haría la lista de las tareas del usuario 2 con categoria @WEB
         const dateTime = '2022-04-18 00:00:00';
         let dateTimeParts= dateTime.split(/[- :]/); // regular expression split that creates array with: year, month, day, hour, minutes, seconds values
         dateTimeParts[1]--; // monthIndex begins with 0 for January and ends with 11 for December so we need to decrement by one
         const fecha1 = new Date(...dateTimeParts); // our Date object
-        const dateTime2 = '2022-05-10 00:00:00';
+        const dateTime2 = '2022-04-20 00:00:00';
         let dateTimeParts2= dateTime2.split(/[- :]/); // regular expression split that creates array with: year, month, day, hour, minutes, seconds values
         dateTimeParts2[1]--; // monthIndex begins with 0 for January and ends with 11 for December so we need to decrement by one
         const fecha2 = new Date(...dateTimeParts2); // our Date object
 
         let prueba = {
             id_tarea: 2,
-            nombre: "Estudio de Bootstrap",
-            prioridad: "MEDIA",
-            categoria: "@WEB",
+            nombre: "Entrenamiento",
+            prioridad: "ALTA",
+            categoria: "@VERANO",
             fechafin: fecha1,
             fechaini: fecha2,
-            tipo: "p",
+            tipo: "m",
         }
 
        await task.BuscarTareaPorNombre(nombre, id_usuario).then(value => {
