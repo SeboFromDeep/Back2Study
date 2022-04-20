@@ -11,14 +11,11 @@ const task = new dao(pool);
 // tests
 describe("Buscar tareas por categoria", async function () {
 
-    before(function () {
-        //Antes de cada test insertamos un usuario y varias tareas
-    
-    })
-    
     it("Debería devolver exactamente la misma lista", async function () {
         let id_usuario = 2, categoria= "@WEB";
+
         //Haría la lista de las tareas del usuario 2 con categoria @WEB
+        //Código para que no peten las fechas
         const dateTime = '2022-04-18 00:00:00';
         let dateTimeParts= dateTime.split(/[- :]/); // regular expression split that creates array with: year, month, day, hour, minutes, seconds values
         dateTimeParts[1]--; // monthIndex begins with 0 for January and ends with 11 for December so we need to decrement by one
@@ -44,5 +41,12 @@ describe("Buscar tareas por categoria", async function () {
 
     });
 
+    it("No debería devolver nada", async function () {
+        let id_usuario = 2, categoria= "@INEXISTENTE";
+        await task.buscarTareasporCategoria(categoria, id_usuario).then(value => {
+            expect(value).to.equal(false);
+        });
 
+
+    })
 });
