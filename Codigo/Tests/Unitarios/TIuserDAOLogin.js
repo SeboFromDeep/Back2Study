@@ -1,7 +1,7 @@
 const assert = require("chai").assert;
 const chai = require("chai");
 const dao = require("../../js/userDAO");
-const testDAO = require("./testsDAOMethods");
+const testDAO = require("../testsDAOMethods");
 const mysql = require('mysql');
 const config = require('../../js/config');
 const { NULL } = require("mysql/lib/protocol/constants/types");
@@ -31,10 +31,11 @@ describe('hooks', function () {
         let id_usuario_no_reg = dao_test.get_id_user(usuario_no_reg.email)
         dao_test.delete_user(id_usuario_no_reg);
     });
-    
+
     after(function () {
         // después de cada test borramos al que se ha insertado para poder ejecutarlos siempre
-        dao_test.delete_user(usuario_reg.email);
+        let id_usuario_reg = dao_test.get_id_user(usuario_reg.email);
+        dao_test.delete_user(id_usuario_reg);
     });
 
     describe("Iniciar sesión correcto", function () {

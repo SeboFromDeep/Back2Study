@@ -11,7 +11,7 @@ const controller = require("../../controller/userController");
 const mysql = require('mysql');
 const config = require('../../js/config');
 const UserController = new controller();
-const testDAO = require("./testsDAOMethods");
+const testDAO = require("../testsDAOMethods");
 const pool = mysql.createPool(config.databaseConfig);
 const dao_test = new testDAO(pool);
 
@@ -30,12 +30,12 @@ describe('hooks', function () {
 
         it("Todos los datos del registro son correctos y el usuario no está registrado aún", function (done) {
             chai.request('http://localhost:3300')
-            .post('/usuarios/registro_Usuario')
-            .send({username:"RegistroTestNEG", correo: "registrotestNEG@gmail.com", password: "1234", password2: "1234"})
-            .end(function (err, response) {
-                expect(response).to.have.status(200);
-                done();
-            })
+                .post('/usuarios/registro_Usuario')
+                .send({ username: "RegistroTestNEG", correo: "registrotestNEG@gmail.com", password: "1234", password2: "1234" })
+                .end(function (err, response) {
+                    expect(response).to.have.status(200);
+                    done();
+                })
         });
 
     });
@@ -44,12 +44,12 @@ describe('hooks', function () {
 
         it("Ya hay un usuario registrado con el mismo nombre de usuario", function (done) {
             chai.request('http://localhost:3300')
-            .post('/usuarios/registro_Usuario')
-            .send({username:"RegistroTestNEG", correo: "registrotestNEGmn@gmail.com", password: "1234", password2: "1234"})
-            .end(function (err, response) {
-                expect(response).to.have.status(500);
-                done();
-            })
+                .post('/usuarios/registro_Usuario')
+                .send({ username: "RegistroTestNEG", correo: "registrotestNEGmn@gmail.com", password: "1234", password2: "1234" })
+                .end(function (err, response) {
+                    expect(response).to.have.status(500);
+                    done();
+                })
         });
 
     });
@@ -58,12 +58,12 @@ describe('hooks', function () {
 
         it("Ya hay un usuario registrado con el mismo correo", function (done) {
             chai.request('http://localhost:3300')
-            .post('/usuarios/registro_Usuario')
-            .send({username:"RegistroTestNEGmc", correo: "registrotestNEG@gmail.com", password: "1234", password2: "1234"})
-            .end(function (err, response) {
-                expect(response).to.have.status(500);
-                done();
-            })
+                .post('/usuarios/registro_Usuario')
+                .send({ username: "RegistroTestNEGmc", correo: "registrotestNEG@gmail.com", password: "1234", password2: "1234" })
+                .end(function (err, response) {
+                    expect(response).to.have.status(500);
+                    done();
+                })
         });
 
     });
@@ -72,11 +72,11 @@ describe('hooks', function () {
 
         it("Nombre de usuario vacío", function () {
             chai.request('http://localhost:3300')
-            .post('/usuarios/registro_Usuario')
-            .send({username:"", correo: "registrotestNEGnv@gmail.com", password: "1234", password2: "1234"})
-            .end(function (err, response) {
-                expect(response).to.have.status(500);
-            })
+                .post('/usuarios/registro_Usuario')
+                .send({ username: "", correo: "registrotestNEGnv@gmail.com", password: "1234", password2: "1234" })
+                .end(function (err, response) {
+                    expect(response).to.have.status(500);
+                })
         });
 
     });
@@ -85,11 +85,11 @@ describe('hooks', function () {
 
         it("Correo vacío", function () {
             chai.request('http://localhost:3300')
-            .post('/usuarios/registro_Usuario')
-            .send({username:"RegistroTestNEGcv", correo: "", password: "1234", password2: "1234"})
-            .end(function (err, response) {
-                expect(response).to.have.status(500);
-            })
+                .post('/usuarios/registro_Usuario')
+                .send({ username: "RegistroTestNEGcv", correo: "", password: "1234", password2: "1234" })
+                .end(function (err, response) {
+                    expect(response).to.have.status(500);
+                })
         });
 
     });
@@ -98,11 +98,11 @@ describe('hooks', function () {
 
         it("Contraseña menor de 4 caracteres", function () {
             chai.request('http://localhost:3300')
-            .post('/usuarios/registro_Usuario')
-            .send({username:"RegistroTestNEGm4", correo: "registrotestNEGm4@gmail.com", password: "123", password2: "123"})
-            .end(function (err, response) {
-                expect(response).to.have.status(500);
-            })
+                .post('/usuarios/registro_Usuario')
+                .send({ username: "RegistroTestNEGm4", correo: "registrotestNEGm4@gmail.com", password: "123", password2: "123" })
+                .end(function (err, response) {
+                    expect(response).to.have.status(500);
+                })
         });
 
     });
@@ -111,11 +111,11 @@ describe('hooks', function () {
 
         it("Contraseñas distintas", function () {
             chai.request('http://localhost:3300')
-            .post('/usuarios/registro_Usuario')
-            .send({username:"RegistroTestNEGcd", correo: "registrotestNEGcd@gmail.com", password: "1234", password2: "4321"})
-            .end(function (err, response) {
-                expect(response).to.have.status(500);
-            })
+                .post('/usuarios/registro_Usuario')
+                .send({ username: "RegistroTestNEGcd", correo: "registrotestNEGcd@gmail.com", password: "1234", password2: "4321" })
+                .end(function (err, response) {
+                    expect(response).to.have.status(500);
+                })
         });
 
     });

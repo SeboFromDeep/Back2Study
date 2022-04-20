@@ -1,7 +1,7 @@
 const assert = require("chai").assert;
 const chai = require("chai");
 const dao = require("../../js/userDAO");
-const testDAO = require("./testsDAOMethods");
+const testDAO = require("../testsDAOMethods");
 const mysql = require('mysql');
 const config = require('../../js/config');
 const { NULL } = require("mysql/lib/protocol/constants/types");
@@ -32,7 +32,7 @@ describe('hooks', function () {
         dao_test.delete_user(id_usuario_no_existe);
     });
 
-    after(function() {
+    after(function () {
         // después de cada test borramos al usuario que se ha insertado para el test
         let id_usuario_existe = dao_test.get_id_user(usuario_existe.email);
         dao_test.delete_user(id_usuario_existe.email);

@@ -1,7 +1,7 @@
 const assert = require("chai").assert;
 const chai = require("chai");
 const dao = require("../../js/userDAO");
-const testDAO = require("./testsDAOMethods");
+const testDAO = require("../testsDAOMethods");
 const mysql = require('mysql');
 const config = require('../../js/config');
 const { NULL } = require("mysql/lib/protocol/constants/types");

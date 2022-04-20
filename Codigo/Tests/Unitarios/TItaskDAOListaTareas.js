@@ -1,7 +1,7 @@
 const assert = require("chai").assert;
 const chai = require("chai");
 const dao = require("../../js/taskDAO");
-const testDAO = require("./testsDAOMethods");
+const testDAO = require("../testsDAOMethods");
 const mysql = require('mysql');
 const config = require('../../js/config');
 const { NULL } = require("mysql/lib/protocol/constants/types");
@@ -44,9 +44,9 @@ describe('hooks', function () {
             fechafin: a.format("YYYY-MM-DD"),
             fechaini: b.format("YYYY-MM-DD"),
             tipo: "p"
-        };     
+        };
         dao_test.insert_task(tarea1);
-        dao_test.insert_task(tarea2);   
+        dao_test.insert_task(tarea2);
         // antes de cada test insertamos ("registramos") un usuario que no tenga tareas
         let usuario_sin_tareas = {
             username: "ListaTareasTestDAOSIN",

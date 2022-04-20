@@ -2,7 +2,7 @@ const assert = require("chai").assert;
 const chai = require("chai");
 const userdao = require("../../js/userDAO");
 const taskdao = require("../../js/taskDAO");
-const testDAO = require("./testsDAOMethods");
+const testDAO = require("../testsDAOMethods");
 const mysql = require('mysql');
 const config = require('../../js/config');
 const { NULL } = require("mysql/lib/protocol/constants/types");
@@ -59,7 +59,7 @@ describe("Listar tareas", function () {
 
     });
 
-    after(function(){
+    after(function () {
         // después de cada test borramos las tareas del usuario para poder ejecutarlos siempre
         dao_test.delete_task(id_tarea_m);
         dao_test.delete_task(id_tarea_p);
