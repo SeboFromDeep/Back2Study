@@ -12,66 +12,73 @@ const dao_test = new testDAO(pool);
 // tests
 describe('hooks', function () {
 
+    let id_usuario_con_tareas, id_usuario_sin_tareas;
+
     before(function () {
         // antes de cada test insertamos ("registramos") un usuario para que tenga tareas
         let usuario_con_tareas = {
-            username: "ListaTareasTestCON",
-            email: "listatareastestcon@gmail.com",
+            username: "ListaTareasTestDAOCON",
+            email: "listatareastestDAOcon@gmail.com",
             password: "1234"
         };
         dao_test.insert_user(usuario_con_tareas);
+        id_usuario_con_tareas = dao_test.get_id_user(usuario_con_tareas.email);
+
+        // PONER BIEN LOS ATRIBUTOS DE LAS TAREAS, CAMBIOS EN LA BD
+
         // añadimos tareas a ese usuario
         let tarea1 = {
-            nombre: "Nombre1",
+            nombre: "Nombre1DAO",
             prioridad: "BAJA",
-            categoria: "Categoria1",
-            id_usuario: 0,
-            fechafin: "2022-10-10",
-            fechaini: "2022-10-01",
+            categoria: "Categoria1DAO",
+            id_usuario: id_usuario_con_tareas,
+            fechafin: a.format("YYYY-MM-DD"),
+            fechaini: b.format("YYYY-MM-DD"),
             tipo: "m"
         };
-        tarea1.id_usuario = dao_test.get_id_user(usuario_con_tareas.email);
         let tarea2 = {
-            nombre: "Nombre2",
+            nombre: "Nombre2DAO",
             prioridad: "ALTA",
-            categoria: "Categoria2",
-            id_usuario: tarea1.id_usuario,
-            fechafin: "2022-11-11",
-            fechaini: "2022-11-01",
+            categoria: "Categoria2DAO",
+            id_usuario: id_usuario_con_tareas,
+            fechafin: a.format("YYYY-MM-DD"),
+            fechaini: b.format("YYYY-MM-DD"),
             tipo: "p"
         };     
         dao_test.insert_task(tarea1);
         dao_test.insert_task(tarea2);   
         // antes de cada test insertamos ("registramos") un usuario que no tenga tareas
         let usuario_sin_tareas = {
-            username: "ListaTareasTestSIN",
-            email: "listatareastestsin@gmail.com",
+            username: "ListaTareasTestDAOSIN",
+            email: "listatareastestDAOsin@gmail.com",
             password: "1234"
         };
         dao_test.insert_user(usuario_sin_tareas);
+        id_usuario_sin_tareas = dao_test.get_id_user(usuario_con_tareas.email);
     });
 
     after(function () {
         // después de cada test borramos las tareas del usuario para poder ejecutarlos siempre
-        
+        let id_tarea1 = dao_test.get_id_task(tarea1);
+        dao_test.delete_task(id_tarea1);
+        let id_tarea2 = dao_test.get_id_task(tarea2);
+        dao_test.delete_task(id_tarea2);
         // después de cada test borramos a los usuarios que se han insertado para poder ejecutarlos siempre
-        dao_test.delete_user(usuario_con_tareas.email);
-        dao_test.delete_user(usuario_sin_tareas.email);
+        dao_test.delete_user(id_usuario_con_tareas);
+        dao_test.delete_user(id_usuario_sin_tareas);
     });
 
     describe("Listar tareas", function () {
 
         it("Usuario con tareas", function () {
-            let id_usuario = 1;
-            task.listaTareas(id_usuario).then(value => {
+            task.listaTareas(id_usuario_con_tareas).then(value => {
                 assert.equal(value, true);
             });
 
         });
 
         it("Usuario sin tareas", function () {
-            let id_usuario = 3;
-            task.listaTareas(id_usuario).then(value => {
+            task.listaTareas(id_usuario_sin_tareas).then(value => {
                 assert.equal(value, false);
             });
 

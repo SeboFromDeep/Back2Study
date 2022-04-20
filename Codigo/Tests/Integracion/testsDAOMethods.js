@@ -46,6 +46,7 @@ class DaoTests {
         });
     }
 
+    // Devuelve el id del usuario indicado
     get_id_user(email){
         this.pool.getConnection(function (err, connection) {
             if (err)
@@ -65,6 +66,7 @@ class DaoTests {
         });
     }
 
+    // PONER BIEN LOS ATRIBUTOS DE LAS TAREAS, CAMBIOS EN LA BD
     // Inserta una tarea en la BD
     insert_task(tarea) {
         this.pool.getConnection(function (err, connection) {
@@ -107,7 +109,9 @@ class DaoTests {
         });
     }
 
-    get_id_tarea(tarea) {
+    // PONER BIEN LOS ATRIBUTOS DE LAS TAREAS, CAMBIOS EN LA BD
+    // Devuelve el id de la tarea indicada
+    get_id_task(tarea) {
         this.pool.getConnection(function (err, connection) {
             if (err)
                 console.log("Error de conexión a la base de datos");
@@ -121,6 +125,50 @@ class DaoTests {
                             console.log("Error de acceso a la base de datos");
                         else
                             return rows;
+                    });
+            }
+        });
+    }
+
+    // PONER BIEN LOS ATRIBUTOS DE LAS TAREAS, CAMBIOS EN LA BD
+    // Inserta una tarea manual en la BD
+    insert_task_m(tarea_m) {
+        this.pool.getConnection(function (err, connection) {
+            if (err)
+                console.log("Error de conexión a la base de datos");
+            else {
+                connection.query('USE back2study;');
+                const valor = "INSERT INTO tareas_manuales (...) VALUES (?)";
+                connection.query(valor,
+                    [],
+                    function (err, rows) {
+                        connection.release(); // devolver al pool la conexión
+                        if (err)
+                            console.log("Error de acceso a la base de datos");
+                        else
+                            console.log("TAREA MANUAL INSERTADA");
+                    });
+            }
+        });
+    }
+
+    // PONER BIEN LOS ATRIBUTOS DE LAS TAREAS, CAMBIOS EN LA BD
+    // Inserta una tarea programada en la BD
+    insert_task_p(tarea_p) {
+        this.pool.getConnection(function (err, connection) {
+            if (err)
+                console.log("Error de conexión a la base de datos");
+            else {
+                connection.query('USE back2study;');
+                const valor = "INSERT INTO tareas_programadas (...) VALUES (?)";
+                connection.query(valor,
+                    [],
+                    function (err, rows) {
+                        connection.release(); // devolver al pool la conexión
+                        if (err)
+                            console.log("Error de acceso a la base de datos");
+                        else
+                            console.log("TAREA MANUAL INSERTADA");
                     });
             }
         });

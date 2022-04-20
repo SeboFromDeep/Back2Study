@@ -16,15 +16,15 @@ describe('hooks', function () {
     before(function () {
         // antes de cada test insertamos al usuario que existe para poder ejecutarlos siempre
         let usuario_existe = {
-            username: "MethodsTestSI",
-            email: "methodstestsi@gmail.com",
+            username: "MethodsTestDAOSI",
+            email: "methodstestDAOsi@gmail.com",
             password: "1234"
         };
         dao_test.insert_user(usuario_existe);
         // antes de cada test insertamos y borramos al usuario que no existe para poder ejecutarlos siempre
         let usuario_no_existe = {
-            username: "MethodsTestNO",
-            email: "methodstestno@gmail.com",
+            username: "MethodsTestDAONO",
+            email: "methodstestDAOno@gmail.com",
             password: "1234"
         };
         dao_test.insert_user(usuario_no_existe);

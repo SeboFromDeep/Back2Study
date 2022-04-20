@@ -13,7 +13,7 @@ describe('hooks', function () {
 
     after(function () {
         // después de cada test borramos al que se ha insertado para poder ejecutarlos siempre
-        let id_usuario = dao_test.get_id_user("registrotest@gmail.com");
+        let id_usuario = dao_test.get_id_user("registrotestDAO@gmail.com");
         dao_test.delete_user(id_usuario);
     });
 
@@ -22,9 +22,9 @@ describe('hooks', function () {
 
         it("Agrega usuario a la BD", function () {
             let nuevoUsuario = {
-                nombre: "RegistroTest",
-                correo: "registrotest@gmail.com",
-                pass: "RTpass",
+                nombre: "RegistroTestDAO",
+                correo: "registrotestDAO@gmail.com",
+                pass: "1234",
             };
             task.registro(nuevoUsuario).then(value => {
                 assert.equal(value, true);

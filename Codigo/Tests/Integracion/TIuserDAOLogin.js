@@ -16,15 +16,15 @@ describe('hooks', function () {
     before(function () {
         // antes de cada test insertamos ("registramos") un usuario para que pueda logearse
         let usuario_reg = {
-            username: "LoginTestReg",
-            email: "logintestreg@gmail.com",
+            username: "LoginTestDAOReg",
+            email: "logintestDAOreg@gmail.com",
             password: "1234"
         };
         dao_test.insert_user(usuario_reg);
         // antes de cada test insertamos y borramos al usuario que no está registrado para poder ejecutarlos siempre
         let usuario_no_reg = {
-            username: "LoginTestNoReg",
-            email: "logintestnoreg@gmail.com",
+            username: "LoginTestDAONoReg",
+            email: "logintestDAOnoreg@gmail.com",
             password: "1234"
         };
         dao_test.insert_user(usuario_no_reg);

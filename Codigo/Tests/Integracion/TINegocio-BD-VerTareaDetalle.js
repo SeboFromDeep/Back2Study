@@ -1,4 +1,4 @@
-//Chai
+// Chai
 const chai = require("chai");
 const assert = require("chai").assert;
 let chaiHttp = require('chai-http');
@@ -7,7 +7,7 @@ chai.use(chaiHttp);
 const app = require('../../app');
 const url='http://localhost:3300';
 
-//Controller Dependencies
+// Controller Dependencies
 const controller = require("../../controller/taskController");
 const mysql = require('mysql');
 const config = require('../../js/config');
