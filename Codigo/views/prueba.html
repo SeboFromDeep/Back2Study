@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8" />
+<title> HTML5 página 1 Diseño web</title>
+</head>
+ <script type="text/javascript">
+    var count = 1;
+
+    // Se utiliza para determinar si se debe eliminar o aumentar el botón para poder calcular el valor de conteo
+    function checkCount(boolOK, coun) {
+       if (boolOK == true) {
+            return count++;
+        }
+       else {
+            count--;
+     }
+    }
+    // Agrega una etiqueta de entrada y también asigna valores a su ID y Nombre.
+    function AddInput() {
+        countAA = checkCount(true, count);
+        var question = document.getElementById("question");
+            // Crear entrada
+            var input = document.createElement("input");
+            input.type = "text";
+            input.id = "questions[" + count + "]_text";
+            input.name = "questions[" + count + "].name";
+            question.appendChild(input);                                     // Añadir un nodo hijo al elemento, el último nodo hijo
+
+
+            var input = document.createElement("input");
+            input.type = "button";
+            input.id = "questions[" + count + "]_btn";
+            input.name = "questions[" + count + "].name";
+            input.value="Botón";
+
+        question.appendChild(input);
+
+        // Crea un espacio
+        var br = document.createElement("br");
+        br.id ="questions[" + count + "]_br"
+        question.appendChild(br);
+    }
+
+    function DealInput(){
+          // Eliminar el último conjunto de elementos agregados: texto del botón br
+             var inputdel = document.getElementById("questions[" + count + "]_text");
+            question.removeChild(inputdel)
+             var inputde2 = document.getElementById("questions[" + count + "]_btn");
+            question.removeChild(inputde2)
+            var inputde3 = document.getElementById("questions[" + count + "]_br");
+
+            question.removeChild(inputde3)
+
+              countAA = checkCount(false, count);  
+
+    }
+
+</script>
+
+<body ">
+<div style="width: 500px; margin-left: 200px;">
+    <div id="question" style="border: 1px solid yellow;">
+        <input id="Text1" type="text" />
+        <input id="btnAddInput" type="button" value="Agregar una entrada" onclick="AddInput()" />
+        <input id="btnDealInput" type="button" value="Eliminar elemento" onclick=" DealInput()">
+
+        <br />
+
+    </div>
+</div>
+</body>
+
+</html>

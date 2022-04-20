@@ -15,11 +15,10 @@ describe("Iniciar sesión correcto", function () {
             correo: "testemail@gmail.com",
             pass: "1234",
         };
-        task.login(usuario.correo, usuario.pass, function(errors, result) {
-            assert.equal(errors, null);
-            assert.equal(result.email, usuario.correo);
-            assert.equal(result.password, usuario.pass);
-        })
+        task.login(usuario.correo, usuario.pass).then(value => {
+            assert.equal(value.email, usuario.correo);
+            assert.equal(value.password, usuario.pass);
+        });
     });
 
 });
@@ -31,10 +30,9 @@ describe("Iniciar sesión incorrecto", function () {
             correo: "noregister@gmail.com",
             pass: "1234",
         };
-        task.login(usuario.correo, usuario.pass, function(errors, result) {
-            assert.equal(errors, null);
-            assert.equal(result, false);
-        })
+        task.login(usuario.correo, usuario.pass).then(value => {
+            assert.equal(value, false);
+        });
     });
 
 });
@@ -46,10 +44,9 @@ describe("Iniciar sesión incorrecto", function () {
             correo: "testemail@gmail.com",
             pass: "4321",
         };
-        task.login(usuario.correo, usuario.pass, function(errors, result) {
-            assert.equal(errors, null);
-            assert.equal(result, false);
-        })
+        task.login(usuario.correo, usuario.pass).then(value => {
+            assert.equal(value, false);
+        });
     });
 
 });

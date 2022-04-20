@@ -17,9 +17,14 @@ taskRouter.get("/taskList",
                 controllerTareas.getListTareas);
 
 // Falta hacer el post de tarea manual
-taskRouter.get("/tasks", 
+// taskRouter.get("/tasks", 
+//                 controllerUsuario.usuarioLogeado, 
+//                 controllerTareas.añadirTareaManual);
+
+//Menu --> Formulario Añadir Tarea Programada
+taskRouter.get("/addManualTask", 
                 controllerUsuario.usuarioLogeado, 
-                controllerTareas.añadirTareaManual);
+                controllerTareas.renderAddManualTask);
 
 //Menu --> Formulario Añadir Tarea Programada
 taskRouter.get("/add_scheduled_task", 
@@ -30,13 +35,44 @@ taskRouter.get("/add_scheduled_task",
 taskRouter.post("/add_scheduled_task", 
             multerFactory.none(),
             controllerUsuario.usuarioLogeado,
+
+            check("nombre", "Nombre de tarea no válido.").isLength({min: 1, max: undefined}),
+            check("prioridad")
+            .custom(
+                (value, {req}) => {
+                    if (value != null) return true;
+                    else throw Error("Por favor escoge una prioridad para la tarea.");
+                }),
+            check("tipo")
+            .custom((value, {req}) => {
+                    if (value == "DIARIA" || value == "SEMANAL") return true;
+                    else throw Error("Por favor indica el tipo de la tarea.");
+                }
+            ),
+            check("horas", "El número de horas debe de ser mayor que 0.").isInt({gt: 0}),
+            check("fechaIni", "Fecha de inicio no válida.").isAfter(),
+            check("fechaFin")
+            .custom((value, {req}) => {
+                if (value > req.body.fechaIni) return true;
+                else throw Error("Fecha de finalización no válida.");
+            }),
             controllerTareas.addTareaProgramada);
+
+//Formulario Añadir Manual --> Tarea bbdd --> Mostrar Tarea
+taskRouter.get("/addManualTask", 
+            multerFactory.none(),
+            controllerUsuario.usuarioLogeado,
+            controllerTareas.renderAddManualTask);
 
 // taskRouter.get("/taskDetalisBy/:id/:tipo/:nombre/:prioridad/:fecha/:cat", 
 taskRouter.get("/taskDetalisBy/:id/:tipo", 
                 controllerUsuario.usuarioLogeado, 
                 controllerTareas.getTask);
 
+//Borrar Tarea 
+taskRouter.get("/deleteTask/:id/:tipo", 
+                controllerUsuario.usuarioLogeado, 
+                controllerTareas.deleteTask);
 // taskRouter.get("/taskBy/:id", 
 //                 cU.usuarioLogeado, 
 //                 cT.getTask);//Busqueda por tag
