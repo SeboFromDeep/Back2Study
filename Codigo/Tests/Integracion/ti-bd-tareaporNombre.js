@@ -12,7 +12,7 @@ const task = new dao(pool);
 describe("Buscar tareas por Nombre", async function () {
 
     it("Debería devolver exactamente la misma lista", async function () {
-        let id_usuario = 2, nombre= "%Estudio de Boostrap%";
+        let id_usuario = 2, nombre= "Estudio de Boostrap";
 
         //Haría la lista de las tareas del usuario 2 con nombre Estudio de Boostrap
         //Código para que no peten las fechas
