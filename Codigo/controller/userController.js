@@ -208,8 +208,8 @@ class controllerU{
         });
     }
 
-    changeEmail(request, response){
-        console.log(request.body.pass1+" <<->>  "+ request.body.pass2);
+    changePassword(request, response){
+        console.log(request);
         //  VERIFICAMOS EN ROUTER, que son iguales y tienen la longitud minima, POR TANTO aqui no se hacen esas comprobaciones
         //Aqui comprobamos que no es la antigua contraseña junto con el correo, si lo es debe modificarla si asi lo quiere
         //Si todo va correcto llamamos al metodo del dao modPass que hara el update

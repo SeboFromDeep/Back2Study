@@ -67,7 +67,7 @@ routerUsers.post("/registro_Usuario",
             }
             return true;
         }),
-        controllerUsuario.changeEmail
+        controllerUsuario.changePassword
         //res.send(email);
     );
 
