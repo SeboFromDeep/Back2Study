@@ -219,11 +219,21 @@ class controllerU{
         if (errors.isEmpty()){
             users.changePassword("sebpinto@ucm.es", request.body.pass1)
             .then(value => {
+                if (value == false) throw new Error("Error al cambiar la contraseña.")
                 response.render("change_pass", {
-                    title: "EXITO", 
-                    errores: errors.mapped(), 
-                    msg: "Ya puedes iniciar sesión con tu nueva contraseña",
-                    tipoAlert: "alert-success"    
+                                title: "EXITO", 
+                                errores: errors.mapped(), 
+                                msg: "Ya puedes iniciar sesión con tu nueva contraseña",
+                                tipoAlert: "alert-success"    
+                });
+            })
+            .catch(error => {
+                response.status(500);
+                response.render("change_pass", {
+                                title: "ERROR", 
+                                errores: errors.mapped(), 
+                                msg: error, 
+                                tipoAlert: "alert-danger" 
                 });
             });
         }
