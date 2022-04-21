@@ -180,10 +180,10 @@ class controllerU{
 
             console.log(info);
 
-            response.render("forgot-password", {
+            response.render("login", {
                             title: "Correo enviado", 
                             errores: errors.mapped(), 
-                            msg: "Revisa tu correo para poder cambiar tu contraseña.",
+                            msgRegistro: "Revisa tu correo para poder cambiar tu contraseña.",
                             tipoAlert: "alert-success",
             }); 
         })
@@ -196,45 +196,16 @@ class controllerU{
                 tipoAlert: "alert-danger",
             });
         });
-
-        // function cb_sendEmail(errors, user){
-        //     if (errors){
-        //         response.render("forgot-password", {}); // falta por hacer
-        //     }
-        //     else{
-        //         if(user){
-        //             console.log("Enviando correo a: " + request.body.email);
-        //             const secret = JWT_SECRET + user.password;
-        //             const payload = {
-        //                 email: request.body.email,
-        //                 id: user.id
-        //             };
-            
-        //             const token = jwt.sign(payload, secret, {expiresIn: '15m'});
-
-        //             request.session.tokenMail = token;
-
-        //             response.locals.tokenMail=request.session.tokenMail;
-
-        //             const link = `http://localhost:3300/usuarios/reset-password/${user.id}/${token}`; // localhost:3300 hay que cambiarlo por back2study.herokuapp.com cuando este todo listo
-        //             console.log("Link creado: " + link);
-            
-        //             // send mail with defined transport object
-        //             let info = transporter.sendMail({
-        //                 from: '"Recuperar contraseña 👻" <back2study.gps@gmail.com>', // sender address
-        //                 to: request.body.email, // list of receivers
-        //                 subject: "Recuperar contraseña ✔", // Subject line
-        //                 html: "<b>Correo enviado desde back2study. <br>Link: " + link + "</b>", // html body
-        //             });
-        //         }   
-        //     }
-        // }
     }
 
     renderChangePassword(request, response){
         response.status(200);
         //AQUI SE DEBERIA COMPROBAR QUE EL TOKEN QUE SE RECIBE CONICIDE CON EL CREADO GLOBALMENTE mirar en response.locals.tokenMail o request.session.tokenMail
-        response.render("change_pass");
+        response.render("change_pass", {
+                        title: "¡Hay Errores!",
+                        errores: false,  
+                        msg: false
+        });
     }
 
     changeEmail(request, response){
@@ -243,6 +214,26 @@ class controllerU{
         //Aqui comprobamos que no es la antigua contraseña junto con el correo, si lo es debe modificarla si asi lo quiere
         //Si todo va correcto llamamos al metodo del dao modPass que hara el update
         //Finalmente reenviamos a login para que acceda con su nueva contraseña
+        const errors = validationResult(request);
+        console.log(errors);
+        if (errors.isEmpty()){
+            users.changePassword("sebpinto@ucm.es", request.body.pass1)
+            .then(value => {
+                response.render("change_pass", {
+                    title: "EXITO", 
+                    errores: errors.mapped(), 
+                    msg: "Ya puedes iniciar sesión con tu nueva contraseña",
+                    tipoAlert: "alert-success"    
+                });
+            });
+        }
+        else{
+            response.status(500);
+            response.render("change_pass", {
+                title: "ERROR", 
+                errores: errors.mapped(), 
+                msg: false});
+        }
     }
     
 }

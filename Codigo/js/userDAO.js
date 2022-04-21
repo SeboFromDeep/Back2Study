@@ -208,7 +208,7 @@ class DaoUsers{
                 }
                 else {
                     //console.log("Cambiando contraseña de usuario " +  email);
-                    connection.query("UPDATE users SET password = ? email = ?" ,
+                    connection.query("UPDATE users SET password = ? WHERE email = ?" ,
                         [newPassword, email],
                         function(err, rows) {
                             connection.release(); // devolver al pool la conexión
@@ -216,7 +216,6 @@ class DaoUsers{
                                 reject(new Error("Error de acceso a la base de datos"));
                             }
                             else {
-                                console.log(rows);
                                 if (rows.affectedRows === 0) {
                                     resolve(false); //no está el usuario con el email proporcionado
                                 }

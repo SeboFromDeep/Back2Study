@@ -129,7 +129,7 @@ app.get("/signup", (request, response) => {
 
 // Recuperar Contraseña-----------------------
 app.get("/forgot-password", (req, res, next) => {
-    res.render("forgot-password",{   msgRegistro: false });
+    res.render("forgot-password",{   msg: false });
 });
 
 app.get("/reset-password/:id/:token", (request, response) => {

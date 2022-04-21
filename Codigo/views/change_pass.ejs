@@ -10,14 +10,46 @@
 
 </head>
 <body>
-    <h1>Cambio de contraseña</h1>
-    <form action="/usuarios/change_password" method="POST" enctype="multipart/form-data">
-        <label for="pass1">Nueva contraseña</label>
-        <input type="password" name="pass1" id="passwd">
-        <label for="pass2">Confirma tu nueva contraseña</label>
-        <input type="password" name="pass2" id="passwd2">
-        <br>
-        <button type="submit">Confirmar</button>
-    </form>
+    <div class="m-0 row justify-content-center">
+        <div class="col-auto p-5 text-center">
+            <h1 class="display-1"><strong>Cambio de contraseña</strong></h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row vh-80 justify-content-center align-items-center">
+            <% if (msg) { %>
+                <div class="alert <%=tipoAlert%> alert-dismissible fade show " role="alert">
+                    <strong><%=msg%></strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <% } %>
+            <% if (errores) { %>
+                <% if(typeof(errores) !== "undefined"){%>
+                   <% if(errores.pass1){%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errores.pass1.msg%>
+                        </div>
+                    <%}%>
+                    <% if(errores.pass2){%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errores.pass2.msg%>
+                        </div>
+                    <%}%>
+                <%}%>
+            <%}%>
+
+            <form action="/usuarios/change_password" method="POST" enctype="multipart/form-data">
+                <label for="pass1">Nueva contraseña</label>
+                <input type="password" name="pass1" id="passwd">
+                <br>
+                <label for="pass2">Confirma tu nueva contraseña</label>
+                <input type="password" name="pass2" id="passwd2">
+                <br>
+                <button type="submit">Confirmar</button>
+            </form>
+        </div>
+    </div>
+
 </body>
 </html>
