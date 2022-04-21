@@ -12,9 +12,9 @@ const task = new dao(pool);
 describe("Buscar tareas por Nombre", async function () {
 
     it("Debería devolver exactamente la misma lista", async function () {
-        let id_usuario = 2, nombre= "Estudio de Boostrap";
+        let id_usuario = 2, nombre= "%Estudio de Boostrap%";
 
-        //Haría la lista de las tareas del usuario 2 con categoria @WEB
+        //Haría la lista de las tareas del usuario 2 con nombre Estudio de Boostrap
         //Código para que no peten las fechas
         const dateTime = '2022-04-18 00:00:00';
         let dateTimeParts= dateTime.split(/[- :]/); // regular expression split that creates array with: year, month, day, hour, minutes, seconds values
@@ -27,7 +27,7 @@ describe("Buscar tareas por Nombre", async function () {
 
         let prueba = {
             id_tarea: 5,
-            nombre: "Estudio de Bootstrap",
+            nombre: "Estudio de Boostrap",
             prioridad: "MEDIA",
             categoria: "@WEB",
             fechafin: fecha1,
