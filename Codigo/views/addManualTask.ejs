@@ -273,7 +273,9 @@
 
 <!-- CONTENIDO -->
     <div class="container contenido ">
-        
+        <% if(typeof(msg) !== "undefined"){%> 
+                <b><%=msg%></b>
+        <% } %>
         <div class="col-auto bg-light p-5 rounded">
             <form action="/tareas/addManualTask" method="POST" enctype="application/x-www-form-urlencoded">
                 <h1 class="display-6 text-center">Añadir Tarea Manual</h1>
