@@ -136,32 +136,34 @@ class DaoUsers{
     }
     
 
-    findUserByEmail(email, callback){
-        console.log("Buscando usuario con correo " + email + " en la BBDD");
-        this.pool.getConnection(function(error, connection){
-            if(error){
-                callback(new Error("Error de acceso a la base de datos"));
-            }
-            else{
-                connection.query("USE back2study;");
-                connection.query("SELECT * FROM users WHERE email = ?;", [email],
-                function(errors, user){
-                    connection.release();
-                    if(errors){
-                        callback(new Error("Error de acceso a la base de datos"));
-                    }
-                    else {
-                        if(user.length === 0){
-                            console.log("Usuario no encontrado");
-                            callback(null, false);
+    findUserByEmail(email){
+        return new Promise((resolve, reject) => {
+            console.log("Buscando usuario con correo " + email + " en la BBDD");
+            this.pool.getConnection(function(error, connection){
+                if(error){
+                    reject(new Error("Error de acceso a la base de datos"));
+                }
+                else{
+                    connection.query("USE back2study;");
+                    connection.query("SELECT * FROM users WHERE email = ?;", [email],
+                    function(errors, user){
+                        connection.release();
+                        if(errors){
+                            reject(new Error("Error de acceso a la base de datos"));
                         }
-                        else{
-                            console.log("Usuario encontrado");
-                            callback(null, user[0]);
+                        else {
+                            if(user.length === 0){
+                                console.log("Usuario no encontrado");
+                                reject(null);
+                            }
+                            else{
+                                console.log("Usuario encontrado");
+                                resolve(user[0]);
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }
+            });
         });
     }
 
@@ -197,9 +199,36 @@ class DaoUsers{
     modPass(pass, callback){
 
     }
-    
- 
 
+    changePassword(email, newPassword){
+        return new Promise ((resolve, reject) =>{
+            this.pool.getConnection(function(err, connection) {
+                if (err) {
+                    reject(new Error("Error de conexión a la base de datos"));
+                }
+                else {
+                    //console.log("Cambiando contraseña de usuario " +  email);
+                    connection.query("UPDATE users SET password = ? email = ?" ,
+                        [newPassword, email],
+                        function(err, rows) {
+                            connection.release(); // devolver al pool la conexión
+                            if (err) {
+                                reject(new Error("Error de acceso a la base de datos"));
+                            }
+                            else {
+                                console.log(rows);
+                                if (rows.affectedRows === 0) {
+                                    resolve(false); //no está el usuario con el email proporcionado
+                                }
+                                else {
+                                    resolve(true);
+                                }
+                            }
+                        });
+                }
+            });
+        });
+    }
 }
 
 module.exports =DaoUsers;

@@ -150,44 +150,88 @@ class controllerU{
     }
 
     sendEmail(request, response){
-        users.findUserByEmail(request.body.email, cb_sendEmail);    // buscamos el usuario en la BBDD
+        const errors = validationResult(request);
 
-        function cb_sendEmail(errors, user){
-            if (errors){
-                response.render("forgot-password", {}); // falta por hacer
-            }
-            else{
-                if(user){
-                    console.log("Enviando correo a: " + request.body.email);
-                    const secret = JWT_SECRET + user.password;
-                    const payload = {
-                        email: request.body.email,
-                        id: user.id
-                    };
+        users.findUserByEmail(request.body.email)
+        .then(user => {
+            console.log("Enviando correo a: " + request.body.email);
+            const secret = JWT_SECRET + user.password;
+            const payload = {
+                email: request.body.email,
+                id: user.id
+            };
+        
+            const token = jwt.sign(payload, secret, {expiresIn: '15m'});
+
+            request.session.tokenMail = token;
+
+            response.locals.tokenMail=request.session.tokenMail;
+
+            const link = `http://localhost:3300/usuarios/reset-password/${user.id}/${token}`; // localhost:3300 hay que cambiarlo por back2study.herokuapp.com cuando este todo listo
+            console.log("Link creado: " + link);
+    
+            // send mail with defined transport object
+            let info = transporter.sendMail({
+                from: '"Recuperar contraseña 👻" <back2study.gps@gmail.com>', // sender address
+                to: request.body.email, // list of receivers
+                subject: "Recuperar contraseña ✔", // Subject line
+                html: "<b>Correo enviado desde back2study. <br>Link: " + link + "</b>", // html body
+            });
+
+            console.log(info);
+
+            response.render("forgot-password", {
+                            title: "Correo enviado", 
+                            errores: errors.mapped(), 
+                            msg: "Revisa tu correo para poder cambiar tu contraseña.",
+                            tipoAlert: "alert-success",
+            }); 
+        })
+        .catch(error => {
+            if (error == null) error = "Ese correo no corresponde con ningún usuario."
+            response.render("forgot-password", {
+                title: "Error", 
+                errores: errors.mapped(), 
+                msg: error,
+                tipoAlert: "alert-danger",
+            });
+        });
+
+        // function cb_sendEmail(errors, user){
+        //     if (errors){
+        //         response.render("forgot-password", {}); // falta por hacer
+        //     }
+        //     else{
+        //         if(user){
+        //             console.log("Enviando correo a: " + request.body.email);
+        //             const secret = JWT_SECRET + user.password;
+        //             const payload = {
+        //                 email: request.body.email,
+        //                 id: user.id
+        //             };
             
-                    const token = jwt.sign(payload, secret, {expiresIn: '15m'});
+        //             const token = jwt.sign(payload, secret, {expiresIn: '15m'});
 
-                    request.session.tokenMail = token;
+        //             request.session.tokenMail = token;
 
-                    response.locals.tokenMail=request.session.tokenMail;
+        //             response.locals.tokenMail=request.session.tokenMail;
 
-                    const link = `http://localhost:3300/usuarios/reset-password/${user.id}/${token}`; // localhost:3300 hay que cambiarlo por back2study.herokuapp.com cuando este todo listo
-                    console.log("Link creado: " + link);
+        //             const link = `http://localhost:3300/usuarios/reset-password/${user.id}/${token}`; // localhost:3300 hay que cambiarlo por back2study.herokuapp.com cuando este todo listo
+        //             console.log("Link creado: " + link);
             
-                    // send mail with defined transport object
-                    let info = transporter.sendMail({
-                        from: '"Recuperar contraseña 👻" <back2study.gps@gmail.com>', // sender address
-                        to: request.body.email, // list of receivers
-                        subject: "Recuperar contraseña ✔", // Subject line
-                        html: "<b>Correo enviado desde back2study. <br>Link: " + link + "</b>", // html body
-                    });
-                }   
-            }
-        }
+        //             // send mail with defined transport object
+        //             let info = transporter.sendMail({
+        //                 from: '"Recuperar contraseña 👻" <back2study.gps@gmail.com>', // sender address
+        //                 to: request.body.email, // list of receivers
+        //                 subject: "Recuperar contraseña ✔", // Subject line
+        //                 html: "<b>Correo enviado desde back2study. <br>Link: " + link + "</b>", // html body
+        //             });
+        //         }   
+        //     }
+        // }
     }
 
-    goTochangeEmail(request, response){
-        console.log("caaaambiamos paaaas");
+    renderChangePassword(request, response){
         response.status(200);
         //AQUI SE DEBERIA COMPROBAR QUE EL TOKEN QUE SE RECIBE CONICIDE CON EL CREADO GLOBALMENTE mirar en response.locals.tokenMail o request.session.tokenMail
         response.render("change_pass");
