@@ -70,9 +70,9 @@ taskRouter.get("/taskDetalisBy/:id/:tipo",
                 controllerTareas.getTask);
 
 //Borrar Tarea 
-taskRouter.get("/deleteTask/:id/:tipo", 
-                controllerUsuario.usuarioLogeado, 
-                controllerTareas.deleteTask);
+//taskRouter.get("/deleteTask/:id/:tipo", 
+//                controllerUsuario.usuarioLogeado, 
+//               controllerTareas.deleteTask);
 // taskRouter.get("/taskBy/:id", 
 //                 cU.usuarioLogeado, 
 //                 cT.getTask);//Busqueda por tag

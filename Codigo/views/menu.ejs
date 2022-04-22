@@ -30,12 +30,21 @@
                               <li><hr class="dropdown-divider"></li>
                               <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>
-                          </li>
+                        </li>
                   
                     </ul>
                     <div class="container-fluid">
                         <form class="d-flex">
                           <input class="form-control me-2 w-100" type="search" placeholder="Search" aria-label="Search">
+                            <div class="dropdown">
+                                <a class="nav-link dropdown-toggle text-muted" href="#" id="filterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Filtrar
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                                  <li><a id="PorNombre" class="dropdown-item" onClick= "filterButtonClick(event)">Por Nombre</a></li>
+                                  <li><a id="PorCategoria" class="dropdown-item" onClick= "filterButtonClick(event)">Por Categoria</a></li>
+                                </ul>
+                            </div>
                           <button class="btn btn-outline-success" type="submit">Search</button>
                         </form>
                       </div>
@@ -48,3 +57,9 @@
           </nav>
     </div>
 </div>
+
+<script>
+  function filterButtonClick(e){
+    console.log("I am the filter " + e.target.id + " button!", e.target);
+  }
+</script>
