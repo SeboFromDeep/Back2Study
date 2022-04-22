@@ -51,12 +51,13 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col">#<%=idTarea%> <b><%=p.nombre%></div></b>
+                    <div class="col">Caduca <b><%=p.fechafin%></b></div>
                     <div class="col text-end"><small>Prioridad: <span class="badge <%=color%>"><%=p.prioridad%></span></small></div>
                 </div>
                  
             </div>
             <div class="card-body">
-              <h5 class="card-title">Tarea <%=p.tipo%> de <%=p.horas%> horas. Fecha Fin: <%=p.fechafin%>    </h5>
+              <h5 class="card-title">Tarea <%=p.tipo%>. Duración <%=p.horas%> horas.     </h5>
               
               
             </div>

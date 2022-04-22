@@ -10,7 +10,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 #usuarios
 INSERT INTO users(id, username,email,password) values (1, 'userPrueba1','userPrueba1@email.com','1234'); #Todas las combinaciones
 insert into tareas(id_tarea, nombre,prioridad,categoria,id_usuario,fechafin,fechaini,tipo) values(1, 'Proyecto TP','ALTA','@TP@UNI',1,(select DATE(sysdate())),'2022-04-07','p');
-insert into tareas_programadas(id_programada, horas,tipo) values (1,2,'Diaria');
+insert into tareas_programadas(id_programada, horas,tipo) values (1,2,'DIARIA');
 
 insert into tareas(id_tarea, nombre,prioridad,categoria,id_usuario,fechafin,fechaini,tipo) values(4, 'Examen GE','MEDIA','@UNI@GE',1,(select DATE(sysdate())),'2022-06-10','p');
 insert into tareas_programadas(id_programada, horas,tipo) values (4,1,'Diaria');

@@ -74,11 +74,15 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col">#<%=p.id_tarea%> <b><%=p.nombre%></div></b>
-                                <div class="col text-center"><small>Fecha Fin: <%=p.fechafin.toDateString()%>.</small></div>
-                                <div class="col text-end"><small>Prioridad: <span class="badge <%=color%>"><%=p.prioridad%></span></small></div>
+                                
+                                <div class="col">#<%=p.id_tarea%> <a href="/tareas/taskDetalisBy/<%=p.id_tarea%>/<%=p.tipo%>" style=" text-decoration:none;"><b><%=p.nombre%></b></a></div>
+                                <div class="col text-center">
+                                    <small>Fecha Fin: <%=p.fechafin.toDateString()%>.</small>
+                                </div>
+                                
                                 <div class="col text-end">
-                                    <a href="/tareas/deleteTask/<%=p.id_tarea%>/<%=p.tipo%>" class="btn btn-danger" style="text-decoration:none;">X</a>
+                                    <small>Prioridad: <span class="badge <%=color%>"><%=p.prioridad%></span></small>
+                                    <a href="/tareas/deleteTask/<%=p.id_tarea%>/<%=p.tipo%>" class="btn btn-danger" style="text-decoration:none;"><b>X</b></a>
                                             
                                 </div>
                             </div>
@@ -86,12 +90,11 @@
                         <div class="card-body">
                           <h5 class="card-title">Tarea <%=tipoTarea%></h5>
                           <!-- <p class="card-text">Fecha Fin: <%=p.fechafin.toDateString()%>.</p> -->
-                            <button  type="button" class="btn btn-outline-primary">
+                          
+                            <!-- <button  type="button" class="btn btn-outline-primary">
                                 <a href="/tareas/taskDetalisBy/<%=p.id_tarea%>/<%=p.tipo%>" style=" text-decoration:none;">Ver detalles</a>
-                            </button>
-                            <button  type="button" class="btn btn-outline-primary">
-                                <a href="/tareas/deleteTask/<%=p.id_tarea%>/<%=p.tipo%>" style=" text-decoration:none;">Borrar</a>
-                            </button>
+                            </button> -->
+                            
                         </div>
                         <div class="card-footer text-muted">
                             <%p.categoria.split('@').forEach( tag => {%>
