@@ -73,6 +73,8 @@ class DaoTests {
             if (err)
                 console.log("Error de conexión a la base de datos");
             else {
+                console.log("mostrando id");
+                console.log(tarea.id_usuario);
                 connection.query('USE back2study;');
                 const valor = "INSERT INTO tareas (nombre, prioridad, categoria, id_usuario, fechafin, fechaini, tipo) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 connection.query(valor,

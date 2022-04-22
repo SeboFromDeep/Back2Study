@@ -35,8 +35,8 @@ describe('hooks', function () {
             prioridad: "BAJA",
             categoria: "@CategoriaMDAO",
             id_usuario: id_usuario_con_tareas,
-            fechafin: a.format("YYYY-MM-DD"),
-            fechaini: b.format("YYYY-MM-DD"),
+            fechafin: "2022-04-20",
+            fechaini: "2022-04-10",
             tipo: "m",
             // atributos tarea manual
             id_tarea: -1,
@@ -59,8 +59,8 @@ describe('hooks', function () {
             prioridad: "ALTA",
             categoria: "@CategoriaPDAO",
             id_usuario: id_usuario_con_tareas,
-            fechafin: a.format("YYYY-MM-DD"),
-            fechaini: b.format("YYYY-MM-DD"),
+            fechafin: "2022-04-20",
+            fechaini: "2022-04-10",
             tipo: "p",
             // atributos tarea programada
             horas: 10,
