@@ -30,16 +30,24 @@ describe('hooks', function () {
             password: "1234"
         };
         dao_test.insert_user(usuario_no_reg);
-        let id_usuario_no_reg = dao_test.get_id_user(usuario_no_reg.email);
-        console.log("El usuario no registrado es: " + id_usuario_no_reg);
-        dao_test.delete_user(id_usuario_no_reg);
+        setTimeout(function () {
+            dao_test.get_id_user(usuario_no_reg.email, cb_getID);
+            function cb_getID(err, getID) {
+                let id_usuario_no_reg = getID;
+                dao_test.delete_user(id_usuario_no_reg);
+            }
+        }, 1000);
     });
 
     after(function () {
         // después de cada test borramos al que se ha insertado para poder ejecutarlos siempre
-        let id_usuario_reg = dao_test.get_id_user(usuario_reg.email);
-        console.log("El usuario registrado es: " + id_usuario_reg);
-        dao_test.delete_user(id_usuario_reg);
+        setTimeout(function () {
+            dao_test.get_id_user(usuario_reg.email, cb_getID);
+            function cb_getID(err, getID) {
+                let id_usuario_reg = getID;
+                dao_test.delete_user(id_usuario_reg);
+            }
+        }, 1000);
     });
 
     describe("Iniciar sesión correcto", function () {

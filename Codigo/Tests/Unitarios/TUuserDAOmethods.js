@@ -28,14 +28,24 @@ describe('hooks', function () {
             password: "1234"
         };
         dao_test.insert_user(usuario_no_existe);
-        let id_usuario_no_existe = dao_test.get_id_user(usuario_no_existe.email);
-        dao_test.delete_user(id_usuario_no_existe);
+        setTimeout(function () {
+            dao_test.get_id_user(usuario_no_existe.email, cb_getID);
+            function cb_getID(err, getID) {
+                let id_usuario_no_existe = getID;
+                dao_test.delete_user(id_usuario_no_existe);
+            }
+        }, 1000);
     });
 
     after(function () {
         // después de cada test borramos al usuario que se ha insertado para el test
-        let id_usuario_existe = dao_test.get_id_user(usuario_existe.email);
-        dao_test.delete_user(id_usuario_existe.email);
+        setTimeout(function () {
+            dao_test.get_id_user(usuario_existe.email, cb_getID);
+            function cb_getID(err, getID) {
+                let id_usuario_existe = getID;
+                dao_test.delete_user(id_usuario_existe);
+            }
+        }, 1000);
     });
 
     describe("Existe usuario", function () {

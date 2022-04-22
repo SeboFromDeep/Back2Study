@@ -13,8 +13,13 @@ describe('hooks', function () {
 
     after(function () {
         // después de cada test borramos al que se ha insertado para poder ejecutarlos siempre
-        let id_usuario = dao_test.get_id_user("registrotestDAO@gmail.com");
-        dao_test.delete_user(id_usuario);
+        setTimeout(function () {
+            dao_test.get_id_user("registrotestDAO@gmail.com", cb_getID);
+            function cb_getID(err, getID) {
+                id_usuario = getID;
+                dao_test.delete_user(id_usuario);
+            }
+        }, 1000);
     });
 
     // tests

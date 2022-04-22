@@ -8,7 +8,7 @@ const config = require('../../js/config');
 const { NULL } = require("mysql/lib/protocol/constants/types");
 const pool = mysql.createPool(config.databaseConfig);
 const userDao = new userdao(pool);
-const taskDao =  new taskdao(pool);
+const taskDao = new taskdao(pool);
 const dao_test = new testDAO(pool);
 
 // tests
@@ -24,7 +24,12 @@ describe('hooks', function () {
             password: "1234"
         };
         dao_test.insert_user(usuario);
-        id_usuario_con_tareas = dao_test.get_id_user(usuario.email);
+        setTimeout(function () {
+            dao_test.get_id_user(usuario.email, cb_getID);
+            function cb_getID(err, getID) {
+                id_usuario_con_tareas = getID;
+            }
+        }, 1000);
 
         // añadimos tareas a ese usuario, una de cada tipo
         let tareaManual = {
@@ -43,7 +48,12 @@ describe('hooks', function () {
             dias_recurrentes: "@L"
         };
         dao_test.insert_task(tareaManual);
-        tareaManual.id_tarea = dao_test.get_id_task(tareaManual);
+        setTimeout(function () {
+            dao_test.get_id_task(tareaManual, cb_getID);
+            function cb_getID(err, getID) {
+                tareaManual.id_tarea = getID;
+            }
+        }, 1000);
         dao_test.insert_task_m(tareaManual);
 
         let tareaProgramada = {
@@ -60,13 +70,20 @@ describe('hooks', function () {
             tipo_ds: "DIARIA"
         };
         dao_test.insert_task(tareaProgramada);
-        tareaProgramada.id_programada = dao_test.get_id_task(tareaProgramada);
+        setTimeout(function () {
+            dao_test.get_id_task(tareaProgramada, cb_getID);
+            function cb_getID(err, getID) {
+                tareaProgramada.id_programada = getID;
+            }
+        }, 1000);
         dao_test.insert_task_p(tareaProgramada);
     });
 
     after(function () {
         // después de cada test borramos al usuario que se ha insertado para poder ejecutarlos siempre
-        dao_test.delete_user(id_usuario_con_tareas);
+        setTimeout(function () {
+            dao_test.delete_user(id_usuario_con_tareas);
+        }, 1000);
     })
 
     describe("Ver detalles de tarea", function () {

@@ -61,7 +61,7 @@ class DaoTests {
                         else if (rows.length != 1)
                             callback(null, false);
                         else
-                            callback(null, rows);
+                            callback(null, rows[0].id);
                     });
             }
         });
@@ -89,10 +89,10 @@ class DaoTests {
     }
 
     // Devuelve el id de la tarea indicada
-    get_id_task(tarea) {
+    get_id_task(tarea, callback) {
         this.pool.getConnection(function (err, connection) {
             if (err)
-                console.log("Error de conexión a la base de datos");
+                callback(new Error("Error de conexión a la base de datos"));
             else {
                 connection.query('USE back2study;');
                 connection.query("SELECT id_tarea FROM tareas WHERE nombre = ? AND prioridad = ? AND categoria = ? AND id_usuario = ? AND fechafin = ? AND fechaini = ? AND tipo = ?",
@@ -100,9 +100,11 @@ class DaoTests {
                     function (err, rows) {
                         connection.release(); // devolver al pool la conexión
                         if (err)
-                            console.log("Error de acceso a la base de datos");
+                            callback(new Error("Error de acceso a la base de datos"));
+                        else if (rows.length != 1)
+                            callback(null, false);
                         else
-                            return rows[0];
+                            callback(null, rows[0].id_tarea);
                     });
             }
         });
