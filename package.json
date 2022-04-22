@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./Codigo/app.js",
     "watch": "nodemon ./Codigo/app.js --ext ejs --ignore public",
-    "test": "mocha --timeout 10000 ./Codigo/Tests/Integracion"
+    "test": "mocha --timeout 10000 ./Codigo/Tests/Unitarios/TUuserDAOLogin"
   },
   "repository": {
     "type": "git",

@@ -46,10 +46,10 @@ class DaoTests {
     }
 
     // Devuelve el id del usuario indicado
-    get_id_user(email) {
+    get_id_user(email, callback) {
         this.pool.getConnection(function (err, connection) {
             if (err)
-                console.log("Error de conexión a la base de datos");
+                callback(new Error("Error de conexión a la base de datos"));
             else {
                 connection.query('USE back2study;');
                 connection.query("SELECT id FROM users WHERE email = ?",
@@ -57,9 +57,11 @@ class DaoTests {
                     function (err, rows) {
                         connection.release(); // devolver al pool la conexión
                         if (err)
-                            console.log("Error de acceso a la base de datos");
+                            callback(new Error("Error de acceso a la base de datos"));
+                        else if (rows.length != 1)
+                            callback(null, false);
                         else
-                            return rows;
+                            callback(null, rows);
                     });
             }
         });
@@ -100,7 +102,7 @@ class DaoTests {
                         if (err)
                             console.log("Error de acceso a la base de datos");
                         else
-                            return rows;
+                            return rows[0];
                     });
             }
         });
@@ -149,3 +151,5 @@ class DaoTests {
     }
 
 }
+
+module.exports = DaoTests;
