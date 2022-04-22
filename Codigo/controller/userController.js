@@ -165,6 +165,8 @@ class controllerU{
 
             request.session.tokenMail = token;
 
+            request.session.recoveryId = user.id
+
             response.locals.tokenMail=request.session.tokenMail;
 
             const link = `http://localhost:3300/usuarios/reset-password/${user.id}/${token}`; // localhost:3300 hay que cambiarlo por back2study.herokuapp.com cuando este todo listo
@@ -200,7 +202,15 @@ class controllerU{
 
     renderChangePassword(request, response){
         response.status(200);
+        //console.log(request.params.id);
         //AQUI SE DEBERIA COMPROBAR QUE EL TOKEN QUE SE RECIBE CONICIDE CON EL CREADO GLOBALMENTE mirar en response.locals.tokenMail o request.session.tokenMail
+
+        const id = request.params.id
+        const token = request.params.token
+
+        console.log(id, token)
+        console.log(request.session.recoveryId, request.session.tokenMail)
+        console.log(id == request.session.recoveryId && token == request.session.tokenMail)
         response.render("change_pass", {
                         title: "¡Hay Errores!",
                         errores: false,  
@@ -209,13 +219,13 @@ class controllerU{
     }
 
     changePassword(request, response){
-        console.log(request);
         //  VERIFICAMOS EN ROUTER, que son iguales y tienen la longitud minima, POR TANTO aqui no se hacen esas comprobaciones
         //Aqui comprobamos que no es la antigua contraseña junto con el correo, si lo es debe modificarla si asi lo quiere
         //Si todo va correcto llamamos al metodo del dao modPass que hara el update
         //Finalmente reenviamos a login para que acceda con su nueva contraseña
         const errors = validationResult(request);
-        console.log(errors);
+        // console.log(request.session.recoveryId);
+        // console.log(request.session.tokenMail);
         if (errors.isEmpty()){
             users.changePassword("sebpinto@ucm.es", request.body.pass1)
             .then(value => {
@@ -223,7 +233,7 @@ class controllerU{
                 response.render("change_pass", {
                                 title: "EXITO", 
                                 errores: errors.mapped(), 
-                                msg: "Ya puedes iniciar sesión con tu nueva contraseña",
+                                msg: "Ya puedes iniciar sesión con tu nueva contraseña.",
                                 tipoAlert: "alert-success"    
                 });
             })

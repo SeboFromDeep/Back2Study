@@ -132,10 +132,6 @@ app.get("/forgot-password", (req, res, next) => {
     res.render("forgot-password",{   msg: false });
 });
 
-app.get("/reset-password/:id/:token", (request, response) => {
-    
-    cP.modPass
-});
 //-----------------------------------------
 
 /*app.post("/forgot-password", (req, res, next) => {
@@ -145,12 +141,12 @@ app.get("/reset-password/:id/:token", (request, response) => {
 });
 */
 // ping browser on Express boot, once browser has reconnected and handshaken
-liveReloadServer.server.once("connection", () => {
-    console.log("Refrescando browser");
-    setTimeout(() => {
-    liveReloadServer.refresh("/");
-    }, 100);
-});
+// liveReloadServer.server.once("connection", () => {
+//     console.log("Refrescando browser");
+//     setTimeout(() => {
+//     liveReloadServer.refresh("/");
+//     }, 100);
+// });
 
 
 //-- -GESTION DE ERRORES 
