@@ -134,12 +134,8 @@ app.get("/forgot-password", (req, res, next) => {
 
 //-----------------------------------------
 
-/*app.post("/forgot-password", (req, res, next) => {
-    const { email } = req.body;
 
-    res.send(email);
-});
-*/
+
 // ping browser on Express boot, once browser has reconnected and handshaken
 // liveReloadServer.server.once("connection", () => {
 //     console.log("Refrescando browser");

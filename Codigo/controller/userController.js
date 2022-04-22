@@ -160,14 +160,15 @@ class controllerU{
                 email: request.body.email,
                 id: user.id
             };
-        
+            //Caduca en 15 min
             const token = jwt.sign(payload, secret, {expiresIn: '15m'});
 
             request.session.tokenMail = token;
-
-            request.session.recoveryId = user.id
-
             response.locals.tokenMail=request.session.tokenMail;
+
+            request.session.recoveryId = user.id;
+            request.session.recoveryMail = user.email;
+            
 
             const link = `http://localhost:3300/usuarios/reset-password/${user.id}/${token}`; // localhost:3300 hay que cambiarlo por back2study.herokuapp.com cuando este todo listo
             console.log("Link creado: " + link);
@@ -204,19 +205,27 @@ class controllerU{
         response.status(200);
         //console.log(request.params.id);
         //AQUI SE DEBERIA COMPROBAR QUE EL TOKEN QUE SE RECIBE CONICIDE CON EL CREADO GLOBALMENTE mirar en response.locals.tokenMail o request.session.tokenMail
-
+        // console.log(request.params);
         const id = request.params.id
-        const token = request.params.token
+        // const token = request.params.token
 
-        console.log(id, token)
-        console.log(request.session.recoveryId, request.session.tokenMail)
-        if(id == request.session.recoveryId && token == request.session.tokenMail) {
+        // console.log(id, token)
+        // console.log(request.session.recoveryId, request.session.tokenMail)
+        console.log("CORREO");
+        console.log(request.session.recoveryMail);
+        if(id == request.session.recoveryId) {
             response.render("change_pass", {
                             title: "¡Hay Errores!",
                             errores: false,  
                             msg: false
             });
         }
+        
+        // response.render("change_pass", {
+        //     title: "¡Hay Errores!",
+        //     errores: false,  
+        //     msg: false
+        // });
     }
 
     changePassword(request, response){
@@ -228,7 +237,8 @@ class controllerU{
         // console.log(request.session.recoveryId);
         // console.log(request.session.tokenMail);
         if (errors.isEmpty()){
-            users.changePassword("sebpinto@ucm.es", request.body.pass1)
+            
+            users.changePassword(request.session.recoveryMail, request.body.pass1)
             .then(value => {
                 if (value == false) throw new Error("Error al cambiar la contraseña.")
                 response.render("change_pass", {
