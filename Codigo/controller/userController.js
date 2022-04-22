@@ -210,12 +210,13 @@ class controllerU{
 
         console.log(id, token)
         console.log(request.session.recoveryId, request.session.tokenMail)
-        console.log(id == request.session.recoveryId && token == request.session.tokenMail)
-        response.render("change_pass", {
-                        title: "¡Hay Errores!",
-                        errores: false,  
-                        msg: false
-        });
+        if(id == request.session.recoveryId && token == request.session.tokenMail) {
+            response.render("change_pass", {
+                            title: "¡Hay Errores!",
+                            errores: false,  
+                            msg: false
+            });
+        }
     }
 
     changePassword(request, response){
