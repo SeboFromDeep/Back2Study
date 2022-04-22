@@ -12,10 +12,9 @@ const taskDao =  new taskdao(pool);
 const dao_test = new testDAO(pool);
 
 // tests
-describe("Listar tareas", function () {
+describe('hooks', function () {
 
     let id_usuario_con_tareas;
-    let id_tarea_m, id_tarea_p;
 
     before(function () {
         // antes de cada test insertamos ("registramos") un usuario para que tenga tareas
@@ -27,58 +26,64 @@ describe("Listar tareas", function () {
         dao_test.insert_user(usuario);
         id_usuario_con_tareas = dao_test.get_id_user(usuario.email);
 
-        // PONER BIEN LOS ATRIBUTOS DE LAS TAREAS, CAMBIOS EN LA BD
         // añadimos tareas a ese usuario, una de cada tipo
         let tareaManual = {
             nombre: "NombreMDAO",
             prioridad: "BAJA",
-            categoria: "CategoriaMDAO",
+            categoria: "@CategoriaMDAO",
             id_usuario: id_usuario_con_tareas,
             fechafin: a.format("YYYY-MM-DD"),
             fechaini: b.format("YYYY-MM-DD"),
-            tipo: "m"
+            tipo: "m",
+            // atributos tarea manual
+            id_tarea: -1,
+            hora_ini: "10:00",
+            hora_fin: "15:00",
+            recurrente: 0,
+            dias_recurrentes: "@L"
         };
         dao_test.insert_task(tareaManual);
-        id_tarea_m = dao_test.get_id_task(tareaManual);
+        tareaManual.id_tarea = dao_test.get_id_task(tareaManual);
         dao_test.insert_task_m(tareaManual);
+
         let tareaProgramada = {
             nombre: "NombrePDAO",
             prioridad: "ALTA",
-            categoria: "CategoriaPDAO",
+            categoria: "@CategoriaPDAO",
             id_usuario: id_usuario_con_tareas,
             fechafin: a.format("YYYY-MM-DD"),
             fechaini: b.format("YYYY-MM-DD"),
             tipo: "p",
             // atributos tarea programada
             horas: 10,
+            id_programada: -1,
             tipo_ds: "DIARIA"
         };
         dao_test.insert_task(tareaProgramada);
-        id_tarea_p = dao_test.get_id_task(tareaProgramada);
+        tareaProgramada.id_programada = dao_test.get_id_task(tareaProgramada);
         dao_test.insert_task_p(tareaProgramada);
-
     });
 
     after(function () {
-        // después de cada test borramos las tareas del usuario para poder ejecutarlos siempre
-        dao_test.delete_task(id_tarea_m);
-        dao_test.delete_task(id_tarea_p);
         // después de cada test borramos al usuario que se ha insertado para poder ejecutarlos siempre
         dao_test.delete_user(id_usuario_con_tareas);
     })
 
-    it("Ver detalles tarea manual", function () {
-        task.getDetailsTaskManual(id_usuario_con_tareas, id_tarea_m).then(value => {
-            assert.equal(value, true);
+    describe("Ver detalles de tarea", function () {
+
+        it("Ver detalles tarea manual", function () {
+            task.getDetailsTaskManual(id_usuario_con_tareas, tareaManual.id_tarea).then(value => {
+                assert.equal(value, true);
+            });
+
         });
 
-    });
+        it("Ver detalles tarea programada", function () {
+            task.listaTareas(id_usuario_con_tareas, tareaProgramada.id_programada).then(value => {
+                assert.equal(value, false);
+            });
 
-    it("Ver detalles tarea programada", function () {
-        task.listaTareas(id_usuario_con_tareas, id_tarea_p).then(value => {
-            assert.equal(value, false);
         });
-
     });
 
 });

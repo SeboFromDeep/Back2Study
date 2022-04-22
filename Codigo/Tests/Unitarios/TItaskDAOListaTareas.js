@@ -24,13 +24,11 @@ describe('hooks', function () {
         dao_test.insert_user(usuario_con_tareas);
         id_usuario_con_tareas = dao_test.get_id_user(usuario_con_tareas.email);
 
-        // PONER BIEN LOS ATRIBUTOS DE LAS TAREAS, CAMBIOS EN LA BD
-
         // añadimos tareas a ese usuario
         let tarea1 = {
             nombre: "Nombre1DAO",
             prioridad: "BAJA",
-            categoria: "Categoria1DAO",
+            categoria: "@Categoria1DAO",
             id_usuario: id_usuario_con_tareas,
             fechafin: a.format("YYYY-MM-DD"),
             fechaini: b.format("YYYY-MM-DD"),
@@ -39,7 +37,7 @@ describe('hooks', function () {
         let tarea2 = {
             nombre: "Nombre2DAO",
             prioridad: "ALTA",
-            categoria: "Categoria2DAO",
+            categoria: "@Categoria2DAO",
             id_usuario: id_usuario_con_tareas,
             fechafin: a.format("YYYY-MM-DD"),
             fechaini: b.format("YYYY-MM-DD"),
@@ -47,6 +45,7 @@ describe('hooks', function () {
         };
         dao_test.insert_task(tarea1);
         dao_test.insert_task(tarea2);
+        
         // antes de cada test insertamos ("registramos") un usuario que no tenga tareas
         let usuario_sin_tareas = {
             username: "ListaTareasTestDAOSIN",
@@ -58,11 +57,6 @@ describe('hooks', function () {
     });
 
     after(function () {
-        // después de cada test borramos las tareas del usuario para poder ejecutarlos siempre
-        let id_tarea1 = dao_test.get_id_task(tarea1);
-        dao_test.delete_task(id_tarea1);
-        let id_tarea2 = dao_test.get_id_task(tarea2);
-        dao_test.delete_task(id_tarea2);
         // después de cada test borramos a los usuarios que se han insertado para poder ejecutarlos siempre
         dao_test.delete_user(id_usuario_con_tareas);
         dao_test.delete_user(id_usuario_sin_tareas);
