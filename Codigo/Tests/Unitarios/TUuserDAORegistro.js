@@ -9,34 +9,31 @@ const pool = mysql.createPool(config.databaseConfig);
 const task = new dao(pool);
 const dao_test = new testDAO(pool);
 
+// tests
 describe('hooks', function () {
 
-    after(function () {
-        // después de cada test borramos al que se ha insertado para poder ejecutarlos siempre
-        setTimeout(function () {
-            dao_test.get_id_user("registrotestDAO@gmail.com", cb_getID);
-            function cb_getID(err, getID) {
-                id_usuario = getID;
-                dao_test.delete_user(id_usuario);
-            }
-        }, 1000);
-    });
-
-    // tests
     describe("Registrarse", function () {
 
-        it("Agrega usuario a la BD", function () {
+        it("Agrega usuario a la BD", async function () {
             let nuevoUsuario = {
                 nombre: "RegistroTestDAO",
                 correo: "registrotestDAO@gmail.com",
                 pass: "1234",
             };
-            task.registro(nuevoUsuario).then(value => {
-                assert.equal(value, true);
+            await task.registro(nuevoUsuario).then(value => {
+                assert.notEqual(value, false);
             });
 
         });
 
+    });
+
+    after(async function () {
+        // después de cada test borramos al que se ha insertado para poder ejecutarlos siempre
+        await dao_test.get_id_user("registrotestDAO@gmail.com")
+            .then(value => {
+                if (value) dao_test.delete_user(value);
+            });
     });
 
 });
