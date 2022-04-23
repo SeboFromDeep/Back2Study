@@ -35,14 +35,14 @@ describe('hooks', function () {
         dao_test.get_id_user("añadirtareatestNEG@gmail.com", cb_getID);
         function cb_getID(err, getID) {
             id_usuario_reg = getID;
-            dao_aux.delete_user(id_usuario_reg);
+            dao_test.delete_user(id_usuario_reg);
         }
 
     });
 
     describe("Añadir tarea programada correcta", function () {
 
-        it("Todos los datos correctos", function () {
+        it("Todos los datos correctos", async function () {
             let agent = chai.request.agent(url);
             await agent.post('/usuarios/login_user')
                 .send({ correo: usuario_reg.email, password: usuario_reg.password })
@@ -59,9 +59,9 @@ describe('hooks', function () {
 
     });
 
-    describe("Añadir tarea programada incorrecta", function () {
+    describe("Añadir tarea programada incorrecta", async function () {
 
-        it("Campos vacíos", function () {
+        it("Campos vacíos", async function () {
             let agent = chai.request.agent(url);
             await agent.post('/usuarios/login_user')
                 .send({ correo: usuario_reg.email, password: usuario_reg.password })
@@ -71,12 +71,12 @@ describe('hooks', function () {
                         .send({ nombre: "NombrePNEGno", prioridad: "", tipo: "SEMANAL", categoria: "@CategoriaPNEGno", horas: "1", fechaIni: "", fechaFin: "" })
                         .redirects(0)
                         .end((err, res, body) => {
-                            expect(res).to.have.status(302);
+                            expect(res).to.have.status(200);
                         });
                 });
         });
 
-        it("Tarea de 0 horas y fechas ini/fin incoherentes", function () {
+        it("Tarea de 0 horas y fechas ini/fin incoherentes", async function () {
 
             let agent = chai.request.agent(url);
             await agent.post('/usuarios/login_user')
