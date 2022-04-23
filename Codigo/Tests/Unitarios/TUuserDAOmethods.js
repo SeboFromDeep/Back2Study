@@ -13,16 +13,18 @@ const dao_test = new testDAO(pool);
 // tests
 describe('hooks', function () {
 
+    let usuario_existe, usuario_no_existe;
+
     before(function () {
         // antes de cada test insertamos al usuario que existe para poder ejecutarlos siempre
-        let usuario_existe = {
+        usuario_existe = {
             username: "MethodsTestDAOSI",
             email: "methodstestDAOsi@gmail.com",
             password: "1234"
         };
         dao_test.insert_user(usuario_existe);
         // antes de cada test insertamos y borramos al usuario que no existe para poder ejecutarlos siempre
-        let usuario_no_existe = {
+        usuario_no_existe = {
             username: "MethodsTestDAONO",
             email: "methodstestDAOno@gmail.com",
             password: "1234"
@@ -51,13 +53,25 @@ describe('hooks', function () {
     describe("Existe usuario", function () {
 
         it("Ya existe un usuario con ese nombre", function () {
-            task.existeUsuario(usuario_existe).then(value => {
+            // para que sean los mismos atributos
+            let usuario = {
+                nombre: usuario_existe.username,
+                correo: usuario_existe.email,
+                pass: usuario_existe.password
+            };
+            task.existeUsuario(usuario).then(value => {
                 assert.equal(value, true);
             });
         });
 
         it("Ya existe un usuario con ese correo", function () {
-            task.existeCorreo(usuario_existe).then(value => {
+            // para que sean los mismos atributos
+            let usuario = {
+                nombre: usuario_existe.username,
+                correo: usuario_existe.email,
+                pass: usuario_existe.password
+            };
+            task.existeCorreo(usuario).then(value => {
                 assert.equal(value, true);
             });
         });
@@ -67,13 +81,25 @@ describe('hooks', function () {
     describe("No existe usuario", function () {
 
         it("No existe un usuario con ese nombre", function () {
-            task.existeUsuario(usuario_no_existe).then(value => {
+            // para que sean los mismos atributos
+            let usuario = {
+                nombre: usuario_no_existe.username,
+                correo: usuario_no_existe.email,
+                pass: usuario_no_existe.password
+            };
+            task.existeUsuario(usuario).then(value => {
                 assert.equal(value, false);
             });
         });
 
         it("No existe un usuario con ese correo", function () {
-            task.existeCorreo(usuario_no_existe).then(value => {
+            // para que sean los mismos atributos
+            let usuario = {
+                nombre: usuario_no_existe.username,
+                correo: usuario_no_existe.email,
+                pass: usuario_no_existe.password
+            };
+            task.existeCorreo(usuario).then(value => {
                 assert.equal(value, false);
             });
         });

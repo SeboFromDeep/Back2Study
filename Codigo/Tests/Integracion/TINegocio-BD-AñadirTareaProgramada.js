@@ -8,10 +8,8 @@ const app = require('../../app');
 const url='http://localhost:3300';
 
 // Controller Dependencies
-const controller = require("../../controller/userController");
 const mysql = require('mysql');
 const config = require('../../js/config');
-const UserController = new controller();
 const testDAO = require("../testsDAOMethods");
 const { getMaxListeners } = require("../../app");
 const pool = mysql.createPool(config.databaseConfig);

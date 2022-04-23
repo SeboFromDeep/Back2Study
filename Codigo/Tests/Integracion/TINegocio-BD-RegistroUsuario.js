@@ -7,10 +7,8 @@ chai.use(chaiHttp);
 const app = require('../../app');
 
 // Controller Dependencies
-const controller = require("../../controller/userController");
 const mysql = require('mysql');
 const config = require('../../js/config');
-const UserController = new controller();
 const testDAO = require("../testsDAOMethods");
 const pool = mysql.createPool(config.databaseConfig);
 const dao_test = new testDAO(pool);
@@ -21,8 +19,11 @@ describe('hooks', function () {
 
     after(function () {
         // después de cada test borramos al que se ha insertado para poder ejecutarlos siempre
-        let id_usuario = dao_test.get_id_user("registrotestNEG@gmail.com");
-        dao_aux.delete_user(id_usuario);
+        dao_test.get_id_user("registrotestNEG@gmail.com", cb_getID);
+        function cb_getID(err, getID) {
+            let id_usuario = getID;
+            dao_test.delete_user(id_usuario);
+        }
     });
 
     // tests

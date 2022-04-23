@@ -24,13 +24,9 @@ describe('hooks', function () {
         };
         dao_test.insert_user(usuario);
         setTimeout(function () {
-
-            console.log("ESTOY AQUI");
             dao_test.get_id_user(usuario.email, cb_getID);
             function cb_getID(err, getID) {
                 id_usuario_con_tareas = getID;
-                console.log("el id es ");
-                console.log(id_usuario_con_tareas)
             }
 
             setTimeout(function () {
@@ -58,7 +54,7 @@ describe('hooks', function () {
                         tareaManual.id_tarea = getID;
                         dao_test.insert_task_m(tareaManual);
                     }
-                }, 1000);                
+                }, 500);
 
                 tareaProgramada = {
                     nombre: "NombrePDAO",
@@ -80,23 +76,23 @@ describe('hooks', function () {
                         tareaProgramada.id_programada = getID;
                         dao_test.insert_task_p(tareaProgramada);
                     }
-                }, 1000);                
+                }, 500);
 
-            }, 1000);
+            }, 500);
 
-        }, 1000);
+        }, 500);
     });
 
     after(function () {
         // después de cada test borramos al usuario que se ha insertado para poder ejecutarlos siempre
-        setTimeout(function () {
-            dao_test.delete_user(id_usuario_con_tareas);
-        }, 1000);
+        dao_test.delete_user(id_usuario_con_tareas);
     })
 
     describe("Ver detalles de tarea", function () {
 
         it("Ver detalles tarea manual", function () {
+            console.log("Mostrando id m");
+            console.log(tareaManual.id_tarea);
             task.getDetailsTaskManual(id_usuario_con_tareas, tareaManual.id_tarea).then(value => {
                 assert.equal(value, true);
             });
@@ -104,11 +100,14 @@ describe('hooks', function () {
         });
 
         it("Ver detalles tarea programada", function () {
+            console.log("Mostrando id p");
+            console.log(tareaProgramada.id_programada);
             task.listaTareas(id_usuario_con_tareas, tareaProgramada.id_programada).then(value => {
                 assert.equal(value, false);
             });
 
         });
+
     });
 
 });

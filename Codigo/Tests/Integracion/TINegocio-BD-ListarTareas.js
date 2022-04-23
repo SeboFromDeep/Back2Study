@@ -7,10 +7,8 @@ chai.use(chaiHttp);
 const app = require('../../app');
 
 // Controller Dependencies
-const controller = require("../../controller/userController");
 const mysql = require('mysql');
 const config = require('../../js/config');
-const UserController = new controller();
 const testDAO = require("../testsDAOMethods");
 const { getMaxListeners } = require("../../app");
 const pool = mysql.createPool(config.databaseConfig);

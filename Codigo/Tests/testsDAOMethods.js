@@ -27,6 +27,8 @@ class DaoTests {
     // Elimina un usuario de la BD
     delete_user(id_usuario) {
         this.pool.getConnection(function (err, connection) {
+            console.log("borramos a");
+            console.log(id_usuario);
             if (err)
                 console.log("Error de conexión a la base de datos");
             else {
@@ -73,8 +75,6 @@ class DaoTests {
             if (err)
                 console.log("Error de conexión a la base de datos");
             else {
-                console.log("mostrando id");
-                console.log(tarea.id_usuario);
                 connection.query('USE back2study;');
                 const valor = "INSERT INTO tareas (nombre, prioridad, categoria, id_usuario, fechafin, fechaini, tipo) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 connection.query(valor,

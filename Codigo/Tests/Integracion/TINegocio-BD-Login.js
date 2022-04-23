@@ -7,40 +7,51 @@ chai.use(chaiHttp);
 const app = require('../../app');
 
 // Controller Dependencies
-const controller = require("../../controller/userController");
 const testDAO = require("../testsDAOMethods");
 const mysql = require('mysql');
 const config = require('../../js/config');
-const UserController = new controller();
+const pool = mysql.createPool(config.databaseConfig);
 const dao_test = new testDAO(pool);
 
 
 // tests
 describe('hooks', function () {
 
-    before(function () {
+    let usuario_reg, usuario_no_reg;
+
+    before(async function (done) {
         // antes de cada test insertamos ("registramos") un usuario para que pueda logearse
-        let usuario_reg = {
+        usuario_reg = {
             username: "LoginTestNEGReg",
             email: "logintestNEGreg@gmail.com",
             password: "1234"
         };
         dao_test.insert_user(usuario_reg);
         // antes de cada test insertamos y borramos al usuario que no está registrado para poder ejecutarlos siempre
-        let usuario_no_reg = {
+        usuario_no_reg = {
             username: "LoginTestNEGNoReg",
             email: "logintestNEGnoreg@gmail.com",
             password: "1234"
         };
         dao_test.insert_user(usuario_no_reg);
-        let id_usuario_no_reg = dao_test.get_id_user(usuario_no_reg.email)
-        dao_test.delete_user(id_usuario_no_reg);
+        setTimeout(function () {
+            dao_test.get_id_user(usuario_no_reg.email, cb_getID);
+            function cb_getID(err, getID) {
+                let id_usuario_no_reg = getID;
+                dao_test.delete_user(id_usuario_no_reg);
+            }
+        }, 1000);    
+        done();    
     })
 
-    after(function () {
+    after(async function (done) {
         // después de cada test borramos al que se ha insertado para poder ejecutarlos siempre
-        let id_usuario_reg = dao_test.get_id_user("logintestNEGreg@gmail.com");
-        dao_aux.delete_user(id_usuario_reg);
+        dao_test.get_id_user("logintestNEGreg@gmail.com", cb_getID);
+        function cb_getID(err, getID) {
+            let id_usuario_reg = getID;
+            dao_test.delete_user(id_usuario_reg);
+        }
+        done();
     });
 
     describe("Login correcto", function () {
