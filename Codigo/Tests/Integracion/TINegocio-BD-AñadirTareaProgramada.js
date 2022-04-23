@@ -5,7 +5,7 @@ let chaiHttp = require('chai-http');
 const expect = require('chai').expect;
 chai.use(chaiHttp);
 const app = require('../../app');
-const url='http://localhost:3300';
+const url = 'http://localhost:3300';
 
 // Controller Dependencies
 const mysql = require('mysql');
@@ -18,9 +18,11 @@ const dao_test = new testDAO(pool);
 // tests
 describe('hooks', function () {
 
+    let usuario_reg;
+
     before(function () {
         // antes de cada test insertamos ("registramos") un usuario para que pueda logearse
-        let usuario_reg = {
+        usuario_reg = {
             username: "AñadirTareaTestNEG",
             email: "añadirtareatestNEG@gmail.com",
             password: "1234"
@@ -30,8 +32,12 @@ describe('hooks', function () {
 
     after(function () {
         // después de cada test borramos al que se ha insertado para poder ejecutarlos siempre
-        let id_usuario_reg = dao_test.get_id_user("añadirtareatestNEG@gmail.com");
-        dao_aux.delete_user(id_usuario_reg);
+        dao_test.get_id_user("añadirtareatestNEG@gmail.com", cb_getID);
+        function cb_getID(err, getID) {
+            id_usuario_reg = getID;
+            dao_aux.delete_user(id_usuario_reg);
+        }
+
     });
 
     describe("Añadir tarea programada correcta", function () {

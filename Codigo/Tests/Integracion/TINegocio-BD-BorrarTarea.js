@@ -5,7 +5,7 @@ let chaiHttp = require('chai-http');
 const expect = require('chai').expect;
 chai.use(chaiHttp);
 const app = require('../../app');
-const url='http://localhost:3300';
+const url = 'http://localhost:3300';
 
 // Controller Dependencies
 const mysql = require('mysql');
@@ -15,29 +15,39 @@ const { getMaxListeners } = require("../../app");
 const pool = mysql.createPool(config.databaseConfig);
 const dao_test = new testDAO(pool);
 
+const ini = moment("2022-05-10");
+const fin = moment("2022-05-30");
+
 // tests
 describe('hooks', function () {
 
+    let usuario_reg;
     let id_usuario_reg;
+    let tareaManual, tareaProgramada;
 
     before(function () {
         // antes de cada test insertamos ("registramos") un usuario para que pueda logearse
-        let usuario_reg = {
+        usuario_reg = {
             username: "BorrarTareaTestNEG",
             email: "borrartareatestNEG@gmail.com",
             password: "1234"
         };
         dao_test.insert_user(usuario_reg);
-        id_usuario_reg = dao_test.get_id_user(usuario_reg.email);
+        setTimeout(function () {
+            dao_test.get_id_user(usuario_reg.email, cb_getID);
+            function cb_getID(err, getID) {
+                id_usuario_reg = getID;
+            }
+        }, 1000);
 
         // añadimos tareas a ese usuario, una de cada tipo
-        let tareaManual = {
+        tareaManual = {
             nombre: "NombreMNEG",
             prioridad: "BAJA",
             categoria: "@CategoriaMNEG",
             id_usuario: id_usuario_reg,
-            fechafin: a.format("YYYY-MM-DD"),
-            fechaini: b.format("YYYY-MM-DD"),
+            fechafin: fin.format("YYYY-MM-DD"),
+            fechaini: ini.format("YYYY-MM-DD"),
             tipo: "m",
             // atributos tarea manual
             id_tarea: -1,
@@ -47,16 +57,21 @@ describe('hooks', function () {
             dias_recurrentes: "@L"
         };
         dao_test.insert_task(tareaManual);
-        tareaManual.id_tarea = dao_test.get_id_task(tareaManual);
-        dao_test.insert_task_m(tareaManual);
+        setTimeout(function () {
+            dao_test.get_id_task(tareaManual, cb_getID);
+            function cb_getID(err, getID) {
+                tareaManual.id_tarea = getID;
+                dao_test.insert_task_m(tareaManual);
+            }
+        }, 1000);
 
-        let tareaProgramada = {
+        tareaProgramada = {
             nombre: "NombrePNEG",
             prioridad: "ALTA",
             categoria: "@CategoriaPNEG",
             id_usuario: id_usuario_reg,
-            fechafin: a.format("YYYY-MM-DD"),
-            fechaini: b.format("YYYY-MM-DD"),
+            fechafin: fin.format("YYYY-MM-DD"),
+            fechaini: ini.format("YYYY-MM-DD"),
             tipo: "p",
             // atributos tarea programada
             horas: 10,
@@ -64,8 +79,13 @@ describe('hooks', function () {
             tipo_ds: "DIARIA"
         };
         dao_test.insert_task(tareaProgramada);
-        tareaProgramada.id_programada = dao_test.get_id_task(tareaProgramada);
-        dao_test.insert_task_p(tareaProgramada);
+        setTimeout(function () {
+            dao_test.get_id_task(tareaProgramada, cb_getID);
+            function cb_getID(err, getID) {
+                tareaProgramada.id_programada = getID;
+                dao_test.insert_task_m(tareaProgramada);
+            }
+        }, 1000);
     })
 
     after(function () {
