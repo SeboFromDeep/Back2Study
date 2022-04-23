@@ -9,6 +9,9 @@ const pool = mysql.createPool(config.databaseConfig);
 const task = new dao(pool);
 const dao_test = new testDAO(pool);
 
+const ini = moment("2022-05-10");
+const fin = moment("2022-05-30");
+
 // tests
 describe('hooks', function () {
 
@@ -35,8 +38,8 @@ describe('hooks', function () {
             prioridad: "BAJA",
             categoria: "@CategoriaMDAO",
             id_usuario: id_usuario_con_tareas,
-            fechafin: "2022-04-20",
-            fechaini: "2022-04-10",
+            fechafin: fin.format("YYYY-MM-DD"),
+            fechaini: ini.format("YYYY-MM-DD"),
             tipo: "m",
             // atributos tarea manual
             id_tarea: -1,
@@ -59,8 +62,8 @@ describe('hooks', function () {
             prioridad: "ALTA",
             categoria: "@CategoriaPDAO",
             id_usuario: id_usuario_con_tareas,
-            fechafin: "2022-04-20",
-            fechaini: "2022-04-10",
+            fechafin: fin.format("YYYY-MM-DD"),
+            fechaini: ini.format("YYYY-MM-DD"),
             tipo: "p",
             // atributos tarea programada
             horas: 10,

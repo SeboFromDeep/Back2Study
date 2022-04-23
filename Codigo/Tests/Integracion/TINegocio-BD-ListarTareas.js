@@ -14,29 +14,43 @@ const { getMaxListeners } = require("../../app");
 const pool = mysql.createPool(config.databaseConfig);
 const dao_test = new testDAO(pool);
 
+const ini = moment("2022-05-10");
+const fin = moment("2022-05-30");
+
 // tests
 describe('hooks', function () {
 
+    let usuario_sin_tareas, usuario_con_tareas, usuario_con_tareas_m, usuario_con_tareas_p;
     let id_usuario_sin_tareas, id_usuario_con_tareas_m, id_usuario_con_tareas_p, id_usuario_con_tareas;
 
     before(function () {
         // antes de cada test insertamos ("registramos") un usuario que no tenga tareas
-        let usuario_sin_tareas = {
+        usuario_sin_tareas = {
             username: "ListaTareasTestNEGSIN",
             email: "listatareastestNEGsin@gmail.com",
             password: "1234"
         };
         dao_test.insert_user(usuario_sin_tareas);
-        id_usuario_sin_tareas = dao_test.get_id_user(usuario_con_tareas.email);
+        setTimeout(function () {
+            dao_test.get_id_user(usuario_sin_tareas.email, cb_getID);
+            function cb_getID(err, getID) {
+                id_usuario_sin_tareas = getID;
+            }
+        }, 1000);
         
         // antes de cada test insertamos ("registramos") un usuario que tenga tareas manuales
-        let usuario_con_tareas_m = {
+        usuario_con_tareas_m = {
             username: "ListaTareasTestNEGCONM",
             email: "listatareastestNEGconm@gmail.com",
             password: "1234"
         };
         dao_test.insert_user(usuario_con_tareas_m);
-        id_usuario_con_tareas_m = dao_test.get_id_user(usuario_con_tareas_m.email);
+        setTimeout(function () {
+            dao_test.get_id_user(usuario_cousuario_con_tareas_m_tareas.email, cb_getID);
+            function cb_getID(err, getID) {
+                id_usuario_con_tareas_m = getID;
+            }
+        }, 1000);
 
         // añadimos tareas a ese usuario
         let tarea1m = {
@@ -44,8 +58,8 @@ describe('hooks', function () {
             prioridad: "BAJA",
             categoria: "@Categoria1MNEG",
             id_usuario: id_usuario_con_tareas_m,
-            fechafin: a.format("YYYY-MM-DD"),
-            fechaini: b.format("YYYY-MM-DD"),
+            fechafin: fin.format("YYYY-MM-DD"),
+            fechaini: ini.format("YYYY-MM-DD"),
             tipo: "m",
             // atributos tarea manual
             id_tarea: -1,
@@ -55,16 +69,21 @@ describe('hooks', function () {
             dias_recurrentes: "@L"
         };
         dao_test.insert_task(tarea1m);
-        tarea1m.id_tarea = dao_test.get_id_task(tarea1m);
-        dao_test.insert_task_m(tarea1m);
+        setTimeout(function () {
+            dao_test.get_id_task(tarea1m, cb_getID);
+            function cb_getID(err, getID) {
+                tarea1m.id_tarea = getID;
+                dao_test.insert_task_m(tarea1m);
+            }
+        }, 1000);
 
         let tarea2m = {
             nombre: "Nombre2MNEG",
             prioridad: "MEDIA",
             categoria: "@Categoria2MNEG",
             id_usuario: id_usuario_con_tareas,
-            fechafin: a.format("YYYY-MM-DD"),
-            fechaini: b.format("YYYY-MM-DD"),
+            fechafin: fin.format("YYYY-MM-DD"),
+            fechaini: ini.format("YYYY-MM-DD"),
             tipo: "m",
             // atributos tarea manual
             id_tarea: -1,
@@ -74,17 +93,27 @@ describe('hooks', function () {
             dias_recurrentes: "@M@X"
         };
         dao_test.insert_task(tarea2m);
-        tarea2m.id_tarea = dao_test.get_id_task(tarea2m);
-        dao_test.insert_task_m(tarea2m);
+        setTimeout(function () {
+            dao_test.get_id_task(tarea2m, cb_getID);
+            function cb_getID(err, getID) {
+                tarea2m.id_tarea = getID;
+                dao_test.insert_task_m(tarea2m);
+            }
+        }, 1000);
 
         // antes de cada test insertamos ("registramos") un usuario que tenga tareas programadas
-        let usuario_con_tareas_p = {
+        usuario_con_tareas_p = {
             username: "ListaTareasTestNEGCONP",
             email: "listatareastestNEGconp@gmail.com",
             password: "1234"
         };
         dao_test.insert_user(usuario_con_tareas_p);
-        id_usuario_con_tareas_p = dao_test.get_id_user(usuario_con_tareas_p.email);
+        setTimeout(function () {
+            dao_test.get_id_user(usuario_con_tareas_p.email, cb_getID);
+            function cb_getID(err, getID) {
+                id_usuario_con_tareas_p = getID;
+            }
+        }, 1000);
 
         // añadimos tareas a ese usuario
         let tarea1p = {
@@ -92,8 +121,8 @@ describe('hooks', function () {
             prioridad: "ALTA",
             categoria: "@Categoria1PNEG",
             id_usuario: id_usuario_con_tareas,
-            fechafin: a.format("YYYY-MM-DD"),
-            fechaini: b.format("YYYY-MM-DD"),
+            fechafin: fin.format("YYYY-MM-DD"),
+            fechaini: ini.format("YYYY-MM-DD"),
             tipo: "p",
             // atributos tarea programada
             horas: 10,
@@ -101,16 +130,21 @@ describe('hooks', function () {
             tipo_ds: "DIARIA"
         };
         dao_test.insert_task(tarea1p);
-        tarea1p.id_programada = dao_test.get_id_task(tarea1p);
-        dao_test.insert_task_p(tarea1p);
+        setTimeout(function () {
+            dao_test.get_id_task(tarea1p, cb_getID);
+            function cb_getID(err, getID) {
+                tarea1p.id_programada = getID;
+                dao_test.insert_task_p(tarea1p);
+            }
+        }, 1000);
 
         let tarea2p = {
             nombre: "Nombre2PNEG",
             prioridad: "BAJA",
             categoria: "@Categoria2PNEG",
             id_usuario: id_usuario_con_tareas,
-            fechafin: a.format("YYYY-MM-DD"),
-            fechaini: b.format("YYYY-MM-DD"),
+            fechafin: fin.format("YYYY-MM-DD"),
+            fechaini: ini.format("YYYY-MM-DD"),
             tipo: "p",
             // atributos tarea programada
             horas: 20,
@@ -118,17 +152,27 @@ describe('hooks', function () {
             tipo_ds: "SEMANAL"
         };
         dao_test.insert_task(tarea2p);
-        tarea2p.id_programada = dao_test.get_id_task(tarea2p);
-        dao_test.insert_task_p(tarea2p);
+        setTimeout(function () {
+            dao_test.get_id_task(tarea2p, cb_getID);
+            function cb_getID(err, getID) {
+                tarea2p.id_programada = getID;
+                dao_test.insert_task_p(tarea2p);
+            }
+        }, 1000);
 
         // antes de cada test insertamos ("registramos") un usuario que tenga tareas de ambos tipos
-        let usuario_con_tareas = {
+        usuario_con_tareas = {
             username: "ListaTareasTestNEGCON",
             email: "listatareastestNEGcon@gmail.com",
             password: "1234"
         };
         dao_test.insert_user(usuario_con_tareas);
-        id_usuario_con_tareas = dao_test.get_id_user(usuario_con_tareas.email);
+        setTimeout(function () {
+            dao_test.get_id_user(id_usuario_con_tareas.email, cb_getID);
+            function cb_getID(err, getID) {
+                id_usuario_con_tareas = getID;
+            }
+        }, 1000);
 
         // añadimos tareas a ese usuario
         let tarea3m = {
@@ -136,8 +180,8 @@ describe('hooks', function () {
             prioridad: "ALTA",
             categoria: "@Categoria3MNEG",
             id_usuario: id_usuario_con_tareas_m,
-            fechafin: a.format("YYYY-MM-DD"),
-            fechaini: b.format("YYYY-MM-DD"),
+            fechafin: fin.format("YYYY-MM-DD"),
+            fechaini: ini.format("YYYY-MM-DD"),
             tipo: "m",
             // atributos tarea manual
             id_tarea: -1,
@@ -147,16 +191,21 @@ describe('hooks', function () {
             dias_recurrentes: "@J"
         };
         dao_test.insert_task(tarea3m);
-        tarea3m.id_tarea = dao_test.get_id_task(tarea3m);
-        dao_test.insert_task_m(tarea3m);
+        setTimeout(function () {
+            dao_test.get_id_task(tarea3m, cb_getID);
+            function cb_getID(err, getID) {
+                tarea3m.id_tarea = getID;
+                dao_test.insert_task_m(tarea3m);
+            }
+        }, 1000);
 
         let tarea3p = {
             nombre: "Nombre3PNEG",
             prioridad: "MEDIA",
             categoria: "@Categoria3PNEG",
             id_usuario: id_usuario_con_tareas,
-            fechafin: a.format("YYYY-MM-DD"),
-            fechaini: b.format("YYYY-MM-DD"),
+            fechafin: fin.format("YYYY-MM-DD"),
+            fechaini: ini.format("YYYY-MM-DD"),
             tipo: "p",
             // atributos tarea programada
             horas: 12,
@@ -164,8 +213,13 @@ describe('hooks', function () {
             tipo_ds: "DIARIA"
         };
         dao_test.insert_task(tarea3p);
-        tarea3p.id_programada = dao_test.get_id_task(tarea3p);
-        dao_test.insert_task_p(tarea3p);
+        setTimeout(function () {
+            dao_test.get_id_task(tarea3p, cb_getID);
+            function cb_getID(err, getID) {
+                tarea3p.id_programada = getID;
+                dao_test.insert_task_p(tarea3p);
+            }
+        }, 1000);
         
     });
 

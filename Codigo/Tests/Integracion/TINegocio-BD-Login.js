@@ -19,7 +19,7 @@ describe('hooks', function () {
 
     let usuario_reg, usuario_no_reg;
 
-    before(async function (done) {
+    before(function () {
         // antes de cada test insertamos ("registramos") un usuario para que pueda logearse
         usuario_reg = {
             username: "LoginTestNEGReg",
@@ -40,18 +40,16 @@ describe('hooks', function () {
                 let id_usuario_no_reg = getID;
                 dao_test.delete_user(id_usuario_no_reg);
             }
-        }, 1000);    
-        done();    
+        }, 1000);
     })
 
-    after(async function (done) {
+    after(function () {
         // después de cada test borramos al que se ha insertado para poder ejecutarlos siempre
         dao_test.get_id_user("logintestNEGreg@gmail.com", cb_getID);
         function cb_getID(err, getID) {
             let id_usuario_reg = getID;
             dao_test.delete_user(id_usuario_reg);
         }
-        done();
     });
 
     describe("Login correcto", function () {
