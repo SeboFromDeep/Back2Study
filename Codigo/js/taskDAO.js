@@ -211,6 +211,36 @@ class DaoTask{
         
     }
 
+    BuscarTareaPorNombre(nombre,id){
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection(function(err,connection){
+                if(err){
+                    reject(new Error("Error de conexión a la base de datos",));
+                }
+                else{
+                    const valor ="SELECT id_tarea, nombre, prioridad, categoria, fechafin ,fechaini, tipo FROM back2study.tareas where nombre LIKE %?% AND id = ?";
+                    connection.query(valor,[nombre,id],
+                        function(err, nameTask){
+                            connection.release();
+                            if(err){
+                                console.log("ERROR:"+err.message);
+                                reject(new Error("Error de acceso a la base de datos"));
+                            }
+                            else{
+                                console.log(nameTask)
+                                if(nameTask.length>0) resolve(nameTask);
+                                else resolve(false);
+                                
+                            }
+                    });
+                }
+    
+            });
+
+        });
+        
+    }
+    
     buscarTareasporCategoria(categoria, id){
         return new Promise((resolve, reject) => {
             this.pool.getConnection(function(err,connection){
@@ -218,8 +248,9 @@ class DaoTask{
                     reject(new Error("Error de conexión a la base de datos",));
                 }
                 else{
-                    const valor ="SELECT id_tarea, nombre, prioridad, categoria, fechafin ,fechaini, tipo FROM back2study.tareas where categoria LIKE ? AND id_usuario = ?";
-                    connection.query(valor, [categoria, id],
+                    let categoria2 = categoria + "@";
+                    const valor ="SELECT id_tarea, nombre, prioridad, categoria, fechafin ,fechaini, tipo FROM back2study.tareas WHERE (categoria = ? OR categoria LIKE ?) AND id_usuario = ?";
+                    connection.query(valor, [categoria, categoria2, id],
                         function(err, resultado){
                             connection.release();
                             if(err){

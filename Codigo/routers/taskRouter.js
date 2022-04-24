@@ -73,8 +73,13 @@ taskRouter.get("/taskDetalisBy/:id/:tipo",
 taskRouter.get("/deleteTask/:id/:tipo", 
                 controllerUsuario.usuarioLogeado, 
                 controllerTareas.deleteTask);
-// taskRouter.get("/taskBy/:id", 
-//                 cU.usuarioLogeado, 
-//                 cT.getTask);//Busqueda por tag
+//Busqueda por nombre  
+taskRouter.get("/taskBy/:id/:nombre", 
+                 controllerUsuario.usuarioLogeado, 
+                 controllerTareas.getListByName);
+//Busqueda por tag
+taskRouter.get("/taskBy/:id/:categoria", 
+                 controllerUsuario.usuarioLogeado, 
+                 controllerTareas.getListByTag);
 
 module.exports = taskRouter;

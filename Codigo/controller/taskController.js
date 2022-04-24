@@ -160,6 +160,36 @@ class controllerTareas {
         }
     }
 
+    getListByName(request, response){
+
+        daoTareas.BuscarTareaPorNombre(request.body.nombre, request.session.id_)
+        .then(value =>{
+            
+            response.render("principal", {
+                title: "", 
+                nameUser: request.session.userName, 
+                mailUser: request.session.mail,
+                tareas: value?value:0 //Evaluamos si hay tareas y mandamos a la vista
+            });
+        })
+        .catch(error =>{  response.status(500);  });
+    }
+    getListByTag(request, response){
+
+        daoTareas.buscarTareasporCategoria(request.body.categoria, request.session.id_)
+        .then(value =>{
+            
+            response.render("principal", {
+                title: "", 
+                nameUser: request.session.userName, 
+                mailUser: request.session.mail,
+                tareas: value?value:0 //Evaluamos si hay tareas y mandamos a la vista
+            });
+        })
+        .catch(error =>{  response.status(500);  });
+    }
+
+
     
 }
 
