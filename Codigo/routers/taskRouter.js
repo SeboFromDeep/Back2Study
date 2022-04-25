@@ -53,7 +53,7 @@ taskRouter.post("/add_scheduled_task",
                     else throw Error("Por favor indica el tipo de la tarea.");
                 }
             ),
-            check("horas", "El número de horas debe de ser mayor que 0.").isInt({gt: 0}),
+            check("horas", "Formato de horas incorrecto").isInt({gt: 0}),
             check("fechaIni", "Fecha de inicio no puede estar vacio").notEmpty(),
             check("fechaFin", "Fecha Fin no puede estar vacio").notEmpty()
             .custom((value, {req}) => {
