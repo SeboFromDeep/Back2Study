@@ -161,6 +161,38 @@ class controllerTareas {
         }
     }
 
+    getListByName(request, response){
+
+        daoTareas.buscarTareaPorNombre(request.body.nombreBuscar, request.session.id_)
+        .then(value =>{
+            
+            response.render("principal", {
+                title: "", 
+                nameUser: request.session.userName, 
+                mailUser: request.session.mail,
+                tareas: value?value:0, //Evaluamos si hay tareas y mandamos a la vista
+                deleteId: false 
+            });
+        })
+        .catch(error =>{  response.status(500);  });
+    }
+
+    getListByTag(request, response){
+
+        daoTareas.buscarTareasporCategoria(request.params.tag, request.session.id_)
+        .then(value =>{
+            
+            response.render("principal", {
+                title: "", 
+                nameUser: request.session.userName, 
+                mailUser: request.session.mail,
+                tareas: value?value:0, //Evaluamos si hay tareas y mandamos a la vista
+                deleteId: false 
+            });
+        })
+        .catch(error =>{  response.status(500);  });
+    }
+
     /**
      * Borra una tarea especifica seleccionada por el usuario (el usuario vera nombres y horarios, pero internamente trabajamos con id)
      * @param {Object[]} request - Contiene el ID de la Tarea en .body

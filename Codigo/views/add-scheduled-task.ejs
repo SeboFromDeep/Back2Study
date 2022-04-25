@@ -24,22 +24,32 @@
         <div class="col-auto bg-light p-5 rounded">
             <form action="/tareas/add_scheduled_task" method="POST" enctype="multipart/form-data">
                 <h1 class="display-6 text-center">Añadir Tarea Programada</h1>
-                <% let control="";%>
+                
                 <% let mensajeNombre=false;%>
+                <% let controlNom="";%>
+
+                <% let mensajePrioridad=false;%>
+                <% let controlPrio="";%>
+
+                <% let mensajeTipo=false;%>
+                <% let controlTipo="";%>
+
                 <% if(typeof(errors) !== "undefined"){%>
+                    
                     <% if(errors.nombre){%>
-                        <div class="alert alert-danger" role="alert">
-                            <%=errors.nombre.msg%>
-                            <% mensajeNombre=true;%>
-                            <% control=is-invalid;%>
-                        </div>
+                        <% mensajeNombre=true;%>
+                        <% controlNom="is-invalid";%>
+                        
                     <%}%>
+                    
                     <% if(errors.prioridad){%>
-                        <div class="alert alert-danger" role="alert">
-                            <%=errors.prioridad.msg%>
-                        </div>
+                        <% mensajePrioridad=true;%>
+                        <% controlPrio="is-invalid";%>
+                        
                     <%}%>
                     <% if(errors.tipo){%>
+                        <% mensajeTipo=true;%>
+                        <% controlTipo="is-invalid";%>
                         <div class="alert alert-danger" role="alert">
                             <%=errors.tipo.msg%>
                         </div>
@@ -64,12 +74,12 @@
                 <div class="row input-group p-2">
                     <!-- <input type="text" name="nombre" class="form-control" id="floatingInput" placeholder="Nombre de la Tarea">   -->
                     <div class="col-4">
-                        <input type="text" name="nombre" class="form-control is-invalid" id="floatingInput" placeholder="Nombre de la Tarea">
-                        
-                        <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                            Please choose a username.
-                        </div>
-                        
+                        <input type="text" name="nombre" class="form-control <%=controlNom%>" id="floatingInput" placeholder="Nombre de la Tarea">
+                        <% if(mensajeNombre){%>
+                            <div class="invalid-feedback">
+                                <%=errors.nombre.msg;%>
+                            </div>
+                        <%}%>
                     </div>
                     <div class="col input-group">
                         <span class="input-group-text">Fecha Inicio y final</span>
@@ -78,7 +88,7 @@
                     </div>  
                 </div>
                 <div class="row input-group p-2">
-                    <div class="col btn-group" role="group" aria-label="Selector de prioridad">
+                    <div class="col btn-group <%=controlPrio%>" role="group" aria-label="Selector de prioridad">
                         <input type="radio" class="btn-check" name="prioridad" value="BAJA" id="btnradio1" autocomplete="off">
                         <label class="btn btn-outline-success" for="btnradio1">Baja</label>
                       
@@ -87,13 +97,20 @@
                       
                         <input type="radio" class="btn-check" name="prioridad" value="ALTA" id="btnradio3" autocomplete="off">
                         <label class="btn btn-outline-danger" for="btnradio3">Alta</label>
+                        
+                        
                     </div>
+                    <% if(mensajePrioridad){%>
+                        <div class="col invalid-feedback">
+                            <%=errors.prioridad.msg;%>
+                        </div>
+                    <%}%>
 
                     <input type="text" class="col form-control" name="categoria" id="formGroupExampleInput" placeholder="@Categoria">
                 </div>
                 <div class="row input-group p-2">
                     
-                    <div class="col btn-group" role="group" aria-label="Selector de prioridad">
+                    <div class="col btn-group <%=controlTipo%>" role="group" aria-label="Selector de prioridad">
                         <input type="radio" class="btn-check" name="tipo" value="DIARIA" id="btnradio1tipo" autocomplete="off">
                         <label class="btn btn-outline-dark" for="btnradio1tipo">Diaria</label>
                       
@@ -102,6 +119,11 @@
                     </div>
                     <input class="col form-control" type="text" name="horas" id="floatingInput" placeholder="Número de horas">
                 </div>
+                <% if(mensajeTipo){%>
+                    <div class="col invalid-feedback">
+                        <%=errors.tipo.msg;%>
+                    </div>
+                <%}%>
                 
                 <br>
                 <button type="submit"class="btn btn-primary w-100">Añadir</button>
