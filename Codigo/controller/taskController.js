@@ -25,19 +25,19 @@ class controllerTareas {
             //     console.log(element);
             // });
             events.UserEvents[request.session.userName] = events.CreateEventsFromTasks(tareas);
-            // response.render("principal", {
-            //                 title: "", 
-            //                 nameUser: request.session.userName, 
-            //                 mailUser: request.session.mail,
-            //                 tareas: tareas?tareas:0,
-            //                 deleteId: false 
-            // });
-            response.render("calendar", {
-                title: "", 
-                nameUser: request.session.userName, 
-                mailUser: request.session.mail}
+            response.render("principal", {
+                            title: "", 
+                            nameUser: request.session.userName, 
+                            mailUser: request.session.mail,
+                            tareas: tareas?tareas:0,
+                            deleteId: false 
+            });
+            // response.render("calendar", {
+            //     title: "", 
+            //     nameUser: request.session.userName, 
+            //     mailUser: request.session.mail}
                 
-            );
+            // );
         })
         .catch(error =>{  response.status(500);  });
     }
