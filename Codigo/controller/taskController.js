@@ -10,6 +10,8 @@ const _ = require('underscore');
 const moment = require('moment');
 const fecha = moment();
 
+let events = require("./../prueba/full-calendar/eventModule")
+
 const { createResponseLocals, createObjectFromRequest, fixObject } = require("./controllerUtils")
 
 //Validar
@@ -86,10 +88,23 @@ class controllerTareas {
         }
         else{
             response.status(200);
+            console.warn("Error en la validacion")
+            
+            events.UserEvents[request.session.userName] = events.CreateEventsFromTasks(events.EventsToParse)//events.TestEvents
+
+            response.render("principal", {
+                title: "", 
+                nameUser: request.session.userName, 
+                mailUser: request.session.mail,
+                tareas: undefined,
+                deleteId: 0,
+            });
+            /*
             response.render("add-scheduled-task", {
                 nameUser: request.session.userName,
                 errors: errors.mapped()
-        });
+            });
+            */
         }
     }
 
