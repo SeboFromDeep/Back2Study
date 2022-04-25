@@ -17,20 +17,19 @@ const fin = moment("2022-05-30");
 // tests
 describe('hooks', function () {
 
-    let id_usuario_con_tareas;
-    let tareaManual, tareaProgramada;
+    let id_usuario_con_tareas, id_usuario_sin_tareas;
 
     before(async function () {
         // antes de cada test insertamos ("registramos") un usuario para que tenga tareas
-        let usuario = {
-            username: "VerDetalleTareaTestDAO",
-            email: "verdetalletareatestDAO@gmail.com",
+        let usuario_con_tareas = {
+            username: "ListaTareasTestDAOCON",
+            email: "listatareastestDAOcon@gmail.com",
             password: "1234"
         };
-        await dao_test.insert_user(usuario).then(value => {
+        await dao_test.insert_user(usuario_con_tareas).then(value => {
             expect(value).eq(true);
         });
-        await dao_test.get_id_user(usuario.email)
+        await dao_test.get_id_user(usuario_con_tareas.email)
             .then(value => {
                 if (value) {
                     id_usuario_con_tareas = value;
@@ -90,36 +89,34 @@ describe('hooks', function () {
                 }
             });
 
+        // antes de cada test insertamos ("registramos") un usuario que no tenga tareas
+        let usuario_sin_tareas = {
+            username: "ListaTareasTestDAOSIN",
+            email: "listatareastestDAOsin@gmail.com",
+            password: "1234"
+        };
+        await dao_test.insert_user(usuario_sin_tareas).then(value => {
+            expect(value).eq(true);
+        });
+        await dao_test.get_id_user(usuario_sin_tareas.email)
+            .then(value => {
+                if (value)
+                    id_usuario_sin_tareas = value;
+            });
     });
 
-    describe("Ver detalles de tarea", function () {
+    describe("Listar tareas", function () {
 
-        it("Ver detalles tarea manual", async function () {
-            await task.getDetailsTaskManual(id_usuario_con_tareas, tareaManual.id_tarea).then(value => {
-                assert.equal(value[0].nombre, tareaManual.nombre);
-                assert.equal(value[0].prioridad, tareaManual.prioridad);
-                assert.equal(value[0].categoria, tareaManual.categoria);
-                // assert.equal(value[0].fechafin, tareaManual.fechafin);
-                // assert.equal(value[0].fechaini, tareaManual.fechaini);
-                assert.equal(value[0].tipo, tareaManual.tipo);
-                assert.equal(value[0].hora_ini, tareaManual.hora_ini);
-                assert.equal(value[0].hora_fin, tareaManual.hora_fin);
-                assert.equal(value[0].recurrente, tareaManual.recurrente);
-                assert.equal(value[0].dias_recurrentes, tareaManual.dias_recurrentes);
+        it("Usuario con tareas", async function () {
+            await task.listaTareas(id_usuario_con_tareas).then(value => {
+                assert.notEqual(value, false);
             });
 
         });
 
-        it("Ver detalles tarea programada", async function () {
-            await task.getDetailsTaskProgram(id_usuario_con_tareas, tareaProgramada.id_programada).then(value => {
-                assert.equal(value[0].nombre, tareaProgramada.nombre);
-                assert.equal(value[0].prioridad, tareaProgramada.prioridad);
-                assert.equal(value[0].categoria, tareaProgramada.categoria);
-                // assert.equal(value[0].fechafin, tareaProgramada.fechafin);
-                // assert.equal(value[0].fechaini, tareaProgramada.fechaini);
-                // assert.equal(value[0].tareas.tipo, tareaProgramada.tipo);
-                assert.equal(value[0].horas, tareaProgramada.horas);
-                // assert.equal(value[0].tareas_programadas.tipo, tareaProgramada.tipo_ds);
+        it("Usuario sin tareas", async function () {
+            await task.listaTareas(id_usuario_sin_tareas).then(value => {
+                assert.equal(value, false);
             });
 
         });
@@ -127,8 +124,10 @@ describe('hooks', function () {
     });
 
     after(async function () {
-        // después de cada test borramos al usuario que se ha insertado para poder ejecutarlos siempre
+        // después de cada test borramos a los usuarios que se han insertado para poder ejecutarlos siempre
         await dao_test.delete_user(id_usuario_con_tareas);
+        await dao_test.delete_user(id_usuario_sin_tareas);
+
     });
 
 });

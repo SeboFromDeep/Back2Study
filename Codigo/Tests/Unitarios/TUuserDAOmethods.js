@@ -26,7 +26,7 @@ describe('hooks', function () {
         await dao_test.insert_user(usuario_existe).then(value => {
             expect(value).eq(true);
         });
-        
+
         // antes de cada test insertamos y borramos al usuario que no existe para poder ejecutarlos siempre
         usuario_no_existe = {
             username: "MethodsTestDAONO",
@@ -100,7 +100,7 @@ describe('hooks', function () {
 
     after(async function () {
         // después de cada test borramos al usuario que se ha insertado poder ejecutarlos siempre
-            await dao_test.get_id_user(usuario_existe.email)
+        await dao_test.get_id_user(usuario_existe.email)
             .then(value => {
                 if (value) dao_test.delete_user(value);
             });
