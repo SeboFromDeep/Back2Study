@@ -57,7 +57,7 @@ taskRouter.post("/add_scheduled_task",
             check("fechaIni", "Fecha de inicio no puede estar vacio").notEmpty(),
             check("fechaFin", "Fecha Fin no puede estar vacio").notEmpty()
             .custom((value, {req}) => {
-                if (value > req.body.fechaIni) return true;
+                if (value >= req.body.fechaIni) return true;
                 else throw Error("Fecha de finalización no válida.");
             }),
             controllerTareas.addTareaProgramada);
@@ -81,7 +81,7 @@ taskRouter.post("/addManualTask",
             check("fechaIni", "Fecha de inicio no puede estar vacio").notEmpty(),
             check("fechaFin", "Fecha Fin no puede estar vacio").notEmpty()
             .custom((value, {req}) => {
-                if (value > req.body.fechaIni) return true;
+                if (value >= req.body.fechaIni) return true;
                 else throw Error("Fecha de finalización no válida.");
             }),
             controllerTareas.addTareaManual);
