@@ -52,17 +52,17 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col">#<%=idTarea%> <b><%=nombre%></b></div>
-                    <div class="col">Caduca <b><%=fecha%></b></div>
-                    <div class="col text-end"><small>Prioridad: <span class="badge <%=color%>"><%=prioridad%></span></small></div>
+                    <div class="col text-center"><small>Prioridad: <span class="badge <%=color%>"><%=prioridad%></span></small></div>
+                    <div class="col text-end">Caduca <b><%=tiempoRest%></b></div>
                 </div>
             </div>
             <div class="card-body">
-              <!-- <p class="card-text">Quedan <%=fecha%></p> -->
+              
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Inicio</th>
-                            <th scope="col">Fin</th>
+                            <th scope="col">Hora de Inicio</th>
+                            <th scope="col">Hora Final</th>
                             <th scope="col">Dias</th>
                             <th scope="col">Recurrente</th>
                         </tr>
@@ -72,7 +72,7 @@
                     <tbody>
                         <% tareaM.forEach(function(p) {%>
                         <tr>
-                            <th scope="row"><%=p.hora_ini%></th>
+                            <td scope="row"><%=fechaIni%> <%=p.hora_ini%></td>
                             <td><%=p.hora_fin%></td>
                             <td>
                                 <%p.dias_recurrentes.split('@').forEach( dia => {%>

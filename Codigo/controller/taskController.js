@@ -124,7 +124,9 @@ class controllerTareas {
                                 idTarea: request.params.id,
                                 nombre: tareaManual[0].nombre,
                                 prioridad: tareaManual[0].prioridad, 
-                                fecha: moment(tareaManual[0].fechafin).fromNow(),
+                                fechaIni: tareaManual[0].fechaIni,
+                                fechaFin: tareaManual[0].fechafin,
+                                tiempoRest: moment(tareaManual[0].fechafin).fromNow(),
                                 cat: tareaManual[0].categoria,
                                 tareaM: tareaManual
                         });
