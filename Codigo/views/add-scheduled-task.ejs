@@ -24,11 +24,14 @@
         <div class="col-auto bg-light p-5 rounded">
             <form action="/tareas/add_scheduled_task" method="POST" enctype="multipart/form-data">
                 <h1 class="display-6 text-center">Añadir Tarea Programada</h1>
-
+                <% let control="";%>
+                <% let mensajeNombre=false;%>
                 <% if(typeof(errors) !== "undefined"){%>
                     <% if(errors.nombre){%>
                         <div class="alert alert-danger" role="alert">
                             <%=errors.nombre.msg%>
+                            <% mensajeNombre=true;%>
+                            <% control=is-invalid;%>
                         </div>
                     <%}%>
                     <% if(errors.prioridad){%>
@@ -61,7 +64,12 @@
                 <div class="row input-group p-2">
                     <!-- <input type="text" name="nombre" class="form-control" id="floatingInput" placeholder="Nombre de la Tarea">   -->
                     <div class="col-4">
-                        <input type="text" name="nombre" class="form-control" id="floatingInput" placeholder="Nombre de la Tarea">
+                        <input type="text" name="nombre" class="form-control is-invalid" id="floatingInput" placeholder="Nombre de la Tarea">
+                        
+                        <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                            Please choose a username.
+                        </div>
+                        
                     </div>
                     <div class="col input-group">
                         <span class="input-group-text">Fecha Inicio y final</span>

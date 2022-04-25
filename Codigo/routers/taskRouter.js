@@ -67,6 +67,19 @@ taskRouter.get("/addManualTask",
 taskRouter.post("/addManualTask", 
             multerFactory.none(),
             controllerUsuario.usuarioLogeado,
+            check("nombre", "Nombre de tarea no válido.").isLength({min: 1, max: undefined}),
+            check("prioridad")
+            .custom(
+                (value, {req}) => {
+                    if (value != null) return true;
+                    else throw Error("Por favor escoge una prioridad para la tarea.");
+                }),
+            check("fechaIni", "Fecha de inicio no válida.").isAfter(),
+            check("fechaFin")
+            .custom((value, {req}) => {
+                if (value > req.body.fechaIni) return true;
+                else throw Error("Fecha de finalización no válida.");
+            }),
             controllerTareas.addTareaManual);
 
 // taskRouter.get("/taskDetalisBy/:id/:tipo/:nombre/:prioridad/:fecha/:cat", 

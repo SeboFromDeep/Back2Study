@@ -37,29 +37,36 @@ class controllerTareas {
     
     //Cambiar para promesas
     addTareaManual(request, response) {
-        let tareaPadre = {
-            nombre : request.body.nombre,
-            fechaIni : request.body.fechaIni,
-            fechaFin : request.body.fechaFin,
-            prioridad : request.body.prioridad,
-            categoria : request.body.categoria.toUpperCase()
+        const errors = validationResult(request);
+        if(errors.isEmpty()){
+            let tareaPadre = {
+                nombre : request.body.nombre,
+                fechaIni : request.body.fechaIni,
+                fechaFin : request.body.fechaFin,
+                prioridad : request.body.prioridad,
+                categoria : request.body.categoria.toUpperCase()
+            }
+            //Tratamos las distintas configuraciones para hacer el insert
+            let aux = fixObject(request.body, 6, 4);
+            let tareas =aux.tasks;
+            daoTareas.addTaskManual(tareaPadre, tareas, request.session.id_)
+            .then(tareaManualId => {
+                if(tareaManualId)   response.redirect("/tareas/taskDetalisBy/"+tareaManualId+"/m");
+                else console.log("NO INTRODUCIDA");
+            })
+            .catch( error =>{
+                response.status(500);
+                console.log("ERROR GARRAFAL");
+                // response.render("add-scheduled-task", createResponseLocals(false, "Error en la creación de la tarea"));
+            });
         }
-        //Tratamos las distintas configuraciones para hacer el insert
-        let aux = fixObject(request.body, 6, 4);
-        let tareas =aux.tasks;
-        // for (let i = 0; i < tareas.length; i++) {
-        //     console.log(tareas[i].dia.replace(/(,)/gm,"")+" "+tareas[i].horaIni+" "+tareas[i].horaFin+" "+tareas[i].recursivo);
-        // }
-        daoTareas.addTaskManual(tareaPadre, tareas, request.session.id_)
-        .then(tareaManualId => {
-            if(tareaManualId)   response.redirect("/tareas/taskDetalisBy/"+tareaManualId+"/m");
-            else console.log("NO INTRODUCIDA");
-        })
-        .catch( error =>{
-            response.status(500);
-            console.log("ERROR GARRAFAL");
-            // response.render("add-scheduled-task", createResponseLocals(false, "Error en la creación de la tarea"));
-        });
+        else{
+            response.status(200);
+            response.render("addManualtask", {
+                nameUser: request.session.userName,
+                errors: errors.mapped()
+            });
+        }
     }
     
     
@@ -89,7 +96,7 @@ class controllerTareas {
             response.render("add-scheduled-task", {
                 nameUser: request.session.userName,
                 errors: errors.mapped()
-        });
+            });
         }
     }
 

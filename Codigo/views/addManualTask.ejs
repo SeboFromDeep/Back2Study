@@ -17,13 +17,8 @@
 
     // Se utiliza para determinar si se debe eliminar o aumentar el botón para poder calcular el valor de conteo
     function checkCount(boolOK, coun) {
-       if (boolOK == true) {
-            return count++;
-        }
-       else {
-            count--;
-        }
-
+       if (boolOK == true) return count++;
+       else count--;
     }
 
     
@@ -150,12 +145,12 @@
                         sabLabel.textContent="Sábado";
                         dias.appendChild(sabLabel);
                         //------------DOMINGO----------------
-                        var idDom = "Domingo"+count+6;
+                        var idDom = "Domingo"+count+7;
                         var domInput= document.createElement("input");
                         domInput.setAttribute("type", "checkbox");
                         domInput.setAttribute("class", "btn-check");
                         domInput.setAttribute("name", "dia"+count);
-                        domInput.setAttribute("value", "@S");
+                        domInput.setAttribute("value", "@D");
                         domInput.setAttribute("id", "btn"+idDom);
                         dias.appendChild(domInput);
 
@@ -279,6 +274,28 @@
         <div class="col-auto bg-light p-5 rounded">
             <form action="/tareas/addManualTask" method="POST" enctype="application/x-www-form-urlencoded">
                 <h1 class="display-6 text-center">Añadir Tarea Manual</h1>
+                <% if(typeof(errors) !== "undefined"){%>
+                    <% if(errors.nombre){%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errors.nombre.msg%>
+                        </div>
+                    <%}%>
+                    <% if(errors.prioridad){%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errors.prioridad.msg%>
+                        </div>
+                    <%}%>
+                    <% if(errors.fechaIni){%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errors.fechaIni.msg%>
+                        </div>
+                    <%}%>
+                    <% if(errors.fechaFin){%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errors.fechaFin.msg%>
+                        </div>
+                    <%}%>
+                <%}%>
                 <div id="conteoTareas">
                 </div>
                 <div class="row justify-content-end">
