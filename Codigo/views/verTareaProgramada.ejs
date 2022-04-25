@@ -54,12 +54,13 @@
                         <b>#<%=idTarea%> <%=p.nombre%></b></a></div>
                     <!-- <div class="col">#<%=idTarea%> <b><%=p.nombre%></div></b> -->
                     <div class="col text-center"><small>Prioridad: <span class="badge <%=color%>"><%=p.prioridad%></span></small></div>
-                    <div class="col text-end">Caduca <b><%=p.fechafin%></b></div>
+                    <div class="col text-end">Caduca <b><%=tiempoRest%></b></div>
                 </div>
                  
             </div>
             <div class="card-body">
-              <h5 class="card-title">Tarea <%=p.tipo%>. Duración <%=p.horas%> horas.     </h5>
+                <h6 class="card-title">Inicio: <b><%=p.fechaini.toLocaleDateString()%></b> Fin:<b><%=p.fechafin.toLocaleDateString()%></b></h6>
+              <h5 class="card-text">Tarea <%=p.tipo%>. Duración <%=p.horas%> horas.     </h5>
               
               
             </div>

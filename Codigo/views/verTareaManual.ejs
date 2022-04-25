@@ -53,13 +53,13 @@
                 <div class="row">
                     <div class="col"><a style=" text-decoration:none;" class="btn btn-outline-info disabled">
                         <b>#<%=idTarea%> <%=nombre%></b></a></div>
-                    <!-- <div class="col">#<%=idTarea%> <b><%=nombre%></b></div> -->
+                    
                     <div class="col text-center"><small>Prioridad: <span class="badge <%=color%>"><%=prioridad%></span></small></div>
                     <div class="col text-end">Caduca <b><%=tiempoRest%></b></div>
                 </div>
             </div>
             <div class="card-body">
-              
+                <h6 class="card-title">Inicio: <b><%=fechaIni.toLocaleDateString()%></b> Fin:<b><%=fechaFin.toLocaleDateString()%></b></h6>
                 <table class="table">
                     <thead>
                         <tr>
@@ -74,7 +74,7 @@
                     <tbody>
                         <% tareaM.forEach(function(p) {%>
                         <tr>
-                            <td scope="row"><%=fechaIni%> <%=p.hora_ini%></td>
+                            <td scope="row"><%=p.hora_ini%></td>
                             <td><%=p.hora_fin%></td>
                             <td>
                                 <%p.dias_recurrentes.split('@').forEach( dia => {%>

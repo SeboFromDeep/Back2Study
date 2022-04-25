@@ -199,7 +199,7 @@ class controllerTareas {
                                 idTarea: request.params.id,
                                 nombre: tareaManual[0].nombre,
                                 prioridad: tareaManual[0].prioridad, 
-                                fechaIni: tareaManual[0].fechaIni,
+                                fechaIni: tareaManual[0].fechaini,
                                 fechaFin: tareaManual[0].fechafin,
                                 tiempoRest: moment(tareaManual[0].fechafin).fromNow(),
                                 cat: tareaManual[0].categoria,
@@ -215,13 +215,14 @@ class controllerTareas {
            .then(tareaProgramada => {
                     console.log("TAREA PROGRAMADA");
                     
-                    tareaProgramada[0].fechafin = moment(tareaProgramada[0].fechafin).fromNow();
+                    
                     console.log(tareaProgramada);
                     response.render("verTareaProgramada",{
                         title: "Tarea Programada", 
                         nameUser: request.session.userName, 
                         mailUser: request.session.mail,
                         idTarea: request.params.id,
+                        tiempoRest: moment(tareaProgramada[0].fechafin).fromNow(),
                         tareaP: tareaProgramada
                     });
            })
