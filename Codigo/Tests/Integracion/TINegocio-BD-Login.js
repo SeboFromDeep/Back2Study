@@ -77,8 +77,7 @@ describe('hooks', function () {
         });
 
         it("Campo contraseña vacío", async function () {
-            await agent
-                .post('/usuarios/login_user')
+            await agent.post('/usuarios/login_user')
                 .send({ correo: usuario_reg.email, password: "" })
                 .then((res) => {
                     expect(res).to.have.status(500);
