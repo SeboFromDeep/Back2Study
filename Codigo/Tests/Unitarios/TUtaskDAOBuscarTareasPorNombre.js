@@ -40,8 +40,8 @@ describe("Buscar tareas por nombre", function() {
             prioridad: "MEDIA",
             categoria: "@WEB",
             id_usuario: id,
-            fechafin: ini.format("YYYY-MM-DD"),
-            fechaini: fin.format("YYYY-MM-DD"),
+            fechafin: fin.format("YYYY-MM-DD"),
+            fechaini: ini.format("YYYY-MM-DD"),
             tipo: "p"
         };
        await dao_test.insert_task(tarea1).then(value => {
@@ -53,8 +53,8 @@ describe("Buscar tareas por nombre", function() {
             prioridad: "BAJA",
             categoria: "@GPS",
             id_usuario: id,
-            fechafin: ini2.format("YYYY-MM-DD"),
-            fechaini: fin2.format("YYYY-MM-DD"),
+            fechafin: fin2.format("YYYY-MM-DD"),
+            fechaini: ini2.format("YYYY-MM-DD"),
             tipo: "p"
         };
         await dao_test.insert_task(tarea2).then(value => {
@@ -86,8 +86,8 @@ describe("Buscar tareas por nombre", function() {
             prioridad: "MEDIA",
             categoria: "@WEB",
             id_usuario: id,
-            fechafin: ini.format("YYYY-MM-DD"),
-            fechaini: fin.format("YYYY-MM-DD"),
+            fechafin: fin.format("YYYY-MM-DD"),
+            fechaini: ini.format("YYYY-MM-DD"),
             tipo: "p"
         };
         await dao_test.get_id_task(tarea1)
@@ -112,8 +112,8 @@ describe("Buscar tareas por nombre", function() {
             nombre: "Tareadeprueba",
             prioridad: "MEDIA",
             categoria: "@WEB",
-            fechafin: fecha1,
-            fechaini: fecha2,
+            fechafin: fecha2,
+            fechaini: fecha1,
             tipo: "p",
         }
 
