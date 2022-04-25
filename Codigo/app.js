@@ -32,7 +32,8 @@ app.use(express.urlencoded({extended: true}));//Devuelve middleware que solo ana
 app.use(morgan("dev"));//Al realizar cambios en los archivos, se reinicia la aplicacion automaticamente (Para programar)
 //Se indica a express donde se encuentan las vistas
 
-
+let events = require("./prueba/full-calendar/eventModule.js"); 
+events.Init();
 
 //---------------------------------Sesion---------------------------------
 const session = require("express-session");
@@ -57,9 +58,6 @@ app.use(function(request, response, next) {
 })
 //--------------------------------------------------------------------
 
-
-
-
 //Routers
 const routerUser = require("./routers/userRouter");
 app.use("/usuarios", routerUser);
@@ -68,6 +66,16 @@ const routerTask = require("./routers/taskRouter");
 const { render } = require("express/lib/response");
 app.use("/tareas", routerTask);
 
+app.get("/calendar-events", (request, response) => {
+    console.log("NEW CALENDAR REQUEST")//, request)
+    let userEvents = events.UserEvents[request.session.userName]
+    console.log("UserEvents:", events.UserEvents)
+    if (userEvents == undefined) {
+        console.log("UserEvents are undefined. Loading DefaultEvents.")
+        userEvents = events.DefaultEvents;
+    }
+    response.json(userEvents);                              
+});
 
 //-- Pagina inicial
 app.get("/", (request, response) => {
@@ -87,7 +95,6 @@ app.get("/", (request, response) => {
     }
     
 });
-
 
 //-----------------------------------Registro --> Login--------------
 app.get("/login", (request, response) => {
@@ -123,7 +130,8 @@ app.get("/signup", (request, response) => {
             nameUser: request.session.userName, 
             mailUser: request.session.mail,
             tareas: undefined,
-            deleteId: false });
+            deleteId: false,
+        });
     }                                
 });
 
@@ -132,17 +140,25 @@ app.get("/forgot-password", (req, res, next) => {
     res.render("forgot-password",{   msg: false });
 });
 
+app.get("/reset-password/:id/:token", (request, response) => {
+    
+    cP.modPass
+});
 //-----------------------------------------
 
+/*app.post("/forgot-password", (req, res, next) => {
+    const { email } = req.body;
 
-
+    res.send(email);
+});
+*/
 // ping browser on Express boot, once browser has reconnected and handshaken
-// liveReloadServer.server.once("connection", () => {
-//     console.log("Refrescando browser");
-//     setTimeout(() => {
-//     liveReloadServer.refresh("/");
-//     }, 100);
-// });
+liveReloadServer.server.once("connection", () => {
+    console.log("Refrescando browser");
+    setTimeout(() => {
+    liveReloadServer.refresh("/");
+    }, 100);
+});
 
 
 //-- -GESTION DE ERRORES 
