@@ -75,23 +75,6 @@ describe('hooks', function () {
                         });
                 });
         });
-
-        it("Tarea de 0 horas y fechas ini/fin incoherentes", async function () {
-
-            let agent = chai.request.agent(url);
-            await agent.post('/usuarios/login_user')
-                .send({ correo: 'prueba@gmail.com', password: '1234' })
-                .then((res) => {
-                    expect(res).to.have.status(200);
-                    agent.post('/tareas/add_scheduled_task')
-                        .send({ nombre: "NombrePNEGno", prioridad: "MEDIA", tipo: "SEMANAL", categoria: "@CategoriaPNEGno", horas: "0", fechaIni: "11/04/2022", fechaFin: "10/04/2022" })
-                        .redirects(0)
-                        .end((err, res, body) => {
-                            expect(res).to.have.status(302);
-                        });
-                });
-        });
-
     });
 
 });

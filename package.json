@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./Codigo/app.js",
     "watch": "nodemon ./Codigo/app.js --ext ejs --ignore public",
-    "test": "mocha --timeout 10000 ./Codigo/Tests/Integracion/TINegocio-BD-BuscarTareaNombre"
+    "test": "mocha --recursive --timeout 10000 ./Codigo/Tests/"
   },
   "repository": {
     "type": "git",
