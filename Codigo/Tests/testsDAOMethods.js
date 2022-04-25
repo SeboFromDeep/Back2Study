@@ -33,8 +33,6 @@ class DaoTests {
     delete_user(id_usuario) {
         return new Promise((resolve, reject) => {
             this.pool.getConnection(function (err, connection) {
-                console.log("borramos a");
-                console.log(id_usuario);
                 if (err)
                     reject(new Error("Error de conexión a la base de datos"));
                 else {
