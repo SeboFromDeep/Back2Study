@@ -67,67 +67,67 @@ describe('hooks', function () {
                 }
             });
 
-        await dao_test.insert_task(tareaManual).then(value => {
-            expect(value).eq(true);
-        });
-        await dao_test.get_id_task(tareaManual)
-            .then(value => {
-                if (value) {
-                    tareaManual.id_tarea = value;
-                    dao_test.insert_task_m(tareaManual);
-                }
-            });
+        // //await dao_test.insert_task(tareaManual).then(value => {
+        //     expect(value).eq(true);
+        // });
+        // await dao_test.get_id_task(tareaManual)
+        //     .then(value => {
+        //         if (value) {
+        //             tareaManual.id_tarea = value;
+        //             dao_test.insert_task_m(tareaManual);
+        //         }
+        //     });
 
-        await dao_test.insert_task(tareaProgramada).then(value => {
-            expect(value).eq(true);
-        });
-        await dao_test.get_id_task(tareaProgramada)
-            .then(value => {
-                if (value) {
-                    tareaProgramada.id_programada = value;
-                    dao_test.insert_task_p(tareaProgramada);
-                }
-            });
+        // await dao_test.insert_task(tareaProgramada).then(value => {
+        //     expect(value).eq(true);
+        // });
+        // await dao_test.get_id_task(tareaProgramada)
+        //     .then(value => {
+        //         if (value) {
+        //             tareaProgramada.id_programada = value;
+        //             dao_test.insert_task_p(tareaProgramada);
+        //         }
+        //     });
 
-        // antes de cada test insertamos ("registramos") un usuario que no tenga tareas
-        let usuario_sin_tareas = {
-            username: "ListarTareasTestDAOSIN",
-            email: "listartareastestDAOsin@gmail.com",
-            password: "1234"
-        };
-        await dao_test.insert_user(usuario_sin_tareas).then(value => {
-            expect(value).eq(true);
-        });
-        await dao_test.get_id_user(usuario_sin_tareas.email)
-            .then(value => {
-                if (value)
-                    id_usuario_sin_tareas = value;
-            });
+        // // antes de cada test insertamos ("registramos") un usuario que no tenga tareas
+        // let usuario_sin_tareas = {
+        //     username: "ListarTareasTestDAOSIN",
+        //     email: "listartareastestDAOsin@gmail.com",
+        //     password: "1234"
+        // };
+        // await dao_test.insert_user(usuario_sin_tareas).then(value => {
+        //     expect(value).eq(true);
+        // });
+        // await dao_test.get_id_user(usuario_sin_tareas.email)
+        //     .then(value => {
+        //         if (value)
+        //             id_usuario_sin_tareas = value;
+        //     });
     });
 
-    describe("Listar tareas", function () {
+    // describe("Listar tareas", function () {
 
-        it("Usuario con tareas", async function () {
-            await task.listaTareas(id_usuario_con_tareas).then(value => {
-                assert.notEqual(value, false);
-            });
+    //     it("Usuario con tareas", async function () {
+    //         await task.listaTareas(id_usuario_con_tareas).then(value => {
+    //             assert.notEqual(value, false);
+    //         });
 
-        });
+    //     });
 
-        it("Usuario sin tareas", async function () {
-            await task.listaTareas(id_usuario_sin_tareas).then(value => {
-                assert.equal(value, false);
-            });
+    //     it("Usuario sin tareas", async function () {
+    //         await task.listaTareas(id_usuario_sin_tareas).then(value => {
+    //             assert.equal(value, false);
+    //         });
 
-        });
+    //     });
 
-    });
+    // });
 
-    after(async function () {
-        // después de cada test borramos a los usuarios que se han insertado para poder ejecutarlos siempre
-        await dao_test.delete_user(id_usuario_con_tareas);
-        await dao_test.delete_user(id_usuario_sin_tareas);
+    // after(async function () {
+    //     // después de cada test borramos a los usuarios que se han insertado para poder ejecutarlos siempre
+    //     await dao_test.delete_user(id_usuario_con_tareas);
+    //     await dao_test.delete_user(id_usuario_sin_tareas);
 
-    });
+    // });
 
 });
