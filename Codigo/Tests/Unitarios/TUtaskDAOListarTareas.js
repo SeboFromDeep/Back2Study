@@ -22,8 +22,8 @@ describe('hooks', function () {
     before(async function () {
         // antes de cada test insertamos ("registramos") un usuario para que tenga tareas
         let usuario_con_tareas = {
-            username: "ListaTareasTestDAOCON",
-            email: "listatareastestDAOcon@gmail.com",
+            username: "ListarTareasTestDAOCON",
+            email: "listartareastestDAOcon@gmail.com",
             password: "1234"
         };
         await dao_test.insert_user(usuario_con_tareas).then(value => {
@@ -91,8 +91,8 @@ describe('hooks', function () {
 
         // antes de cada test insertamos ("registramos") un usuario que no tenga tareas
         let usuario_sin_tareas = {
-            username: "ListaTareasTestDAOSIN",
-            email: "listatareastestDAOsin@gmail.com",
+            username: "ListarTareasTestDAOSIN",
+            email: "listartareastestDAOsin@gmail.com",
             password: "1234"
         };
         await dao_test.insert_user(usuario_sin_tareas).then(value => {
