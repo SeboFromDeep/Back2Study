@@ -31,7 +31,7 @@ routerUsers.get("/prueba2",
 
 routerUsers.post("/registro_Usuario",
     multerFactory.none(),
-    
+    check("username", "El nombre de usuario esta vacio").notEmpty(),
     check("correo","Dirección de correo no válida o vacia").isEmail(),
     check("password", "La logintud minima debe ser 4").isLength({ min: 4}),
     check("password2")
