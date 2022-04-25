@@ -66,7 +66,8 @@ const routerTask = require("./routers/taskRouter");
 const { render } = require("express/lib/response");
 app.use("/tareas", routerTask);
 
-app.get("/calendar-events", (request, response) => {
+/*
+app.get("/tareas/calendar-events", (request, response) => {
     console.log("NEW CALENDAR REQUEST")//, request)
     let userEvents = events.UserEvents[request.session.userName]
     console.log("UserEvents:", events.UserEvents)
@@ -76,6 +77,7 @@ app.get("/calendar-events", (request, response) => {
     }
     response.json(userEvents);                              
 });
+*/
 
 //-- Pagina inicial
 app.get("/", (request, response) => {

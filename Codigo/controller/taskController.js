@@ -24,7 +24,7 @@ class controllerTareas {
             // tareas.array.forEach(element => {
             //     console.log(element);
             // });
-            events.UserEvents[request.session.userName] = events.CreateEventsFromTasks(tareas);
+
             response.render("principal", {
                             title: "", 
                             nameUser: request.session.userName, 
@@ -32,12 +32,6 @@ class controllerTareas {
                             tareas: tareas?tareas:0,
                             deleteId: false 
             });
-            // response.render("calendar", {
-            //     title: "", 
-            //     nameUser: request.session.userName, 
-            //     mailUser: request.session.mail}
-                
-            // );
         })
         .catch(error =>{  response.status(500);  });
     }
@@ -48,29 +42,28 @@ class controllerTareas {
         let userEvents = events.UserEvents[request.session.userName]
         console.log("UserEvents:", events.UserEvents)
         if (userEvents == undefined) {
-            console.log("UserEvents are undefined. Loading DefaultEvents.")
-            userEvents = events.DefaultEvents;
+            console.log("UserEvents are undefined. Initializing empty array.")
+            userEvents = []; //events.DefaultEvents;
+            events.UserEvents[request.session.userName] = userEvents;
         }
         response.json(userEvents);
-        // response.render("calendar", {
-        //         title: "", 
-        //         nameUser: request.session.userName, 
-        //         mailUser: request.session.mail,
-        //         tareas: value?value:0, //Evaluamos si hay tareas y mandamos a la vista
-        //         deleteId: false 
-            
-        // }); 
     }
 
     getCalendar(request, response){
-        response.status(200);
-        events.UserEvents[request.session.userName] = events.CreateEventsFromTasks(events.EventsToParse)
-        response.render("calendar", {
+        daoTareas.listaTareas(request.session.id_)
+        .then(tareas =>{
+            
+            if (tareas != false) {
+                events.UserEvents[request.session.userName] = events.CreateEventsFromTasks(tareas);
+            }
+            
+            response.render("calendar", {
                 title: "", 
                 nameUser: request.session.userName, 
-                mailUser: request.session.mail}
-                
-        );
+                mailUser: request.session.mail
+                });
+        })
+        .catch(error => { response.status(500); });
     }
 
 

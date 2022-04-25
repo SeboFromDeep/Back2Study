@@ -164,21 +164,36 @@ module.exports.TestEvents = [
     }
 ];
 
+function createEventFromTask(task) {
+  return {
+      _id: task.id_tarea,
+      title: task.nombre + ' ' + task.categoria,
+      start: task.fechaini,
+      end: task.fechafin,
+      backgroundColor: ColorDictionary[task.prioridad]
+  };
+}
+
 module.exports.CreateEventsFromTasks = function(tasks) {
     console.log("PARSING TASKS:", tasks)
     let eventArray = []
     for (const task of tasks) {
       console.log("TASK TO PARSE:", task)
-        let newEvent = {
-            title: task.nombre + ' ' + task.categoria,
-            start: task.fechaini,
-            end: task.fechafin,
-            backgroundColor: ColorDictionary[task.prioridad]
-        }
-        eventArray.push(newEvent);
+      eventArray.push(createEventFromTask(task));
     }
     console.log("PARSED EVENTS:", eventArray)
     return eventArray
+}
+
+module.exports.AddTask = function(username, task) {
+  let eventArray = module.exports.UserEvents[username];
+  if (eventArray == undefined)
+    throw error("Cannot add task. Username " + username + " has no intialized data.");
+
+  console.log("TASK TO PARSE:", task)
+  eventArray.push(createEventFromTask(task));
+  console.log("PARSED EVENTS:", eventArray)
+  return eventArray
 }
 
 module.exports.Init = function() { 
