@@ -44,11 +44,7 @@ describe('hooks', function () {
 
         it("Correo y contraseña correctos", async function () {
             await task.login(usuario_reg.email, usuario_reg.password).then(value => {
-                console.log("EL VALUE: ");
-                console.log(value.email);
-                console.log("EL USUARIO REG: ");
-                console.log(usuario_reg.email);
-                assert.equal(value.email, usuario_reg.emai);
+                assert.equal(value.email, usuario_reg.email);
                 assert.equal(value.password, usuario_reg.password);
             });
         });

@@ -99,8 +99,8 @@ describe('hooks', function () {
                 assert.equal(value[0].nombre, tareaManual.nombre);
                 assert.equal(value[0].prioridad, tareaManual.prioridad);
                 assert.equal(value[0].categoria, tareaManual.categoria);
-                // assert.equal(value[0].fechafin, tareaManual.fechafin);
-                // assert.equal(value[0].fechaini, tareaManual.fechaini);
+                assert.equal(moment(value[0].fechafin).format("YYYY-MM-DD"), tareaManual.fechafin);
+                assert.equal(moment(value[0].fechaini).format("YYYY-MM-DD"), tareaManual.fechaini);
                 assert.equal(value[0].tipo, tareaManual.tipo);
                 assert.equal(value[0].hora_ini, tareaManual.hora_ini);
                 assert.equal(value[0].hora_fin, tareaManual.hora_fin);
@@ -115,11 +115,10 @@ describe('hooks', function () {
                 assert.equal(value[0].nombre, tareaProgramada.nombre);
                 assert.equal(value[0].prioridad, tareaProgramada.prioridad);
                 assert.equal(value[0].categoria, tareaProgramada.categoria);
-                // assert.equal(value[0].fechafin, tareaProgramada.fechafin);
-                // assert.equal(value[0].fechaini, tareaProgramada.fechaini);
-                // assert.equal(value[0].tareas.tipo, tareaProgramada.tipo);
+                assert.equal(moment(value[0].fechafin).format("YYYY-MM-DD"), tareaProgramada.fechafin);
+                assert.equal(moment(value[0].fechaini).format("YYYY-MM-DD"), tareaProgramada.fechaini);
                 assert.equal(value[0].horas, tareaProgramada.horas);
-                // assert.equal(value[0].tareas_programadas.tipo, tareaProgramada.tipo_ds);
+                assert.equal(value[0].tipo, tareaProgramada.tipo_ds);
             });
 
         });
