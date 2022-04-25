@@ -23,6 +23,7 @@ const fin = moment("2022-05-30");
 // tests
 describe('hooks', function () {
 
+    let id_usuario_reg;
     let usuario_reg;
     let tareaManual, tareaProgramada;
 
@@ -127,10 +128,7 @@ describe('hooks', function () {
 
     after(async function () {
         // después de cada test borramos al que se ha insertado para poder ejecutarlos siempre
-        await dao_test.get_id_user(usuario_reg.email)
-            .then(value => {
-                if (value) dao_test.delete_user(value);
-            });
+        await dao_test.delete_user(id_usuario_reg);
     });
 
 });

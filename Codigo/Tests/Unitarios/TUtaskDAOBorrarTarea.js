@@ -17,9 +17,13 @@ const fin = moment("2022-05-30");
 // tests
 describe('hooks', function () {
 
+    let usuario;
+    let tareaManual, tareaProgramada;
+    let id_usuario;
+
     before(async function () {
         // antes de cada test insertamos ("registramos") un usuario para que tenga tareas
-        let id_usuario, usuario = {
+        usuario = {
             username: "BorrarTareasdaotest",
             email: "borrartareasdaotest@gmail.com",
             password: "1234"
@@ -33,50 +37,73 @@ describe('hooks', function () {
                     id_usuario = value;
 
                     // añadimos tareas a ese usuario, una de cada tipo
-                    tarea = {
-                        nombre: "PruebaBorrar",
+                    tareaManual = {
+                        nombre: "NombreMDAO",
                         prioridad: "BAJA",
-                        categoria: "@CategoriaBorrar",
+                        categoria: "@CategoriaMDAO",
                         id_usuario: id_usuario,
                         fechafin: fin.format("YYYY-MM-DD"),
                         fechaini: ini.format("YYYY-MM-DD"),
                         tipo: "m",
+                        // atributos tarea manual
+                        id_tarea: -1,
+                        hora_ini: "10:00",
+                        hora_fin: "15:00",
+                        recurrente: 0,
+                        dias_recurrentes: "@L"
+                    };
+
+                    tareaProgramada = {
+                        nombre: "NombrePDAO",
+                        prioridad: "ALTA",
+                        categoria: "@CategoriaPDAO",
+                        id_usuario: id_usuario,
+                        fechafin: fin.format("YYYY-MM-DD"),
+                        fechaini: ini.format("YYYY-MM-DD"),
+                        tipo: "p",
+                        // atributos tarea programada
+                        horas: 10,
+                        id_programada: -1,
+                        tipo_ds: "DIARIA"
                     };
                 }
             });
 
-        await dao_test.insert_task(tarea).then(value => {
+        await dao_test.insert_task(tareaManual).then(value => {
             expect(value).eq(true);
         });
+        await dao_test.get_id_task(tareaManual)
+            .then(value => {
+                if (value) {
+                    tareaManual.id_tarea = value;
+                    dao_test.insert_task_m(tareaManual);
+                }
+            });
+
+        await dao_test.insert_task(tareaProgramada).then(value => {
+            expect(value).eq(true);
+        });
+        await dao_test.get_id_task(tareaProgramada)
+            .then(value => {
+                if (value) {
+                    tareaProgramada.id_programada = value;
+                    dao_test.insert_task_p(tareaProgramada);
+                }
+            });
     });
 
     describe("Borrar tareas", function () {
 
+        it("Borrar tarea manual", async function () {
+            await task.deleteTask(id_usuario, tareaManual.id_tarea).then(value => {
+                expect(value).to.equal(tareaManual.id_tarea);
+            });
 
-        it("Borra con exito", async function () {
-        let id_usuario, id_tarea;
-        await dao_test.get_id_user("borrartareasdaotest@gmail.com")
-        .then(value => {
-            if(value) id_usuario=value;
-        });
-        
-        tarea = {
-            nombre: "PruebaBorrar",
-            prioridad: "BAJA",
-            categoria: "@CategoriaBorrar",
-            id_usuario: id_usuario,
-            fechafin: fin.format("YYYY-MM-DD"),
-            fechaini: ini.format("YYYY-MM-DD"),
-            tipo: "m",
-        };
-
-        await dao_test.get_id_task(tarea)
-        .then(value => {
-            if(value) id_tarea=value;
         });
 
-        await task.deleteTask(id_usuario, id_tarea).then(value => {
-                expect(value).to.equal(id_tarea);
+        it("Borrar tarea programada", async function () {
+            await task.deleteTask(id_usuario, tareaProgramada.id_programada).then(value => {
+                expect(value).to.equal(tareaProgramada.id_programada);
             });
 
         });
@@ -85,11 +112,6 @@ describe('hooks', function () {
 
     after(async function () {
         // después de cada test borramos a los usuarios que se han insertado para poder ejecutarlos siempre
-        let id_usuario;
-        await dao_test.get_id_user("borrartareasdaotest@gmail.com")
-            .then(value => {
-                if (value) id_usuario = value;
-            });
         await dao_test.delete_user(id_usuario);
     });
 
