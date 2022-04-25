@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./Codigo/app.js",
     "watch": "nodemon ./Codigo/app.js --ext ejs --ignore public",
-    "test": "mocha ./Codigo/Tests/Integracion/TIDAO-BD-BuscarTareasPorCategoria.js"
+    "test": "mocha ./Codigo/Tests/Unitarios/TUtaskDAOBuscarTareasPorNombre.js"
   },
   "repository": {
     "type": "git",
