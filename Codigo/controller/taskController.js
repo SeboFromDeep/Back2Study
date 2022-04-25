@@ -70,34 +70,50 @@ class controllerTareas {
     //Cambiar para promesas
     addTareaManual(request, response) {
         const errors = validationResult(request);
-        if(errors.isEmpty()){
-            let tareaPadre = {
-                nombre : request.body.nombre,
-                fechaIni : request.body.fechaIni,
-                fechaFin : request.body.fechaFin,
-                prioridad : request.body.prioridad,
-                categoria : request.body.categoria.toUpperCase()
-            }
-            //Tratamos las distintas configuraciones para hacer el insert
-            let aux = fixObject(request.body, 6, 4);
-            let tareas =aux.tasks;
-            daoTareas.addTaskManual(tareaPadre, tareas, request.session.id_)
-            .then(tareaManualId => {
-                if(tareaManualId)   response.redirect("/tareas/taskDetalisBy/"+tareaManualId+"/m");
-                else console.log("NO INTRODUCIDA");
-            })
-            .catch( error =>{
-                response.status(500);
-                console.log("ERROR GARRAFAL");
-                // response.render("add-scheduled-task", createResponseLocals(false, "Error en la creación de la tarea"));
-            });
+        if(request.body.categoria.includes(" ")){
+            response.status(200);
+                response.render("addManualtask", {
+                    nameUser: request.session.userName,
+                    errors: undefined,
+                    msg: "Formato de etiquetas incorrecto"
+                });
         }
         else{
-            response.status(200);
-            response.render("addManualtask", {
-                nameUser: request.session.userName,
-                errors: errors.mapped()
-            });
+            if(errors.isEmpty()){
+                let tareaPadre = {
+                    nombre : request.body.nombre,
+                    fechaIni : request.body.fechaIni,
+                    fechaFin : request.body.fechaFin,
+                    prioridad : request.body.prioridad,
+                    categoria : request.body.categoria.toUpperCase()
+                }
+                //Tratamos las distintas configuraciones para hacer el insert
+                let aux = fixObject(request.body, 6, 4);
+                let tareas =aux.tasks;
+                daoTareas.addTaskManual(tareaPadre, tareas, request.session.id_)
+                .then(tareaManualId => {
+                    if(tareaManualId)   response.redirect("/tareas/taskDetalisBy/"+tareaManualId+"/m");
+                    else {
+                        response.render("addManualtask", {
+                            nameUser: request.session.userName,
+                            errors: undefined,
+                            msg: "Tarea Manual no introducida"
+                        });
+                    }
+                })
+                .catch( error =>{
+                    response.status(500);
+                    console.log("ERROR GARRAFAL");
+                    // response.render("add-scheduled-task", createResponseLocals(false, "Error en la creación de la tarea"));
+                });
+            }
+            else{
+                response.status(200);
+                response.render("addManualtask", {
+                    nameUser: request.session.userName,
+                    errors: errors.mapped()
+                });
+            }
         }
     }
     
@@ -106,29 +122,48 @@ class controllerTareas {
     //REVISAR LOS RENDER!
     addTareaProgramada(request, response){
         const errors = validationResult(request);
-        if(errors.isEmpty()){
-            console.log("Añadiendo la tarea " + request.body.nombre +  " a la BBDD");
-            // inicializamos el objeto de tarea
-            request.body.category = request.body.categoria.toUpperCase();
-            request.body.tipo = request.body.tipo.toUpperCase();
-            let tareaProgramada = createObjectFromRequest(request);
-            
-            daoTareas.addTaskProgram(tareaProgramada)
-            .then(tareaId => {
-                if(tareaId)   response.redirect("/tareas/taskDetalisBy/"+tareaId+"/p");
-                else response.render("add-scheduled-task", createResponseLocals(false, "Error en la creación de la tarea"));
-            })
-            .catch( error =>{
-                response.status(500);
-                response.render("add-scheduled-task", createResponseLocals(false, "Error en la creación de la tarea"));
-            });
+        if(request.body.categoria.includes(" ")){
+            response.status(200);
+                response.render("add-scheduled-task", {
+                                nameUser: request.session.userName,
+                                errors: undefined,
+                                msg: "Formato de etiquetas incorrecto"
+                });
         }
         else{
-            response.status(200);
-            response.render("add-scheduled-task", {
-                nameUser: request.session.userName,
-                errors: errors.mapped()
-            });
+            if(errors.isEmpty()){
+                console.log("Añadiendo la tarea " + request.body.nombre +  " a la BBDD");
+                // inicializamos el objeto de tarea
+                request.body.category = request.body.categoria.toUpperCase();
+                request.body.tipo = request.body.tipo.toUpperCase();
+                let tareaProgramada = createObjectFromRequest(request);
+                
+                daoTareas.addTaskProgram(tareaProgramada)
+                .then(tareaId => {
+                    if(tareaId)   response.redirect("/tareas/taskDetalisBy/"+tareaId+"/p");
+                    else response.render("add-scheduled-task", {
+                                        nameUser: request.session.userName,
+                                        errors: undefined,
+                                        msg: "Tarea no creada correctamente"
+                    });
+                })
+                .catch( error =>{
+                    response.status(500);
+                    response.render("add-scheduled-task", {
+                                        nameUser: request.session.userName,
+                                        errors: undefined,
+                                        msg: "Tarea no creada correctamente"
+                    });
+                });
+            }
+            else{
+                response.status(200);
+                response.render("add-scheduled-task", {
+                    nameUser: request.session.userName,
+                    errors: errors.mapped(),
+                    msg: undefined
+                });
+            }
         }
     }
 
@@ -136,7 +171,8 @@ class controllerTareas {
         response.status(200);
         response.render("add-scheduled-task", {
                         nameUser: request.session.userName,
-                        errors: undefined
+                        errors: undefined,
+                        msg: undefined
         });
     }
 

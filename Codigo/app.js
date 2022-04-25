@@ -94,6 +94,8 @@ app.get("/", (request, response) => {
             mailUser: request.session.mail,
             tareas: undefined,
             deleteId: false });
+
+        
     }
     
 });
