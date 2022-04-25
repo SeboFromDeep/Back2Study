@@ -24,8 +24,8 @@ describe('hooks', function () {
     before(async function () {
         // antes de cada test insertamos ("registramos") un usuario para que tenga tareas
         usuario = {
-            username: "BorrarTareasdaotest",
-            email: "borrartareasdaotest@gmail.com",
+            username: "BorrarTareasTestDAO",
+            email: "borrartareastestDAO@gmail.com",
             password: "1234"
         };
         await dao_test.insert_user(usuario).then(value => {
@@ -111,7 +111,7 @@ describe('hooks', function () {
     });
 
     after(async function () {
-        // después de cada test borramos a los usuarios que se han insertado para poder ejecutarlos siempre
+        // después de cada test borramos al usuario que se ha insertado para poder ejecutarlos siempre
         await dao_test.delete_user(id_usuario);
     });
 
