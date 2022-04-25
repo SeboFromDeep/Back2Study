@@ -12,7 +12,12 @@
     
     
 </head>
-
+<script type="text/javascript">
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
 <body>
     <!--Centrar en bootstrap: https://codea.app/blog/centrar-div-boostrap -->
 
@@ -34,6 +39,7 @@
 
             <% let color="bg-secondary";%>
             <% let tipoTarea="";%>
+            <% let colorTipoTarea="";%>
             <% let prioridad="";%>
             <% if(tareas===0){%>
                 <div class="row vh-80 justify-content-center align-items-center">
@@ -62,34 +68,40 @@
                         }%>
                         <% if(p.tipo == "p"){
                             tipoTarea="Programada";
+                            colorTipoTarea="bg-light text-dark";
                             
                         }
                         else if(p.tipo == "m") {
                             tipoTarea="Manual";
+                            colorTipoTarea="bg-info text-dark";
                         }%> 
                         
             
             <div class="row">
                 <div class="col ">
-                    <div class="card">
+                    <div class="card ">
+                        <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill <%=colorTipoTarea%>">
+                            Tarea <%=tipoTarea%>
+                            </span>
                         <div class="card-header">
                             <div class="row">
                                 
-                                <div class="col">#<%=p.id_tarea%> <a href="/tareas/taskDetalisBy/<%=p.id_tarea%>/<%=p.tipo%>" style=" text-decoration:none;"><b><%=p.nombre%></b></a></div>
+                                <div class="col"><a href="/tareas/taskDetalisBy/<%=p.id_tarea%>/<%=p.tipo%>" style=" text-decoration:none;" class="btn btn-outline-info" title="Ver detalles de Tarea #<%=p.id_tarea%>"><b>#<%=p.id_tarea%> <%=p.nombre%></b></a></div>
                                 <div class="col text-center">
-                                    <small>Fecha Fin: <%=p.fechafin.toDateString()%>.</small>
+                                    <!-- <small>Fecha Fin: <%=p.fechafin.toDateString()%>.</small> -->
+                                    <small>Prioridad: <span class="badge <%=color%>"><%=p.prioridad%></span></small>
                                 </div>
                                 
                                 <div class="col text-end">
-                                    <small>Prioridad: <span class="badge <%=color%>"><%=p.prioridad%></span></small>
-                                    <a href="/tareas/deleteTask/<%=p.id_tarea%>/<%=p.tipo%>" class="btn btn-danger" style="text-decoration:none;"><b>X</b></a>
-                                            
+                                    
+                                    <button type="button" href="/tareas/deleteTask/<%=p.id_tarea%>/<%=p.tipo%>" class="btn btn-danger btn-sm" title="Borrar Tarea #<%=p.id_tarea%>"><b>X</b></button>
+                                           
                                 </div>
                             </div>
                             </div>
                         <div class="card-body">
-                          <h5 class="card-title">Tarea <%=tipoTarea%></h5>
-                          <!-- <p class="card-text">Fecha Fin: <%=p.fechafin.toDateString()%>.</p> -->
+                          <!-- <h5 class="card-title">Tarea <%=tipoTarea%></h5> -->
+                          <p class="card-text">Fecha Inicio: <b><%=p.fechaini.toLocaleDateString()%></b> Fecha Fin: <b><%=p.fechafin.toLocaleDateString()%>.</b></p>
                           
                             <!-- <button  type="button" class="btn btn-outline-primary">
                                 <a href="/tareas/taskDetalisBy/<%=p.id_tarea%>/<%=p.tipo%>" style=" text-decoration:none;">Ver detalles</a>
