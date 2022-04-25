@@ -24,40 +24,124 @@
         <div class="col-auto bg-light p-5 rounded">
             <form action="/tareas/add_scheduled_task" method="POST" enctype="multipart/form-data">
                 <h1 class="display-6 text-center">Añadir Tarea Programada</h1>
-                <div class="row input-group p-2">
-                    <input type="text" name="nombre" class="form-control" id="floatingInput" placeholder="Nombre de la Tarea">  
-                </div>
-                <div class="row input-group p-2">
-                    <select class="col form-select" name="prioridad" aria-label="Selector de prioridad">
-                        <option selected>Prioridad</option>
-                        <option value="BAJA" class="bg-success text-white">Baja</option>
-                        <option value="MEDIA" class="bg-warning text-dark">Media</option>
-                        <option value="ALTA" class="bg-danger text-white">Alta</option>
-                    </select>
+                
+                <% let mensajeNombre=false;%>
+                <% let controlNom="";%>
 
-                    <input class="col" type="text" name="categoria" id="floatingInput" placeholder="@CATEGORIA">
-                </div>
-                <div class="row input-group p-2">
-                    <select class="col form-select" name="tipo" aria-label="Selector de tipo">
-                        <option selected>Tipo</option>
-                        <option value="DIARIA">Diaria</option>
-                        <option value="SEMANAL">Semanal</option>
-                    </select>
+                <% let mensajePrioridad=false;%>
+                <% let controlPrio="";%>
 
-                    <input class="col" type="text" name="horas" id="floatingInput" placeholder="Número de horas">
+                <% let mensajeTipo=false;%>
+                <% let controlTipo="";%>
+
+                <% let mensajeHoras=false;%>
+                <% let controlHoras="";%>
+
+                <% let mensajefechaIni=false;%>
+                <% let controlfechaIni="";%>
+
+                <% if(typeof(errors) !== "undefined"){%>
+                    
+                    <% if(errors.nombre){%>
+                        <% mensajeNombre=true;%>
+                        <% controlNom="is-invalid";%>
+                        
+                    <%}%>
+                    
+                    <% if(errors.prioridad){%>
+                        <% mensajePrioridad=true;%>
+                        <% controlPrio="is-invalid";%>
+                        
+                    <%}%>
+                    <% if(errors.tipo){%>
+                        <% mensajeTipo=true;%>
+                        <% controlTipo="is-invalid";%>
+                        
+                    <%}%>
+                    <% if(errors.horas){%>
+                        <% mensajeHoras=true;%>
+                        <% controlHoras="is-invalid";%>
+                        
+                    <%}%>
+                    <% if(errors.fechaIni){%>
+                        <% mensajefechaIni=true;%>
+                        <% controlfechaIni="is-invalid";%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errors.fechaIni.msg%>
+                        </div>
+                    <%}%>
+                    <% if(errors.fechaFin){%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errors.fechaFin.msg%>
+                        </div>
+                    <%}%>
+                <%}%>
+
+                <div class="row input-group p-2">
+                    <!-- <input type="text" name="nombre" class="form-control" id="floatingInput" placeholder="Nombre de la Tarea">   -->
+                    <div class="col-4">
+                        <input type="text" name="nombre" class="form-control <%=controlNom%>" id="floatingInput" placeholder="Nombre de la Tarea">
+                        <% if(mensajeNombre){%>
+                            <div class="invalid-feedback">
+                                <%=errors.nombre.msg;%>
+                            </div>
+                        <%}%>
+                    </div>
+                    <div class="col input-group">
+                        <span class="input-group-text">Fecha Inicio y final</span>
+                        <input type="date" class="form-control" name="fechaIni">
+                        <input type="date" class="form-control" name="fechaFin">
+                    </div>  
                 </div>
                 <div class="row input-group p-2">
-                    <div class="col">
-                        <label for="fechaIni">Fecha de inicio</label>
-                        <input id="fechaIni" class="form-control" type="date" name="fechaIni"/>
-                        <span id="fechaIniSeleccionada"></span>
+                    <div class="col btn-group <%=controlPrio%>" role="group" aria-label="Selector de prioridad">
+                        <input type="radio" class="btn-check" name="prioridad" value="BAJA" id="btnradio1" autocomplete="off">
+                        <label class="btn btn-outline-success" for="btnradio1">Baja</label>
+                      
+                        <input type="radio" class="btn-check" name="prioridad" value="MEDIA" id="btnradio2" autocomplete="off">
+                        <label class="btn btn-outline-warning" for="btnradio2">Media</label>
+                      
+                        <input type="radio" class="btn-check" name="prioridad" value="ALTA" id="btnradio3" autocomplete="off">
+                        <label class="btn btn-outline-danger" for="btnradio3">Alta</label>
+                        
+                        
                     </div>
+                    <% if(mensajePrioridad){%>
+                        <div class="col invalid-feedback">
+                            <%=errors.prioridad.msg;%>
+                        </div>
+                    <%}%>
+
+                    <input type="text" class="col form-control" name="categoria" id="formGroupExampleInput" placeholder="@Categoria">
+                </div>
+                <div class="row input-group p-2">
+                    
+                        <div class="col btn-group <%=controlTipo%>" role="group" aria-label="Selector de prioridad">
+                            <input type="radio" class="btn-check" name="tipo" value="DIARIA" id="btnradio1tipo" autocomplete="off">
+                            <label class="btn btn-outline-dark" for="btnradio1tipo">Diaria</label>
+                          
+                            <input type="radio" class="btn-check" name="tipo" value="SEMANAL" id="btnradio2tipo" autocomplete="off">
+                            <label class="btn btn-outline-info" for="btnradio2tipo">Semanal</label>
+                        </div>
+                        <% if(mensajeTipo){%>
+                            <div class="col invalid-feedback">
+                                <%=errors.tipo.msg;%>
+                            </div>
+                        <%}%>
+                    
+                    
                     <div class="col">
-                        <label for="fechaFin">Fecha de finalización</label>
-                        <input id="fechaFin" class="form-control" type="date" name="fechaFin"/>
-                        <span id="fechaFinSeleccionada"></span>
+                        <input class="form-control <%=controlHoras%>" type="text" name="horas" id="floatingInput" placeholder="Número de horas">
+                        <% if(mensajeHoras){%>
+                        <div class="invalid-feedback">
+                            <%=errors.horas.msg%>
+                        </div>
+                        <%}%>
                     </div>
-                </div><br>
+                    
+                </div>
+                
+                <br>
                 <button type="submit"class="btn btn-primary w-100">Añadir</button>
             </form>
         </div>
@@ -66,7 +150,7 @@
     </div>
 
     
-   
+    <%- include("footer") %>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 </body>
 </html>

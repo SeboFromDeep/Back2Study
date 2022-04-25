@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    
+    <title></title>
+    
+    <link rel="stylesheet" href="/css/stilo.css" media="screen"/>
+    <!-- <link rel="stylesheet" href="public/css/stilo.css" media="screen"/> -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    
+</head>
+
+<script type="text/javascript">
+    let count = 0;
+
+    // Se utiliza para determinar si se debe eliminar o aumentar el botón para poder calcular el valor de conteo
+    function checkCount(boolOK, coun) {
+       if (boolOK == true) return count++;
+       else count--;
+    }
+
+    
+    // Agrega una etiqueta de entrada y también asigna valores a su ID y Nombre.
+    //Para pillar los datos, hay que ASEGURARSE que se generen name´s diferentes por ejemplo lunes1, lunes3 ayudado por el contador.
+    function AddTareas() {
+        countAA = checkCount(true, count);
+        
+        console.log("CONTADOR");
+        console.log(countAA);
+        
+        var contendorTareas = document.getElementById("tareaManual");
+            var tareaX = document.createElement("div");
+            tareaX.setAttribute("id", "tarea"+count);
+            contendorTareas.appendChild(tareaX);
+
+
+                var hr = document.createElement("hr");
+                tareaX.appendChild(hr);
+
+                var rowDiasRecu = document.createElement("div");
+                rowDiasRecu.setAttribute("id", "contenidoDiasRe");
+                rowDiasRecu.setAttribute("class", "row input-group p-2");
+                tareaX.appendChild(rowDiasRecu);
+                
+                    var dias = document.createElement("div");
+                    dias.setAttribute("id", "dias");
+                    dias.setAttribute("class", "col btn-group");
+                    dias.setAttribute("role", "group");
+                    dias.setAttribute("aria-label", "Basic checkbox toggle button group");
+                    rowDiasRecu.appendChild(dias);
+
+                    // let diasInput = [lunesInput, martesInput, mierInput, jueInput, vieInput, sabInput, domInput];
+                    // let diasLabel = [lunesLabel, martesLabel, mierLabel, jueLabel, vieLabel, sabLabel, domLabel];
+                    
+                        //------------LUNES----------------
+                        var idLunes = "Lunes"+count+1;
+                        var lunesInput= document.createElement("input");
+                        lunesInput.setAttribute("type", "checkbox");
+                        lunesInput.setAttribute("class", "btn-check");
+                        lunesInput.setAttribute("name", "dia"+count);
+                        lunesInput.setAttribute("value", "@L");
+                        lunesInput.setAttribute("id", "btn"+idLunes);
+                        dias.appendChild(lunesInput);
+
+                        var lunesLabel= document.createElement("label");
+                        lunesLabel.setAttribute("class", "btn btn-outline-dark");
+                        lunesLabel.setAttribute("for", "btn"+idLunes);
+                        lunesLabel.textContent="Lunes";
+                        dias.appendChild(lunesLabel);
+                        //------------MARTES----------------
+                        var idMartes = "Martes"+count+2;
+                        var martesInput= document.createElement("input");
+                        martesInput.setAttribute("type", "checkbox");
+                        martesInput.setAttribute("class", "btn-check");
+                        martesInput.setAttribute("name", "dia"+count);
+                        martesInput.setAttribute("value", "@M");
+                        martesInput.setAttribute("id", "btn"+idMartes);
+                        dias.appendChild(martesInput);
+
+                        var martesLabel= document.createElement("label");
+                        martesLabel.setAttribute("class", "btn btn-outline-dark");
+                        martesLabel.setAttribute("for", "btn"+idMartes);
+                        martesLabel.textContent="Martes";
+                        dias.appendChild(martesLabel);
+                        //------------MIERCOLES----------------
+                        var idMierc = "Miercoles"+count+3;
+                        var mierInput= document.createElement("input");
+                        mierInput.setAttribute("type", "checkbox");
+                        mierInput.setAttribute("class", "btn-check");
+                        mierInput.setAttribute("name", "dia"+count);
+                        mierInput.setAttribute("value", "@X");
+                        mierInput.setAttribute("id", "btn"+idMierc);
+                        dias.appendChild(mierInput);
+
+                        var mierLabel= document.createElement("label");
+                        mierLabel.setAttribute("class", "btn btn-outline-dark");
+                        mierLabel.setAttribute("for", "btn"+idMierc);
+                        mierLabel.textContent="Miércoles";
+                        dias.appendChild(mierLabel);
+                        //------------JUEVES----------------
+                        var idJuev = "Jueves"+count+4;
+                        var jueInput= document.createElement("input");
+                        jueInput.setAttribute("type", "checkbox");
+                        jueInput.setAttribute("class", "btn-check");
+                        jueInput.setAttribute("name", "dia"+count);
+                        jueInput.setAttribute("value", "@J");
+                        jueInput.setAttribute("id", "btn"+idJuev);
+                        dias.appendChild(jueInput);
+
+                        var jueLabel= document.createElement("label");
+                        jueLabel.setAttribute("class", "btn btn-outline-dark");
+                        jueLabel.setAttribute("for", "btn"+idJuev);
+                        jueLabel.textContent="Jueves";
+                        dias.appendChild(jueLabel);
+                        //------------VIERNES----------------
+                        var idVie = "Viernes"+count+5;
+                        var vieInput= document.createElement("input");
+                        vieInput.setAttribute("type", "checkbox");
+                        vieInput.setAttribute("class", "btn-check");
+                        vieInput.setAttribute("name", "dia"+count);
+                        vieInput.setAttribute("value", "@V");
+                        vieInput.setAttribute("id", "btn"+idVie);
+                        dias.appendChild(vieInput);
+
+                        var vieLabel= document.createElement("label");
+                        vieLabel.setAttribute("class", "btn btn-outline-dark");
+                        vieLabel.setAttribute("for", "btn"+idVie);
+                        vieLabel.textContent="Viernes";
+                        dias.appendChild(vieLabel);
+                        //------------SABADO----------------
+                        var idSab = "Sabado"+count+6;
+                        var sabInput= document.createElement("input");
+                        sabInput.setAttribute("type", "checkbox");
+                        sabInput.setAttribute("class", "btn-check");
+                        sabInput.setAttribute("name", "dia"+count);
+                        sabInput.setAttribute("value", "@S");
+                        sabInput.setAttribute("id", "btn"+idSab);
+                        dias.appendChild(sabInput);
+
+                        var sabLabel= document.createElement("label");
+                        sabLabel.setAttribute("class", "btn btn-outline-secondary");
+                        sabLabel.setAttribute("for", "btn"+idSab);
+                        sabLabel.textContent="Sábado";
+                        dias.appendChild(sabLabel);
+                        //------------DOMINGO----------------
+                        var idDom = "Domingo"+count+7;
+                        var domInput= document.createElement("input");
+                        domInput.setAttribute("type", "checkbox");
+                        domInput.setAttribute("class", "btn-check");
+                        domInput.setAttribute("name", "dia"+count);
+                        domInput.setAttribute("value", "@D");
+                        domInput.setAttribute("id", "btn"+idDom);
+                        dias.appendChild(domInput);
+
+                        var domLabel= document.createElement("label");
+                        domLabel.setAttribute("class", "btn btn-outline-secondary");
+                        domLabel.setAttribute("for", "btn"+idDom);
+                        domLabel.textContent="Domingo";
+                        dias.appendChild(domLabel);
+
+                    
+
+
+                    // horas
+                    var horas = document.createElement("div");
+                    horas.setAttribute("id", "horaIniFin");
+                    horas.setAttribute("class", "row input-group p-2");
+                    rowDiasRecu.appendChild(horas);
+
+                        var horasContenido = document.createElement("div");
+                        horasContenido.setAttribute("class", "col input-group");
+                        horas.appendChild(horasContenido);
+
+                        
+                            var horaLabel= document.createElement("span");
+                            horaLabel.setAttribute("class", "input-group-text");
+                            horaLabel.textContent="Hora Inicio y final";
+                            horasContenido.appendChild(horaLabel);
+
+                            var horaIniId = "HoraIni"+count+6;
+                            var horaIniInput= document.createElement("input");
+                            horaIniInput.setAttribute("type", "time");
+                            horaIniInput.setAttribute("name", "horaIni"+count);
+                            horaIniInput.setAttribute("class", "form-control");
+                            horasContenido.appendChild(horaIniInput);
+
+                            var horaFinId = "HoraFin"+count+6;
+                            var horaFinInput= document.createElement("input");
+                            horaFinInput.setAttribute("type", "time");
+                            horaFinInput.setAttribute("name", "horaFin"+count);
+                            horaFinInput.setAttribute("class", "form-control");
+                            horasContenido.appendChild(horaFinInput);
+                        
+                        var recu = document.createElement("div");
+                        recu.setAttribute("id", "recurrente");
+                        recu.setAttribute("class", "col-3 btn-group");
+                        recu.setAttribute("role", "group");
+                        recu.setAttribute("aria-label", "Selector de prioridad");
+                        horas.appendChild(recu);
+                        //      RECURRENTE
+                            var recuId = "Recu"+count+6;
+                            var recuInput= document.createElement("input");
+                            recuInput.setAttribute("type", "radio");
+                            recuInput.setAttribute("class", "btn-check");
+                            recuInput.setAttribute("name", "recursivo"+count);
+                            recuInput.setAttribute("value", "1");
+                            recuInput.setAttribute("id", "re1"+recuId);
+                            recu.appendChild(recuInput);
+
+                            var recuLabel= document.createElement("label");
+                            recuLabel.setAttribute("class", "btn btn-outline-primary");
+                            recuLabel.setAttribute("for", "re1"+recuId);
+                            recuLabel.textContent="Recursivo";
+                            recu.appendChild(recuLabel);
+
+                            var recuId2 = "Recu"+count+6;
+                            var recuInput2= document.createElement("input");
+                            recuInput2.setAttribute("type", "radio");
+                            recuInput2.setAttribute("class", "btn-check");
+                            recuInput2.setAttribute("name", "recursivo"+count);
+                            recuInput2.setAttribute("value", "0");
+                            recuInput2.setAttribute("id", "re2"+recuId2);
+                            recu.appendChild(recuInput2);
+
+                            var recuLabel2= document.createElement("label");
+                            recuLabel2.setAttribute("class", "btn btn-outline-secondary");
+                            recuLabel2.setAttribute("for", "re2"+recuId2);
+                            recuLabel2.textContent="Una Vez";
+                            recu.appendChild(recuLabel2);
+                        
+                            // var botonDelContenido = document.createElement("div");
+                        // botonDelContenido.setAttribute("class", "col-2 d-grid");
+                        // horas.appendChild(botonDelContenido);
+
+                        //     var botonDel= document.createElement("button");
+                        //     botonDel.setAttribute("type", "button");
+                        //     botonDel.setAttribute("class", "btn btn-danger");
+                        //     botonDel.setAttribute("onclick", "DealInput()");
+                        //     botonDel.textContent="-";
+                        //     botonDelContenido.appendChild(botonDel);
+
+    }
+
+    function getCount(){
+        // Sirve para añadir como ultimo campo el numero de configuraciones
+        var contendorConteo = document.getElementById("conteoTareas");
+        var hidden = document.createElement("input");
+            hidden.setAttribute("type", "hidden");
+            hidden.setAttribute("name", "oculto");
+            hidden.setAttribute("value", count+1);
+            contendorConteo.appendChild(hidden);
+    }
+
+    function DealInput(){
+        const div =document.getElementById("tarea"+count);
+        div.remove();
+        countAA = checkCount(false, count); 
+    }
+</script>
+
+
+<body>
+    
+     
+<%- include("menu") %>
+
+<!-- CONTENIDO -->
+    <div class="container contenido ">
+        <% if(typeof(msg) !== "undefined"){%> 
+            <div class="alert alert-warning" role="alert"><%=msg%></div>
+        <% } %>
+        <div class="col-auto bg-light p-5 rounded">
+            <form action="/tareas/addManualTask" method="POST" enctype="application/x-www-form-urlencoded">
+                <h1 class="display-6 text-center">Añadir Tarea Manual</h1>
+                <% if(typeof(errors) !== "undefined"){%>
+                    <% if(errors.nombre){%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errors.nombre.msg%>
+                        </div>
+                    <%}%>
+                    <% if(errors.prioridad){%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errors.prioridad.msg%>
+                        </div>
+                    <%}%>
+                    <% if(errors.fechaIni){%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errors.fechaIni.msg%>
+                        </div>
+                    <%}%>
+                    <% if(errors.fechaFin){%>
+                        <div class="alert alert-danger" role="alert">
+                            <%=errors.fechaFin.msg%>
+                        </div>
+                    <%}%>
+                <%}%>
+                <div id="conteoTareas">
+                </div>
+                <div class="row justify-content-end">
+                    <div class="col-1 d-grid">
+                        <button type="button" class="btn btn-success" onclick="AddTareas()">+</button>
+                    </div>
+                    <div class="col-1 d-grid">
+                        <button type="button" class="btn btn-danger" onclick="DealInput()">-</button>
+                    </div>
+                </div>
+                
+                <div class="row input-group p-2">
+                    <div class="col-4">
+                        <input type="text" name="nombre" class="form-control" id="floatingInput" placeholder="Nombre de la Tarea">
+                    </div>
+                    
+                    
+                    <div class="col input-group">
+                        <span class="input-group-text">Fecha Inicio y final</span>
+                        <input type="date" class="form-control" name="fechaIni">
+                        <input type="date" class="form-control" name="fechaFin">
+                    </div>  
+                </div>
+                
+                <div class="row input-group p-2">
+                    <div class="col btn-group" role="group" aria-label="Selector de prioridad">
+                        <input type="radio" class="btn-check" name="prioridad" value="BAJA" id="btnradio1" autocomplete="off">
+                        <label class="btn btn-outline-success" for="btnradio1">Baja</label>
+                    
+                        <input type="radio" class="btn-check" name="prioridad" value="MEDIA" id="btnradio2" autocomplete="off">
+                        <label class="btn btn-outline-warning" for="btnradio2">Media</label>
+                    
+                        <input type="radio" class="btn-check" name="prioridad" value="ALTA" id="btnradio3" autocomplete="off">
+                        <label class="btn btn-outline-danger" for="btnradio3">Alta</label>
+                    </div>
+                    
+                    <input type="text" class="col form-control" name="categoria" id="formGroupExampleInput" placeholder="@Categoria">
+                    
+                    
+                </div>
+                
+                <div id="">
+                    <hr>
+                    <div id="contenidoDiasRe" class="row input-group p-2">
+                        <!-- CONTENIDO REPRODUCIBLE!!! -->
+                    
+                        <div id="dias" class="col btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                            <input type="checkbox" class="btn-check" name="dia" value="@L" id="btncheck1" >
+                            <label class="btn btn-outline-dark" for="btncheck1">Lunes</label>
+                        
+                            <input type="checkbox" class="btn-check" name="dia" value="@M" id="btncheck2" autocomplete="off">
+                            <label class="btn btn-outline-dark" for="btncheck2">Martes</label>
+                        
+                            <input type="checkbox" class="btn-check" name="dia" value="@X" id="btncheck3" autocomplete="off">
+                            <label class="btn btn-outline-dark" for="btncheck3">Miércoles</label>
+
+                            <input type="checkbox" class="btn-check" name="dia" value="@J"id="btncheck4" autocomplete="off">
+                            <label class="btn btn-outline-dark" for="btncheck4">Jueves</label>
+
+                            <input type="checkbox" class="btn-check" name="dia" value="@V" id="btncheck5" autocomplete="off">
+                            <label class="btn btn-outline-dark" for="btncheck5">Viernes</label>
+
+                            <input type="checkbox" class="btn-check" name="dia" value="@S" id="btncheck6" autocomplete="off">
+                            <label class="btn btn-outline-secondary" name="dia" for="btncheck6">Sábado</label>
+
+                            <input type="checkbox" class="btn-check" name="dia" value="@D" id="btncheck7" autocomplete="off">
+                            <label class="btn btn-outline-secondary" name="dia" for="btncheck7">Domingo</label>
+                        </div>
+                        <!-- <div id="recurrente" class="col-2 btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                            <input type="radio" class="btn-check" name="recu"  id="recur">
+                            <label class="btn btn-outline-info" for="recur">Recurrente</label>
+                        </div> -->
+                        
+                    </div>
+
+                    <div id="horaIniFin" class="row input-group p-2">
+                        <div class="col input-group">
+                            <span class="input-group-text">Hora Inicio y final</span>
+                            <input type="time" name="horaIni" class="form-control">
+                            <input type="time" name="horaFin" class="form-control">
+                        </div>
+                        <div class="col-3 btn-group" id="recurrente" role="group" aria-label="Selector de prioridad">
+                            <input type="radio" class="btn-check" name="recursivo" value="1" id="re1" autocomplete="off">
+                            <label class="btn btn-outline-primary " for="re1">Recursivo</label>
+                        
+                            <input type="radio" class="btn-check" name="recursivo" value="0" id="re2" autocomplete="off">
+                            <label class="btn btn-outline-secondary" for="re2">Una vez</label>
+                        </div>
+                    </div>
+                </div>
+                <div id="tareaManual">
+                </div> <!-- FIN TAREA MANUAL en este div se añaden los dias adicionales-->
+                
+                <br>
+                
+                <button type="submit" class="btn btn-primary w-100" onclick="getCount()">Añadir</button>
+            </form>
+        </div>
+        
+            
+    </div>
+    
+        
+      
+    
+    <%- include("footer") %>
+       
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    </body>
+</html>

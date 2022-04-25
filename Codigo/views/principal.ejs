@@ -12,35 +12,45 @@
     
     
 </head>
-
+<script type="text/javascript">
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
 <body>
     <!--Centrar en bootstrap: https://codea.app/blog/centrar-div-boostrap -->
+
 <!-- ENCABEADO Menu--> 
 <%- include("menu") %>
 
 <!-- CONTENIDO -->
     <div class="container contenido ">
-        
+         <!-- <h1>HOLA <%=nameUser %> tu correo de sesion es <%=mailUser %></h1> -->
+            <!-- Para borrado de tareas -->
+            <% if(deleteId!=false){%>
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Borrado tarea con ID <%=deleteId%> exitoso</strong> 
+                    <button  type="button" class="btn btn-outline-primary"  >
+                        <a href="/tareas/taskList">OK</a>
+                    </button>
+                </div>
+            <% }%>
 
-        <div class="row vh-80 justify-content-center align-items-center">
-            
-            <h1>HOLA <%=nameUser %> tu correo de sesion es <%=mailUser %></h1>
-            
-            
-            
-            
-            
-        </div>
-        
             <% let color="bg-secondary";%>
             <% let tipoTarea="";%>
+            <% let colorTipoTarea="";%>
             <% let prioridad="";%>
-            <% if(tareas){%>
+            <% if(tareas===0){%>
+                <div class="row vh-80 justify-content-center align-items-center">
+                    <p class="h3">Sin Tareas </p>
+                </div> 
+            <% }else{%>
                 <% if(typeof(tareas) !== "undefined"){%> 
             <div class="row vh-80 justify-content-center align-items-center">
 
-                HOLA <%=nameUser %> tu correo de sesion es <%=mailUser %>
-                <p class="h3">Numero de Tareas: <span class="badge bg-warning rounded-circle"><%=tareas.length%></span></p>
+                <!-- HOLA <%=nameUser %> tu correo de sesion es <%=mailUser %> -->
+                <p class="h3">Numero de Tareas: <span class="badge bg-secondary rounded-circle border border-dark"><%=tareas.length%></span></p>
             </div>  
 
                     <% tareas.forEach(function(p) {%>
@@ -58,34 +68,52 @@
                         }%>
                         <% if(p.tipo == "p"){
                             tipoTarea="Programada";
+                            colorTipoTarea="bg-dark";
                             
                         }
                         else if(p.tipo == "m") {
                             tipoTarea="Manual";
+                            colorTipoTarea="bg-info text-dark";
                         }%> 
                         
             
             <div class="row">
                 <div class="col ">
-                    <div class="card">
+                    <div class="card ">
+                        <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill <%=colorTipoTarea%>">
+                            Tarea <%=tipoTarea%>
+                            </span>
                         <div class="card-header">
-                            <!-- <div class="row">
-                                <div class="col">#<%=p.id%> <b><%=p.nombre%></div></b>
-                                <div class="col text-end"><small>Prioridad: <span class="badge <%=color%>"><%=p.prioridad%></span></small></div>
-                            </div> -->
-                            #<%=p.id%> <b><%=p.nombre%> <small>Prioridad: <span class="badge <%=color%>"><%=p.prioridad%></span></small></b>
-                        </div>
+                            <div class="row">
+                                
+                                <div class="col"><a href="/tareas/taskDetalisBy/<%=p.id_tarea%>/<%=p.tipo%>" style=" text-decoration:none;" class="btn btn-outline-info" title="Ver detalles de Tarea #<%=p.id_tarea%>"><b>#<%=p.id_tarea%> <%=p.nombre%></b></a></div>
+                                <div class="col text-center">
+                                    <!-- <small>Fecha Fin: <%=p.fechafin.toDateString()%>.</small> -->
+                                    <small>Prioridad: <span class="badge <%=color%>"><%=p.prioridad%></span></small>
+                                </div>
+                                
+                                <div class="col text-end">
+                                    <a href="/tareas/deleteTask/<%=p.id_tarea%>/<%=p.tipo%>">
+                                        <button type="button"  class="btn btn-danger btn-sm"><b>X</b></button>
+                                    </a>
+                                    
+                                           
+                                </div>
+                            </div>
+                            </div>
                         <div class="card-body">
-                          <h5 class="card-title">Tarea <%=tipoTarea%></h5>
-                          <p class="card-text">Fecha Fin: <%=p.fechafin.toDateString()%>.</p>
-                            <button  type="button" class="btn btn-outline-primary">
-                                <a href="/tareas/taskDetalisBy/<%=p.id%>/<%=p.tipo%>/<%=p.nombre%>/<%=p.prioridad%>/<%=p.fechafin.toDateString()%>/<%=p.categoria%>" style=" text-decoration:none;">Ver detalles</a>
-                            </button>
+                          <!-- <h5 class="card-title">Tarea <%=tipoTarea%></h5> -->
+                          <p class="card-text">Fecha Inicio: <b><%=p.fechaini.toLocaleDateString()%></b> Fecha Fin: <b><%=p.fechafin.toLocaleDateString()%>.</b></p>
+                          
+                            <!-- <button  type="button" class="btn btn-outline-primary">
+                                <a href="/tareas/taskDetalisBy/<%=p.id_tarea%>/<%=p.tipo%>" style=" text-decoration:none;">Ver detalles</a>
+                            </button> -->
+                            
                         </div>
                         <div class="card-footer text-muted">
                             <%p.categoria.split('@').forEach( tag => {%>
                                 <% if(tag != ''){%>
-                                    <a href="/porTag/<%=tag%>" class="badge bg-info">#<%=tag%></a>
+                                    <a href="/tareas/porTag/<%=tag%>" class="badge bg-info">#<%=tag%></a>
                                 <%} %>
                             <%});%>
                         </div>
@@ -100,7 +128,7 @@
             
     </div>
 
-    
+    <%- include("footer") %>
    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 </body>

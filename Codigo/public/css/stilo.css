@@ -15,8 +15,11 @@ h1 {
 
 .contenido{
   margin-top: 100px;
+  margin-bottom: 100px;
   
 }
+
+
 /*.abs-center {
     margin-top: 15%;
     display: flex;

@@ -21,9 +21,13 @@
 <!-- CONTENIDO -->
     <div class="container contenido ">
         
-        <div class="row vh-80 justify-content-center text-center align-items-center">
+        <div class="row vh-80 align-items-center">
             
-            <h1 class="display-6">Tarea Manual</h1>
+            <div class="col "><h1 class="display-6">Tarea Manual</h1></div>
+                
+            <div class="col text-end"><input type="button" onclick="history.back()" name="volver atrás" value="Atrás" class="btn btn-light btn-sm"></div>
+                
+            <br>
         </div>
         
         <% let color="bg-secondary";%>
@@ -33,7 +37,7 @@
             <% if(typeof(tareaM) !== "undefined"){%>   
                 <% if(prioridad == "ALTA"){
                         color="bg-danger";
-                        ;
+                        
                     }
                     else if(prioridad == "MEDIA") {
                         color="bg-warning";
@@ -47,17 +51,20 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col">#<%=idTarea%> <b><%=nombre%></div></b>
-                    <div class="col text-end"><small>Prioridad: <span class="badge <%=color%>"><%=prioridad%></span></small></div>
+                    <div class="col"><a style=" text-decoration:none;" class="btn btn-outline-info disabled">
+                        <b>#<%=idTarea%> <%=nombre%></b></a></div>
+                    
+                    <div class="col text-center"><small>Prioridad: <span class="badge <%=color%>"><%=prioridad%></span></small></div>
+                    <div class="col text-end">Caduca <b><%=tiempoRest%></b></div>
                 </div>
             </div>
             <div class="card-body">
-              <p class="card-text">Fecha Fin: <%=fecha%></p>
+                <h6 class="card-title">Inicio: <b><%=fechaIni.toLocaleDateString()%></b> Fin:<b><%=fechaFin.toLocaleDateString()%></b></h6>
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Inicio</th>
-                            <th scope="col">Fin</th>
+                            <th scope="col">Hora de Inicio</th>
+                            <th scope="col">Hora Final</th>
                             <th scope="col">Dias</th>
                             <th scope="col">Recurrente</th>
                         </tr>
@@ -67,7 +74,7 @@
                     <tbody>
                         <% tareaM.forEach(function(p) {%>
                         <tr>
-                            <th scope="row"><%=p.hora_ini%></th>
+                            <td scope="row"><%=p.hora_ini%></td>
                             <td><%=p.hora_fin%></td>
                             <td>
                                 <%p.dias_recurrentes.split('@').forEach( dia => {%>
@@ -117,15 +124,10 @@
                                     textoRepetir="Recurrente";
                                 }
                                 %>
-                                <!-- <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" <%=marca%> disabled>
-                                <label class="form-check-label" for="flexCheckDisabled">
-                                    Repetir
-                                </label> -->
-
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckCheckedDisabled" <%=marca%> disabled>
                                     <label class="form-check-label" for="flexSwitchCheckCheckedDisabled"><%=textoRepetir%></label>
-                                  </div>
+                                </div>
                                 
                             
                             </td>
@@ -138,7 +140,7 @@
             <div class="card-footer text-muted">
                 <%cat.split('@').forEach( tag => {%>
                     <% if(tag != ''){%>
-                        <a href="/porTagManual/<%=tag%>" class="badge bg-info">#<%=tag%></a>
+                        <a href="/tareas/porTag/<%=tag%>" class="badge bg-info">#<%=tag%></a>
                     <%} %>
                 <%});%>
             </div>
@@ -150,7 +152,7 @@
             
     </div>
 
-    
+    <%- include("footer") %>
    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 </body>

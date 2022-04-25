@@ -1,8 +1,5 @@
 'use strict'
 
-
-
-
 const path = require("path");// modulo para manejar rutas
 // watch front-end changes
 const livereload = require("livereload");
@@ -35,12 +32,14 @@ app.use(express.urlencoded({extended: true}));//Devuelve middleware que solo ana
 app.use(morgan("dev"));//Al realizar cambios en los archivos, se reinicia la aplicacion automaticamente (Para programar)
 //Se indica a express donde se encuentan las vistas
 
+let events = require("./modules/event-module.js");  
+events.Init();
+
 //---------------------------------Sesion---------------------------------
 const session = require("express-session");
 const mysqlSession = require("express-mysql-session");
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(config.databaseConfig);
-
 const middlewareSession = session({
     saveUninitialized: false,
     secret: "foobar34",
@@ -48,52 +47,115 @@ const middlewareSession = session({
     store: sessionStore
 });
 
+
+
 app.use(middlewareSession);
 
-//Para ver que usuario esta logeado en el momento (Para pruebas)
+//Para ver que usuario esta logeado en el momento (Para pruebas) A eliminar en un futuro no muy lejano
 app.use(function(request, response, next) {
     console.log("Usuario logeado: ", request.session.userName);
     next();
 })
 //--------------------------------------------------------------------
 
-
-
-
 //Routers
 const routerUser = require("./routers/userRouter");
 app.use("/usuarios", routerUser);
 
 const routerTask = require("./routers/taskRouter");
+const { render } = require("express/lib/response");
 app.use("/tareas", routerTask);
 
+/*
+app.get("/tareas/calendar-events", (request, response) => {
+    console.log("NEW CALENDAR REQUEST")//, request)
+    let userEvents = events.UserEvents[request.session.userName]
+    console.log("UserEvents:", events.UserEvents)
+    if (userEvents == undefined) {
+        console.log("UserEvents are undefined. Loading DefaultEvents.")
+        userEvents = events.DefaultEvents;
+    }
+    response.json(userEvents);                              
+});
+*/
 
 //-- Pagina inicial
 app.get("/", (request, response) => {
-    response.status(200);
-    
-    response.render("login", {  title: "Página de inicio de sesión",
-                                msgRegistro: false});
-});
+    if(request.session.userName===undefined){
+        response.status(200);
+        response.render("login", {  
+                title: "Página de inicio de sesión",
+                msgRegistro: false});
+    }
+    else{
+        response.render("principal", {  
+            title: "Back2Study", 
+            nameUser: request.session.userName, 
+            mailUser: request.session.mail,
+            tareas: undefined,
+            deleteId: false });
 
+        
+    }
+    
+});
 
 //-----------------------------------Registro --> Login--------------
 app.get("/login", (request, response) => {
-     response.status(200);
-        response.render("login", {  title: "Pagina de logeo", 
-                                    msgRegistro: false});
+    if(request.session.userName===undefined){
+        response.status(200);
+        response.render("login", {  
+                title: "Página de inicio de sesión",
+                msgRegistro: false});
+    }
+    else{
+        response.render("principal", {  
+            title: "Back2Study", 
+            nameUser: request.session.userName, 
+            mailUser: request.session.mail,
+            tareas: undefined,
+            deleteId: false });
+    }
     
 });
 
 //-- Pagina de registro Login --> Registro
 app.get("/signup", (request, response) => {     
-    response.status(200);
-    const errors = validationResult(request);
-    response.render("signup", { title: "Página de registro",
-                                errores: errors.mapped() ,
-                                msgRegistro: false});//False para usu que no existe True si ya existe 
-                            });
+    if(request.session.userName===undefined){
+        response.status(200);
+        const errors = validationResult(request);
+        response.render("signup", { title: "Página de registro",
+                                    errores: errors.mapped() ,
+                                    msgRegistro: false});//False para usu que no existe True si ya existe 
+    }
+    else{
+        response.render("principal", {  
+            title: "Back2Study", 
+            nameUser: request.session.userName, 
+            mailUser: request.session.mail,
+            tareas: undefined,
+            deleteId: false,
+        });
+    }                                
+});
 
+// Recuperar Contraseña-----------------------
+app.get("/forgot-password", (req, res, next) => {
+    res.render("forgot-password",{   msg: false });
+});
+
+app.get("/reset-password/:id/:token", (request, response) => {
+    
+    cP.modPass
+});
+//-----------------------------------------
+
+/*app.post("/forgot-password", (req, res, next) => {
+    const { email } = req.body;
+
+    res.send(email);
+});
+*/
 // ping browser on Express boot, once browser has reconnected and handshaken
 liveReloadServer.server.once("connection", () => {
     console.log("Refrescando browser");
@@ -102,12 +164,6 @@ liveReloadServer.server.once("connection", () => {
     }, 100);
 });
 
-//---
-
-/*
-app.get("/prueba", (request, response) => {
-    response.render("login");
-});*/
 
 //-- -GESTION DE ERRORES 
 
@@ -135,3 +191,6 @@ app.listen(PORT, (err) => {
         console.log(`Servidor arrancado en el puerto ${ PORT }`);        
     }
 });
+
+module.exports = app;
+
