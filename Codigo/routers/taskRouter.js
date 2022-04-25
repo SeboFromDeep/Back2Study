@@ -41,21 +41,21 @@ taskRouter.post("/add_scheduled_task",
             controllerUsuario.usuarioLogeado,
 
             check("nombre", "Nombre de tarea no válido.").isLength({min: 1, max: undefined}),
-            check("prioridad")
+            check("prioridad", "Prioridad no puede estar vacio").notEmpty()
             .custom(
                 (value, {req}) => {
                     if (value != null) return true;
                     else throw Error("Por favor escoge una prioridad para la tarea.");
                 }),
-            check("tipo")
+            check("tipo", "Debes elegir un tipo").notEmpty()
             .custom((value, {req}) => {
                     if (value == "DIARIA" || value == "SEMANAL") return true;
                     else throw Error("Por favor indica el tipo de la tarea.");
                 }
             ),
             check("horas", "El número de horas debe de ser mayor que 0.").isInt({gt: 0}),
-            check("fechaIni", "Fecha de inicio no válida.").isAfter(),
-            check("fechaFin")
+            check("fechaIni", "Fecha de inicio no puede estar vacio").notEmpty(),
+            check("fechaFin", "Fecha Fin no puede estar vacio").notEmpty()
             .custom((value, {req}) => {
                 if (value > req.body.fechaIni) return true;
                 else throw Error("Fecha de finalización no válida.");
@@ -72,14 +72,14 @@ taskRouter.post("/addManualTask",
             multerFactory.none(),
             controllerUsuario.usuarioLogeado,
             check("nombre", "Nombre de tarea no válido.").isLength({min: 1, max: undefined}),
-            check("prioridad")
+            check("prioridad", "Prioridad no puede estar vacio").notEmpty()
             .custom(
                 (value, {req}) => {
                     if (value != null) return true;
                     else throw Error("Por favor escoge una prioridad para la tarea.");
                 }),
-            check("fechaIni", "Fecha de inicio no válida.").isAfter(),
-            check("fechaFin")
+            check("fechaIni", "Fecha de inicio no puede estar vacio").notEmpty(),
+            check("fechaFin", "Fecha Fin no puede estar vacio").notEmpty()
             .custom((value, {req}) => {
                 if (value > req.body.fechaIni) return true;
                 else throw Error("Fecha de finalización no válida.");
