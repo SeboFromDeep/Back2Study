@@ -34,6 +34,9 @@
                 <% let mensajeTipo=false;%>
                 <% let controlTipo="";%>
 
+                <% let mensajeHoras=false;%>
+                <% let controlHoras="";%>
+
                 <% if(typeof(errors) !== "undefined"){%>
                     
                     <% if(errors.nombre){%>
@@ -50,11 +53,11 @@
                     <% if(errors.tipo){%>
                         <% mensajeTipo=true;%>
                         <% controlTipo="is-invalid";%>
-                        <div class="alert alert-danger" role="alert">
-                            <%=errors.tipo.msg%>
-                        </div>
+                        
                     <%}%>
                     <% if(errors.horas){%>
+                        <% mensajeHoras=true;%>
+                        <% controlHoras="is-invalid";%>
                         <div class="alert alert-danger" role="alert">
                             <%=errors.horas.msg%>
                         </div>
@@ -109,21 +112,31 @@
                     <input type="text" class="col form-control" name="categoria" id="formGroupExampleInput" placeholder="@Categoria">
                 </div>
                 <div class="row input-group p-2">
+                    <div class="col">
+                        <div class="btn-group <%=controlTipo%>" role="group" aria-label="Selector de prioridad">
+                            <input type="radio" class="btn-check" name="tipo" value="DIARIA" id="btnradio1tipo" autocomplete="off">
+                            <label class="btn btn-outline-dark" for="btnradio1tipo">Diaria</label>
+                          
+                            <input type="radio" class="btn-check" name="tipo" value="SEMANAL" id="btnradio2tipo" autocomplete="off">
+                            <label class="btn btn-outline-info" for="btnradio2tipo">Semanal</label>
+                        </div>
+                        <% if(mensajeTipo){%>
+                            <div class="invalid-feedback">
+                                <%=errors.tipo.msg;%>
+                            </div>
+                        <%}%>
+                    </div>
                     
-                    <div class="col btn-group <%=controlTipo%>" role="group" aria-label="Selector de prioridad">
-                        <input type="radio" class="btn-check" name="tipo" value="DIARIA" id="btnradio1tipo" autocomplete="off">
-                        <label class="btn btn-outline-dark" for="btnradio1tipo">Diaria</label>
-                      
-                        <input type="radio" class="btn-check" name="tipo" value="SEMANAL" id="btnradio2tipo" autocomplete="off">
-                        <label class="btn btn-outline-info" for="btnradio2tipo">Semanal</label>
+                    <div class="col">
+                        <input class="form-control <%=controlHoras%>" type="text" name="horas" id="floatingInput" placeholder="Número de horas">
+                        <% if(mensajeHoras){%>
+                        <div class="invalid-feedback">
+                            <%=errors.horas.msg%>
+                        </div>
+                        <%}%>
                     </div>
-                    <input class="col form-control" type="text" name="horas" id="floatingInput" placeholder="Número de horas">
+                    
                 </div>
-                <% if(mensajeTipo){%>
-                    <div class="col invalid-feedback">
-                        <%=errors.tipo.msg;%>
-                    </div>
-                <%}%>
                 
                 <br>
                 <button type="submit"class="btn btn-primary w-100">Añadir</button>

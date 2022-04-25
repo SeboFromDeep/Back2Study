@@ -42,13 +42,13 @@
             });
         }
         });
-        $(".fc-right .fc-button-group").append(
-            '<div class="input-group datetimepicker"><input type="text" class="form-control fc-datepicker" placeholder="YYYY-MM-DD" style="padding: 0;width: 0;border: none;margin: 0;"></div>');
-            $(".fc-datepicker").datepicker({
-            dateFormat: 'yy-mm-dd',
-            showOn: "button",
-            buttonText: '<span class="input-group-addon"><i class="fas fa-calendar-alt"></i></span>'
-            });
+        // $(".fc-right .fc-button-group").append(
+        //     '<div class="input-group datetimepicker"><input type="text" class="form-control fc-datepicker" placeholder="YYYY-MM-DD" style="padding: 0;width: 0;border: none;margin: 0;"></div>');
+        //     $(".fc-datepicker").datepicker({
+        //     dateFormat: 'yy-mm-dd',
+        //     showOn: "button",
+        //     buttonText: '<span class="input-group-addon"><i class="fas fa-calendar-alt"></i></span>'
+        //     });
   });
 </script>
 </head>
@@ -63,91 +63,7 @@
     <div class="container contenido ">
          <!-- <h1>HOLA <%=nameUser %> tu correo de sesion es <%=mailUser %></h1> -->
             <!-- Para borrado de tareas -->
-            <% if(deleteId!=false){%>
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong>Borrado tarea con ID <%=deleteId%> exitoso</strong> 
-                    <button  type="button" class="btn btn-outline-primary"  >
-                        <a href="/tareas/taskList">OK</a>
-                    </button>
-                </div>
-            <% }%>
-
-            <% let color="bg-secondary";%>
-            <% let tipoTarea="";%>
-            <% let prioridad="";%>
-            <% if(tareas===0){%>
-                <div class="row vh-80 justify-content-center align-items-center">
-                    <p class="h3">Sin Tareas </p>
-                </div> 
-            <% }else{%>
-                <% if(typeof(tareas) !== "undefined"){%> 
-            <div class="row vh-80 justify-content-center align-items-center">
-
-                <!-- HOLA <%=nameUser %> tu correo de sesion es <%=mailUser %> -->
-                <p class="h3">Numero de Tareas: <span class="badge bg-warning rounded-circle"><%=tareas.length%></span></p>
-            </div>  
-
-                    <% tareas.forEach(function(p) {%>
-                        <% if(p.prioridad == "ALTA"){
-                            color="bg-danger";
-                            prioridad="ALTA";
-                        }
-                        else if(p.prioridad == "MEDIA") {
-                            color="bg-warning";
-                            prioridad="MEDIA";
-                        }
-                        else if(p.prioridad == "BAJA") {
-                            color="bg-success";
-                            prioridad="BAJA";
-                        }%>
-                        <% if(p.tipo == "p"){
-                            tipoTarea="Programada";
-                            
-                        }
-                        else if(p.tipo == "m") {
-                            tipoTarea="Manual";
-                        }%> 
-                        
             
-            <div class="row">
-                <div class="col ">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col">#<%=p.id_tarea%> <b><%=p.nombre%></div></b>
-                                <div class="col text-center"><small>Fecha Fin: <%=p.fechafin.toDateString()%>.</small></div>
-                                <div class="col text-end"><small>Prioridad: <span class="badge <%=color%>"><%=p.prioridad%></span></small></div>
-                                <div class="col text-end">
-                                    <a href="/tareas/deleteTask/<%=p.id_tarea%>/<%=p.tipo%>" class="btn btn-danger" style="text-decoration:none;">X</a>
-                                            
-                                </div>
-                            </div>
-                            </div>
-                        <div class="card-body">
-                          <h5 class="card-title">Tarea <%=tipoTarea%></h5>
-                          <!-- <p class="card-text">Fecha Fin: <%=p.fechafin.toDateString()%>.</p> -->
-                            <button  type="button" class="btn btn-outline-primary">
-                                <a href="/tareas/taskDetalisBy/<%=p.id_tarea%>/<%=p.tipo%>" style=" text-decoration:none;">Ver detalles</a>
-                            </button>
-                            <button  type="button" class="btn btn-outline-primary">
-                                <a href="/tareas/deleteTask/<%=p.id_tarea%>/<%=p.tipo%>" style=" text-decoration:none;">Borrar</a>
-                            </button>
-                        </div>
-                        <div class="card-footer text-muted">
-                            <%p.categoria.split('@').forEach( tag => {%>
-                                <% if(tag != ''){%>
-                                    <a href="/porTag/<%=tag%>" class="badge bg-info">#<%=tag%></a>
-                                <%} %>
-                            <%});%>
-                        </div>
-                    </div>
-                    <br>
-                </div>
-            </div>  
-     
-                            <%});%>
-                        <%}%>
-                    <%}%>
             
     </div>
 

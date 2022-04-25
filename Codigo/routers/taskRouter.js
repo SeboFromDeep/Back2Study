@@ -16,10 +16,14 @@ taskRouter.get("/taskList",
                 controllerUsuario.usuarioLogeado, 
                 controllerTareas.getListTareas);
 
-// Falta hacer el post de tarea manual
-// taskRouter.get("/tasks", 
-//                 controllerUsuario.usuarioLogeado, 
-//                 controllerTareas.añadirTareaManual);
+
+taskRouter.get("/calendar-events", 
+                controllerUsuario.usuarioLogeado, 
+                controllerTareas.updateCalendar);            
+
+taskRouter.get("/calendario", 
+                controllerUsuario.usuarioLogeado, 
+                controllerTareas.getCalendar); 
 
 //Menu --> Formulario Añadir Tarea Programada
 taskRouter.get("/addManualTask", 

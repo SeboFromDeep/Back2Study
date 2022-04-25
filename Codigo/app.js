@@ -32,7 +32,7 @@ app.use(express.urlencoded({extended: true}));//Devuelve middleware que solo ana
 app.use(morgan("dev"));//Al realizar cambios en los archivos, se reinicia la aplicacion automaticamente (Para programar)
 //Se indica a express donde se encuentan las vistas
 
-let events = require("./prueba/full-calendar/eventModule.js"); 
+let events = require("./modules/event-module.js");  
 events.Init();
 
 //---------------------------------Sesion---------------------------------
