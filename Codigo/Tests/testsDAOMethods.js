@@ -8,8 +8,10 @@ class DaoTests {
     insert_user(usuario) {
         return new Promise((resolve, reject) => {
             this.pool.getConnection(function (err, connection) {
-                if (err)
+                if (err){
+                    console.log(err);
                     reject(new Error("Error de conexión a la base de datos"));
+                }
                 else {
                     connection.query('USE back2study;');
                     connection.query("INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
