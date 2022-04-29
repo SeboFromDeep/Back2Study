@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./Codigo/app.js",
     "watch": "nodemon ./Codigo/app.js --ext ejs --ignore public",
-    "test": "mocha test --reporter mocha-junit-reporter --recursive --timeout 10000 ./Codigo/Tests/ --exit "
+    "test": "mocha test --reporter mocha-junit-reporter --recursive --timeout 10000 ./Codigo/Tests/"
   },
   "repository": {
     "type": "git",
