@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="21.6460" tests="44" failures="2">
+  <testsuite name="Root Suite" timestamp="2022-04-29T11:04:24" tests="0" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="hooks" timestamp="2022-04-29T11:04:24" tests="0" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-AñadirTareaM.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Añadir tarea programada correcta" timestamp="2022-04-29T11:04:24" tests="1" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-AñadirTareaM.js" time="0.3380" failures="0">
+    <testcase name="hooks Añadir tarea programada correcta Todos los datos correctos" time="0.3340" classname="Todos los datos correctos">
+    </testcase>
+  </testsuite>
+  <testsuite name="Añadir tarea programada incorrecta" timestamp="2022-04-29T11:04:24" tests="1" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-AñadirTareaM.js" time="0.1820" failures="0">
+    <testcase name="hooks Añadir tarea programada incorrecta Campos vacíos" time="0.1800" classname="Campos vacíos">
+    </testcase>
+  </testsuite>
+  <testsuite name="hooks" timestamp="2022-04-29T11:04:24" tests="0" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-BorrarTarea.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Borrar tarea" timestamp="2022-04-29T11:04:25" tests="2" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-BorrarTarea.js" time="0.7150" failures="0">
+    <testcase name="hooks Borrar tarea Borrar tarea manual" time="0.2010" classname="Borrar tarea manual">
+    </testcase>
+    <testcase name="hooks Borrar tarea Borrar tarea programada" time="0.3410" classname="Borrar tarea programada">
+    </testcase>
+  </testsuite>
+  <testsuite name="hooks" timestamp="2022-04-29T11:04:26" tests="0" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-BuscarTareaCategoria.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Buscar tarea por categoria" timestamp="2022-04-29T11:04:27" tests="2" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-BuscarTareaCategoria.js" time="0.6980" failures="0">
+    <testcase name="hooks Buscar tarea por categoria Buscar categoria que existe" time="0.1740" classname="Buscar categoria que existe">
+    </testcase>
+    <testcase name="hooks Buscar tarea por categoria Buscar categoria que no existe" time="0.3550" classname="Buscar categoria que no existe">
+    </testcase>
+  </testsuite>
+  <testsuite name="hooks" timestamp="2022-04-29T11:04:28" tests="0" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-BuscarTareaNombre.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Buscar tarea por nombre" timestamp="2022-04-29T11:04:28" tests="2" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-BuscarTareaNombre.js" time="0.6750" failures="0">
+    <testcase name="hooks Buscar tarea por nombre Buscar tarea que existe" time="0.1720" classname="Buscar tarea que existe">
+    </testcase>
+    <testcase name="hooks Buscar tarea por nombre Buscar tarea que no existe" time="0.3350" classname="Buscar tarea que no existe">
+    </testcase>
+  </testsuite>
+  <testsuite name="hooks" timestamp="2022-04-29T11:04:29" tests="0" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-ListarTareas.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Listar tareas" timestamp="2022-04-29T11:04:32" tests="4" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-ListarTareas.js" time="1.8980" failures="0">
+    <testcase name="hooks Listar tareas El usuario no tiene ninguna tarea" time="0.1810" classname="El usuario no tiene ninguna tarea">
+    </testcase>
+    <testcase name="hooks Listar tareas El usuario sólo tiene tareas manuales" time="0.3420" classname="El usuario sólo tiene tareas manuales">
+    </testcase>
+    <testcase name="hooks Listar tareas El usuario sólo tiene tareas programadas" time="0.3610" classname="El usuario sólo tiene tareas programadas">
+    </testcase>
+    <testcase name="hooks Listar tareas El usuario tiene tareas manuales y programadas" time="0.3410" classname="El usuario tiene tareas manuales y programadas">
+    </testcase>
+  </testsuite>
+  <testsuite name="hooks" timestamp="2022-04-29T11:04:34" tests="0" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-Login.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Login correcto" timestamp="2022-04-29T11:04:34" tests="1" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-Login.js" time="0.1720" failures="0">
+    <testcase name="hooks Login correcto Todos los datos del login son correctos y el usuario está registrado" time="0.1720" classname="Todos los datos del login son correctos y el usuario está registrado">
+    </testcase>
+  </testsuite>
+  <testsuite name="Login incorrecto" timestamp="2022-04-29T11:04:34" tests="5" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-Login.js" time="1.3940" failures="0">
+    <testcase name="hooks Login incorrecto Todos los datos del login son correctos y el usuario no está registrado" time="0.2560" classname="Todos los datos del login son correctos y el usuario no está registrado">
+    </testcase>
+    <testcase name="hooks Login incorrecto Campo email vacio" time="0.2610" classname="Campo email vacio">
+    </testcase>
+    <testcase name="hooks Login incorrecto Campo contraseña vacío" time="0.2520" classname="Campo contraseña vacío">
+    </testcase>
+    <testcase name="hooks Login incorrecto Contraseña incorrecta" time="0.2500" classname="Contraseña incorrecta">
+    </testcase>
+    <testcase name="hooks Login incorrecto Ambos campos vacios" time="0.2540" classname="Ambos campos vacios">
+    </testcase>
+  </testsuite>
+  <testsuite name="hooks" timestamp="2022-04-29T11:04:36" tests="0" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-Registro.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Registrarse correcto" timestamp="2022-04-29T11:04:36" tests="1" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-Registro.js" time="0.2530" failures="0">
+    <testcase name="hooks Registrarse correcto Todos los datos del registro son correctos y el usuario no está registrado aún" time="0.2530" classname="Todos los datos del registro son correctos y el usuario no está registrado aún">
+    </testcase>
+  </testsuite>
+  <testsuite name="Registrarse incorrecto" timestamp="2022-04-29T11:04:36" tests="1" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-Registro.js" time="0.0870" failures="0">
+    <testcase name="hooks Registrarse incorrecto Ya hay un usuario registrado con el mismo nombre de usuario" time="0.0870" classname="Ya hay un usuario registrado con el mismo nombre de usuario">
+    </testcase>
+  </testsuite>
+  <testsuite name="Registrarse incorrecto" timestamp="2022-04-29T11:04:36" tests="1" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-Registro.js" time="0.1650" failures="0">
+    <testcase name="hooks Registrarse incorrecto Ya hay un usuario registrado con el mismo correo" time="0.1650" classname="Ya hay un usuario registrado con el mismo correo">
+    </testcase>
+  </testsuite>
+  <testsuite name="Registrarse incorrecto" timestamp="2022-04-29T11:04:36" tests="1" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-Registro.js" time="0.0040" failures="0">
+    <testcase name="hooks Registrarse incorrecto Nombre de usuario vacío" time="0.0040" classname="Nombre de usuario vacío">
+    </testcase>
+  </testsuite>
+  <testsuite name="Registrarse incorrecto" timestamp="2022-04-29T11:04:36" tests="1" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-Registro.js" time="0.0040" failures="0">
+    <testcase name="hooks Registrarse incorrecto Correo vacío" time="0.0040" classname="Correo vacío">
+    </testcase>
+  </testsuite>
+  <testsuite name="Registrarse incorrecto" timestamp="2022-04-29T11:04:36" tests="1" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-Registro.js" time="0.0070" failures="0">
+    <testcase name="hooks Registrarse incorrecto Contraseña menor de 4 caracteres" time="0.0070" classname="Contraseña menor de 4 caracteres">
+    </testcase>
+  </testsuite>
+  <testsuite name="Registrarse incorrecto" timestamp="2022-04-29T11:04:36" tests="1" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-Registro.js" time="0.2490" failures="0">
+    <testcase name="hooks Registrarse incorrecto Contraseñas distintas" time="0.0050" classname="Contraseñas distintas">
+    </testcase>
+  </testsuite>
+  <testsuite name="hooks" timestamp="2022-04-29T11:04:37" tests="0" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-VerDetallesTarea.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Ver detalles de tarea" timestamp="2022-04-29T11:04:37" tests="2" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Integracion\TINegocio-BD-VerDetallesTarea.js" time="0.6990" failures="0">
+    <testcase name="hooks Ver detalles de tarea Ver detalles tarea manual" time="0.1710" classname="Ver detalles tarea manual">
+    </testcase>
+    <testcase name="hooks Ver detalles de tarea Ver detalles tarea programada" time="0.3440" classname="Ver detalles tarea programada">
+    </testcase>
+  </testsuite>
+  <testsuite name="Añadir Tarea Programada" timestamp="2022-04-29T11:04:38" tests="1" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUtaskDAOAñadirTareaM.js" time="0.0000" failures="0">
+    <testcase name="Añadir Tarea Programada Debería crear una nueva fila en la BBDD" time="0.0000" classname="Debería crear una nueva fila en la BBDD">
+    </testcase>
+  </testsuite>
+  <testsuite name="hooks" timestamp="2022-04-29T11:04:38" tests="0" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUtaskDAOBorrarTarea.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Borrar tareas" timestamp="2022-04-29T11:04:39" tests="2" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUtaskDAOBorrarTarea.js" time="0.4210" failures="0">
+    <testcase name="hooks Borrar tareas Borrar tarea manual" time="0.0860" classname="Borrar tarea manual">
+    </testcase>
+    <testcase name="hooks Borrar tareas Borrar tarea programada" time="0.1680" classname="Borrar tarea programada">
+    </testcase>
+  </testsuite>
+  <testsuite name="hooks" timestamp="2022-04-29T11:04:40" tests="0" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUtaskDAOBuscarTareaCategoria.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Buscar tarea por categoría" timestamp="2022-04-29T11:04:40" tests="2" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUtaskDAOBuscarTareaCategoria.js" time="0.3320" failures="0">
+    <testcase name="hooks Buscar tarea por categoría Debería devolver exactamente la misma lista" time="0.0830" classname="Debería devolver exactamente la misma lista">
+    </testcase>
+    <testcase name="hooks Buscar tarea por categoría No debería devolver nada" time="0.0820" classname="No debería devolver nada">
+    </testcase>
+  </testsuite>
+  <testsuite name="hooks" timestamp="2022-04-29T11:04:41" tests="0" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUtaskDAOBuscarTareaNombre.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Buscar tarea por nombre" timestamp="2022-04-29T11:04:42" tests="2" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUtaskDAOBuscarTareaNombre.js" time="0.3290" failures="0">
+    <testcase name="hooks Buscar tarea por nombre Debería devolver exactamente la misma lista" time="0.0830" classname="Debería devolver exactamente la misma lista">
+    </testcase>
+    <testcase name="hooks Buscar tarea por nombre No debería devolver nada" time="0.0800" classname="No debería devolver nada">
+    </testcase>
+  </testsuite>
+  <testsuite name="hooks" timestamp="2022-04-29T11:04:42" tests="0" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUtaskDAOVerDetallesTarea.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Ver detalles de tarea" timestamp="2022-04-29T11:04:43" tests="2" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUtaskDAOVerDetallesTarea.js" time="0.3330" failures="0">
+    <testcase name="hooks Ver detalles de tarea Ver detalles tarea manual" time="0.0830" classname="Ver detalles tarea manual">
+    </testcase>
+    <testcase name="hooks Ver detalles de tarea Ver detalles tarea programada" time="0.0820" classname="Ver detalles tarea programada">
+    </testcase>
+  </testsuite>
+  <testsuite name="hooks" timestamp="2022-04-29T11:04:43" tests="0" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUuserDAOLogin.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Iniciar sesión correcto" timestamp="2022-04-29T11:04:44" tests="1" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUuserDAOLogin.js" time="0.1680" failures="0">
+    <testcase name="hooks Iniciar sesión correcto Correo y contraseña correctos" time="0.1670" classname="Correo y contraseña correctos">
+    </testcase>
+  </testsuite>
+  <testsuite name="Iniciar sesión incorrecto" timestamp="2022-04-29T11:04:44" tests="2" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUuserDAOLogin.js" time="0.2900" failures="0">
+    <testcase name="hooks Iniciar sesión incorrecto Correo no registrado en la BD" time="0.0870" classname="Correo no registrado en la BD">
+    </testcase>
+    <testcase name="hooks Iniciar sesión incorrecto Correo registrado pero contraseña incorrecta" time="0.0810" classname="Correo registrado pero contraseña incorrecta">
+    </testcase>
+  </testsuite>
+  <testsuite name="hooks" timestamp="2022-04-29T11:04:44" tests="0" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUuserDAOmethods.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Existe usuario" timestamp="2022-04-29T11:04:44" tests="2" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUuserDAOmethods.js" time="0.2650" failures="2">
+    <testcase name="hooks Existe usuario Ya existe un usuario con ese nombre" time="0.1770" classname="Ya existe un usuario con ese nombre">
+      <failure message="expected false to equal true" type="AssertionError"><![CDATA[AssertionError: expected false to equal true
+    at C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUuserDAOmethods.js:55:24
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async Context.<anonymous> (Codigo\Tests\Unitarios\TUuserDAOmethods.js:54:13)]]></failure>
+    </testcase>
+    <testcase name="hooks Existe usuario Ya existe un usuario con ese correo" time="0.0870" classname="Ya existe un usuario con ese correo">
+      <failure message="expected false to equal true" type="AssertionError"><![CDATA[AssertionError: expected false to equal true
+    at C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUuserDAOmethods.js:67:24
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async Context.<anonymous> (Codigo\Tests\Unitarios\TUuserDAOmethods.js:66:13)]]></failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="No existe usuario" timestamp="2022-04-29T11:04:45" tests="2" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUuserDAOmethods.js" time="0.2890" failures="0">
+    <testcase name="hooks No existe usuario No existe un usuario con ese nombre" time="0.0870" classname="No existe un usuario con ese nombre">
+    </testcase>
+    <testcase name="hooks No existe usuario No existe un usuario con ese correo" time="0.0810" classname="No existe un usuario con ese correo">
+    </testcase>
+  </testsuite>
+  <testsuite name="hooks" timestamp="2022-04-29T11:04:45" tests="0" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUuserDAORegistro.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Registrarse" timestamp="2022-04-29T11:04:45" tests="1" file="C:\Universidad\B2S\Back2Study\Codigo\Tests\Unitarios\TUuserDAORegistro.js" time="0.2890" failures="0">
+    <testcase name="hooks Registrarse Agrega usuario a la BD" time="0.1670" classname="Agrega usuario a la BD">
+    </testcase>
+  </testsuite>
+</testsuites>
